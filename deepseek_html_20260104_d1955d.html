@@ -1,0 +1,1813 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактор сайта - Студия танцев</title>
+    <style>
+        :root {
+            --primary: #E67E22;
+            --secondary: #D35400;
+            --light: #FFF8F0;
+            --dark: #2C1810;
+            --success: #27AE60;
+            --danger: #E74C3C;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+        }
+        
+        .tabs {
+            display: flex;
+            background: var(--light);
+            border-bottom: 2px solid var(--primary);
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            padding: 18px 30px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--dark);
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab:hover {
+            background: rgba(230, 126, 34, 0.1);
+        }
+        
+        .tab.active {
+            background: white;
+            border-bottom: 3px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 30px;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .form-section {
+            background: #f9f9f9;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 1px solid #eee;
+        }
+        
+        .form-section h3 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form-section h3 i {
+            font-size: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.1);
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(230, 126, 34, 0.3);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #2ECC71);
+            color: white;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #FF6B6B);
+            color: white;
+        }
+        
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+        }
+        
+        .item-list {
+            background: white;
+            border-radius: 10px;
+            border: 1px solid #eee;
+            margin-top: 20px;
+        }
+        
+        .item {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .item:last-child {
+            border-bottom: none;
+        }
+        
+        .item-info h4 {
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+        
+        .item-info p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .item-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .preview {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .status-message {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 10px;
+            background: var(--success);
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+        
+        .status-message.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .status-message.error {
+            background: var(--danger);
+        }
+        
+        .editor-toolbar {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .counter {
+            background: var(--primary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                text-align: center;
+                border-bottom: 1px solid #ddd;
+            }
+            
+            .tab.active {
+                border-right: 3px solid var(--primary);
+                border-bottom: none;
+            }
+            
+            .actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-edit"></i> Редактор сайта танцевальной студии</h1>
+            <p>Управляйте контентом, ценами, командой и другими данными</p>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active" data-tab="main">Основное</div>
+            <div class="tab" data-tab="directions">Направления</div>
+            <div class="tab" data-tab="prices">Цены</div>
+            <div class="tab" data-tab="team">Команда</div>
+            <div class="tab" data-tab="reviews">Отзывы</div>
+            <div class="tab" data-tab="gallery">Галерея</div>
+            <div class="tab" data-tab="news">Новости</div>
+            <div class="tab" data-tab="faq">FAQ</div>
+        </div>
+        
+        <!-- Вкладка Основное -->
+        <div class="tab-content active" id="main">
+            <div class="form-section">
+                <h3><i class="fas fa-cog"></i> Основные настройки</h3>
+                <div class="form-group">
+                    <label>Название студии *</label>
+                    <input type="text" id="studioName" placeholder="Первый ритм Ленинского">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Телефон *</label>
+                        <input type="tel" id="phone" placeholder="+7 (904) 123-31-75">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="email" placeholder="info@primeritm.ru">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Адрес *</label>
+                    <textarea id="address" placeholder="г. Иркутск, ул. 1-й Ленинский квартал, д. 1"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Часы работы *</label>
+                    <input type="text" id="workingHours" placeholder="Ежедневно с 8:00 до 22:00">
+                </div>
+                
+                <div class="form-group">
+                    <label>Цена пробного занятия *</label>
+                    <input type="text" id="trialPrice" placeholder="300₽">
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3><i class="fas fa-hashtag"></i> Социальные сети</h3>
+                <div id="socialLinksList">
+                    <!-- Ссылки будут добавляться динамически -->
+                </div>
+                <button class="btn btn-primary" onclick="addSocialLink()">
+                    <i class="fas fa-plus"></i> Добавить соцсеть
+                </button>
+            </div>
+            
+            <div class="actions">
+                <button class="btn btn-success" onclick="saveMainSettings()">
+                    <i class="fas fa-save"></i> Сохранить основные настройки
+                </button>
+                <button class="btn btn-primary" onclick="loadFromWebsite()">
+                    <i class="fas fa-sync-alt"></i> Загрузить данные с сайта
+                </button>
+            </div>
+        </div>
+        
+        <!-- Вкладка Направления -->
+        <div class="tab-content" id="directions">
+            <div class="editor-toolbar">
+                <div>
+                    <strong>Направления танцев:</strong>
+                    <span class="counter" id="directionsCount">0</span>
+                </div>
+                <button class="btn btn-primary btn-small" onclick="addDirection()">
+                    <i class="fas fa-plus"></i> Добавить направление
+                </button>
+            </div>
+            
+            <div id="directionsList">
+                <!-- Направления будут добавляться динамически -->
+            </div>
+            
+            <div class="actions">
+                <button class="btn btn-success" onclick="saveDirections()">
+                    <i class="fas fa-save"></i> Сохранить направления
+                </button>
+            </div>
+        </div>
+        
+        <!-- Вкладка Цены -->
+        <div class="tab-content" id="prices">
+            <div class="editor-toolbar">
+                <div>
+                    <strong>Тарифы:</strong>
+                    <span class="counter" id="pricesCount">0</span>
+                </div>
+                <button class="btn btn-primary btn-small" onclick="addPrice()">
+                    <i class="fas fa-plus"></i> Добавить тариф
+                </button>
+            </div>
+            
+            <div id="pricesList">
+                <!-- Цены будут добавляться динамически -->
+            </div>
+            
+            <div class="actions">
+                <button class="btn btn-success" onclick="savePrices()">
+                    <i class="fas fa-save"></i> Сохранить цены
+                </button>
+            </div>
+        </div>
+        
+        <!-- Вкладка Команда -->
+        <div class="tab-content" id="team">
+            <div class="editor-toolbar">
+                <div>
+                    <strong>Команда:</strong>
+                    <span class="counter" id="teamCount">0</span>
+                </div>
+                <button class="btn btn-primary btn-small" onclick="addTeamMember()">
+                    <i class="fas fa-plus"></i> Добавить участника
+                </button>
+            </div>
+            
+            <div id="teamList">
+                <!-- Команда будет добавляться динамически -->
+            </div>
+            
+            <div class="actions">
+                <button class="btn btn-success" onclick="saveTeam()">
+                    <i class="fas fa-save"></i> Сохранить команду
+                </button>
+            </div>
+        </div>
+        
+        <!-- Вкладка Отзывы -->
+        <div class="tab-content" id="reviews">
+            <div class="editor-toolbar">
+                <div>
+                    <strong>Отзывы:</strong>
+                    <span class="counter" id="reviewsCount">0</span>
+                </div>
+                <button class="btn btn-primary btn-small" onclick="addReview()">
+                    <i class="fas fa-plus"></i> Добавить отзыв
+                </button>
+                <button class="btn btn-primary btn-small" onclick="loadPendingReviews()">
+                    <i class="fas fa-inbox"></i> Ожидающие модерации
+                </button>
+            </div>
+            
+            <div id="reviewsList">
+                <!-- Отзывы будут добавляться динамически -->
+            </div>
+            
+            <div class="actions">
+                <button class="btn btn-success" onclick="saveReviews()">
+                    <i class="fas fa-save"></i> Сохранить отзывы
+                </button>
+            </div>
+        </div>
+        
+        <!-- Вкладка Галерея -->
+        <div class="tab-content" id="gallery">
+            <div class="editor-toolbar">
+                <div>
+                    <strong>Фотографии:</strong>
+                    <span class="counter" id="galleryCount">0</span>
+                </div>
+                <button class="btn btn-primary btn-small" onclick="addGalleryItem()">
+                    <i class="fas fa-plus"></i> Добавить фото
+                </button>
+            </div>
+            
+            <div id="galleryItemsList">
+                <!-- Галерея будет добавляться динамически -->
+            </div>
+            
+            <div class="actions">
+                <button class="btn btn-success" onclick="saveGallery()">
+                    <i class="fas fa-save"></i> Сохранить галерею
+                </button>
+            </div>
+        </div>
+        
+        <!-- Вкладка Новости -->
+        <div class="tab-content" id="news">
+            <div class="editor-toolbar">
+                <div>
+                    <strong>Новости:</strong>
+                    <span class="counter" id="newsCount">0</span>
+                </div>
+                <button class="btn btn-primary btn-small" onclick="addNews()">
+                    <i class="fas fa-plus"></i> Добавить новость
+                </button>
+            </div>
+            
+            <div id="newsList">
+                <!-- Новости будут добавляться динамически -->
+            </div>
+            
+            <div class="actions">
+                <button class="btn btn-success" onclick="saveNews()">
+                    <i class="fas fa-save"></i> Сохранить новости
+                </button>
+            </div>
+        </div>
+        
+        <!-- Вкладка FAQ -->
+        <div class="tab-content" id="faq">
+            <div class="editor-toolbar">
+                <div>
+                    <strong>Вопросы и ответы:</strong>
+                    <span class="counter" id="faqCount">0</span>
+                </div>
+                <button class="btn btn-primary btn-small" onclick="addFAQ()">
+                    <i class="fas fa-plus"></i> Добавить вопрос
+                </button>
+            </div>
+            
+            <div id="faqList">
+                <!-- FAQ будет добавляться динамически -->
+            </div>
+            
+            <div class="actions">
+                <button class="btn btn-success" onclick="saveFAQ()">
+                    <i class="fas fa-save"></i> Сохранить FAQ
+                </button>
+            </div>
+        </div>
+        
+        <div class="actions" style="margin: 30px; border-top: none;">
+            <button class="btn btn-success" onclick="saveAllData()" style="flex: 2;">
+                <i class="fas fa-download"></i> Сохранить ВСЕ изменения на сайт
+            </button>
+            <button class="btn btn-primary" onclick="loadFromWebsite()">
+                <i class="fas fa-sync-alt"></i> Загрузить данные с сайта
+            </button>
+            <button class="btn btn-danger" onclick="clearAllData()">
+                <i class="fas fa-trash"></i> Очистить все данные
+            </button>
+        </div>
+    </div>
+    
+    <div class="preview">
+        <button class="btn btn-primary" onclick="previewSite()">
+            <i class="fas fa-eye"></i> Просмотр сайта
+        </button>
+        <button class="btn btn-primary" onclick="exportData()" style="margin-top: 10px;">
+            <i class="fas fa-file-export"></i> Экспорт
+        </button>
+        <button class="btn btn-primary" onclick="importData()" style="margin-top: 10px;">
+            <i class="fas fa-file-import"></i> Импорт
+        </button>
+    </div>
+    
+    <div class="status-message" id="statusMessage">
+        Данные успешно сохранены!
+    </div>
+    
+    <script>
+        // === КОНСТАНТЫ И ПЕРЕМЕННЫЕ ===
+        let currentData = {
+            main: {
+                studioName: "Первый ритм Ленинского",
+                phone: "+7 (904) 123-31-75",
+                email: "info@primeritm.ru",
+                address: "г. Иркутск, ул. 1-й Ленинский квартал, д. 1",
+                workingHours: "Ежедневно с 8:00 до 22:00",
+                trialPrice: "300₽",
+                socialLinks: [
+                    { name: "VK", url: "https://vk.com/club233766207", icon: "fab fa-vk" },
+                    { name: "Telegram", url: "#", icon: "fab fa-telegram" },
+                    { name: "Instagram", url: "#", icon: "fab fa-instagram" }
+                ]
+            },
+            directions: [],
+            prices: [],
+            team: [],
+            reviews: [],
+            gallery: [],
+            news: [],
+            faq: []
+        };
+        
+        let pendingReviews = [];
+        
+        // === ИНИЦИАЛИЗАЦИЯ ===
+        document.addEventListener('DOMContentLoaded', function() {
+            loadFromWebsite();
+            setupTabs();
+        });
+        
+        // === ЗАГРУЗКА ДАННЫХ С САЙТА ===
+        function loadFromWebsite() {
+            try {
+                // Пытаемся загрузить из localStorage сайта
+                const savedData = localStorage.getItem('studioData');
+                
+                if (savedData) {
+                    const parsedData = JSON.parse(savedData);
+                    
+                    // Объединяем данные
+                    if (parsedData.main) {
+                        currentData.main = {
+                            ...currentData.main,
+                            ...parsedData.main
+                        };
+                    }
+                    
+                    // Загружаем остальные данные
+                    ['directions', 'prices', 'team', 'reviews', 'gallery', 'news', 'faq'].forEach(key => {
+                        if (parsedData[key] && Array.isArray(parsedData[key])) {
+                            currentData[key] = parsedData[key];
+                        }
+                    });
+                    
+                    showStatus('Данные загружены из сайта', 'success');
+                } else {
+                    // Если данных нет в localStorage, загружаем статические данные
+                    loadStaticDataFromHTML();
+                    showStatus('Загружены статические данные с сайта', 'success');
+                }
+                
+                updateAllSections();
+                
+            } catch (error) {
+                console.error('Ошибка загрузки данных:', error);
+                showStatus('Ошибка загрузки данных. Загружаем статические данные...', 'error');
+                loadStaticDataFromHTML();
+                updateAllSections();
+            }
+        }
+        
+        // === ЗАГРУЗКА СТАТИЧЕСКИХ ДАННЫХ ИЗ HTML ===
+        function loadStaticDataFromHTML() {
+            // Основные данные (можно извлечь из HTML структуры)
+            const mainData = extractMainDataFromHTML();
+            if (mainData) {
+                currentData.main = mainData;
+            }
+            
+            // Направления из данных на сайте
+            currentData.directions = extractDirectionsFromHTML();
+            
+            // Цены из данных на сайте
+            currentData.prices = extractPricesFromHTML();
+            
+            // Команда из данных на сайте
+            currentData.team = extractTeamFromHTML();
+            
+            // Отзывы из данных на сайте
+            currentData.reviews = extractReviewsFromHTML();
+            
+            // Галерея из данных на сайте
+            currentData.gallery = extractGalleryFromHTML();
+            
+            // Новости из данных на сайте
+            currentData.news = extractNewsFromHTML();
+            
+            // FAQ из данных на сайте
+            currentData.faq = extractFAQFromHTML();
+        }
+        
+        function extractMainDataFromHTML() {
+            try {
+                // Эти данные можно было бы извлечь из DOM, но для примера используем константы
+                return {
+                    studioName: "Первый ритм Ленинского",
+                    phone: "+7 (904) 123-31-75",
+                    email: "info@primeritm.ru",
+                    address: "г. Иркутск, ул. 1-й Ленинский квартал, д. 1",
+                    workingHours: "Ежедневно с 8:00 до 22:00",
+                    trialPrice: "300₽",
+                    socialLinks: [
+                        { name: "VK", url: "https://vk.com/club233766207", icon: "fab fa-vk" },
+                        { name: "Telegram", url: "#", icon: "fab fa-telegram" },
+                        { name: "Instagram", url: "#", icon: "fab fa-instagram" }
+                    ]
+                };
+            } catch (error) {
+                console.error('Ошибка извлечения основных данных:', error);
+                return null;
+            }
+        }
+        
+        function extractDirectionsFromHTML() {
+            const directions = [];
+            
+            // Данные направлений из вашего HTML
+            const directionData = [
+                {
+                    id: 'baby-dance',
+                    title: 'Танец-игра / Ритмика',
+                    age: '3-7 лет',
+                    schedule: 'Понедельник и среда в 17:00',
+                    price: 'Пробное занятие: 300₽',
+                    description: 'Развитие чувства ритма, координации и любви к движению через веселые игры и простые танцевальные комбинации.'
+                },
+                {
+                    id: 'baby-classic',
+                    title: 'Азбука классического танца',
+                    age: '3-7 лет',
+                    schedule: 'Вторник и четверг в 17:30',
+                    price: 'Пробное занятие: 300₽',
+                    description: 'Первое знакомство с основами балета в игровой форме. Постановка корпуса, развитие гибкости и музыкальности.'
+                },
+                {
+                    id: 'kids-classic',
+                    title: 'Классическая хореография',
+                    age: '8-12 лет',
+                    schedule: 'Понедельник, среда и пятница в 16:00',
+                    price: 'Абонемент: 2800₽/мес',
+                    description: 'Углубленное изучение основ балета. Укрепление мышечного корсета, развитие выносливости, грации и дисциплины.'
+                },
+                {
+                    id: 'kids-modern',
+                    title: 'Современный танец',
+                    age: '8-12 лет',
+                    schedule: 'Вторник и четверг в 17:00',
+                    price: 'Абонемент: 2800₽/мес',
+                    description: 'Изучение энергичных и популярных стилей: хип-хоп, джаз-модерн. Работа над ритмом, стилем и умением двигаться под современную музыку.'
+                },
+                {
+                    id: 'teens-contemporary',
+                    title: 'Современная хореография (Contemporary)',
+                    age: '13-16 лет',
+                    schedule: 'Понедельник и среда в 18:00',
+                    price: 'Абонемент: 3200₽/мес',
+                    description: 'Выразительный танец, основанный на эмоциях и естественности движения. Развитие пластики, гибкости и умения работать с собственным телом.'
+                },
+                {
+                    id: 'teens-hiphop-old',
+                    title: 'Хип-хоп (Old School)',
+                    age: '13-16 лет',
+                    schedule: 'Вторник в 18:30',
+                    price: 'Абонемент: 3200₽/мес',
+                    description: 'Изучение истоков уличной культуры. Мощные и техничные стили: Breaking, Popping, Locking. Развитие силы, выносливости и чувства ритма.'
+                },
+                {
+                    id: 'adult-contemporary',
+                    title: 'Танец для души (Contemporary, Modern Dance)',
+                    age: '17+ лет',
+                    schedule: 'Понедельник и четверг в 19:30',
+                    price: 'Абонемент: 3200₽/мес',
+                    description: 'Свободный танец, помогающий снять напряжение, выразить чувства и улучшить физическую форму через гармоничное движение.'
+                },
+                {
+                    id: 'adult-heels',
+                    title: 'High Heels / Lady Dance',
+                    age: '17+ лет',
+                    schedule: 'Вторник в 20:00 и пятница в 19:00',
+                    price: 'Абонемент: 3200₽/мес',
+                    description: 'Стильный и женственный танец на каблуках. Развитие грации, сексуальности и уверенности в себе.'
+                },
+                {
+                    id: 'adult25-ballet',
+                    title: 'Body Ballet для взрослых',
+                    age: '25+ лет',
+                    schedule: 'Вторник и четверг в 19:00',
+                    price: 'Абонемент: 3200₽/мес',
+                    description: 'Упрощенная и адаптированная версия классического балета для взрослых. Идеально для формирования красивой осанки.'
+                },
+                {
+                    id: 'adult45-lady',
+                    title: 'Lady Dance для женщин 45+',
+                    age: '45+ лет',
+                    schedule: 'Понедельник и среда в 10:00',
+                    price: 'Абонемент: 3000₽/мес',
+                    description: 'Элегантный танец, подчеркивающий женственность и пластику. Специально адаптированные занятия для женщин 45+.'
+                },
+                {
+                    id: 'adult45-ballroom',
+                    title: 'Социальные танцы',
+                    age: '45+ лет',
+                    schedule: 'Четверг в 10:00 и суббота в 11:00',
+                    price: 'Абонемент: 3000₽/мес',
+                    description: 'Прекрасный способ поддерживать активность, улучшать координацию, память и обретать новые знакомства в дружеской атмосфере.'
+                }
+            ];
+            
+            return directionData;
+        }
+        
+        function extractPricesFromHTML() {
+            return [
+                {
+                    featured: true,
+                    title: "ПРОБНОЕ ЗАНЯТИЕ",
+                    subtitle: "Любое направление",
+                    price: "300₽",
+                    period: "1 занятие",
+                    features: ["Первое занятие", "Консультация педагога", "Подбор направления", "Подарок при покупке абонемента"]
+                },
+                {
+                    title: "ДЕТСКИЙ",
+                    subtitle: "3-16 лет",
+                    price: "2 800₽",
+                    period: "8 занятий",
+                    features: ["Абонемент на 30 дней", "Любое направление", "Заморозка на 7 дней", "Консультации педагога"]
+                },
+                {
+                    title: "ВЗРОСЛЫЙ",
+                    subtitle: "17+ лет",
+                    price: "3 200₽",
+                    period: "8 занятий",
+                    features: ["Абонемент на 30 дней", "Любое направление", "Заморозка на 7 дней", "Индивидуальный подход"]
+                },
+                {
+                    title: "СЕМЕЙНЫЙ",
+                    subtitle: "2 человека",
+                    price: "5 000₽",
+                    period: "8 занятий",
+                    features: ["Для двоих родственников", "Любое направление", "Экономия 20%", "Гибкое расписание"]
+                }
+            ];
+        }
+        
+        function extractTeamFromHTML() {
+            return [
+                {
+                    initials: "АП",
+                    name: "Анна Петрова",
+                    role: "Главный хореограф",
+                    experience: "14 лет",
+                    description: "Профессиональный хореограф с международным опытом. Ученики - победители всероссийских конкурсов."
+                },
+                {
+                    initials: "ЕС",
+                    name: "Елена Сидорова",
+                    role: "Педагог детских групп",
+                    experience: "8 лет",
+                    description: "Специалист по работе с детьми 3-7 лет. Автор методики 'Танцы через игру'."
+                },
+                {
+                    initials: "МК",
+                    name: "Михаил Козлов",
+                    role: "Преподаватель хип-хопа",
+                    experience: "6 лет",
+                    description: "Участник российских баттлов, специалист по уличным танцевальным стилям."
+                },
+                {
+                    initials: "ОВ",
+                    name: "Ольга Васильева",
+                    role: "Педагог взрослых групп",
+                    experience: "10 лет",
+                    description: "Специалист по contemporary и body ballet для взрослых. Автор программы 'Танец для души'."
+                }
+            ];
+        }
+        
+        function extractReviewsFromHTML() {
+            return [
+                {
+                    rating: 5,
+                    text: '"Дочь ходит второй год, вижу огромный прогреск! Преподаватели очень внимательные, находят подход к каждому ребенку. Рекомендую!"',
+                    author: "Анна К.",
+                    role: "Мама Софии (6 лет)",
+                    initials: "АК"
+                },
+                {
+                    rating: 5,
+                    text: '"После 40 лет начала заниматься body ballet. За полгода улучшилась осанка, стала чувствовать себя моложе и увереннее. Спасибо преподавателям!"',
+                    author: "Марина С.",
+                    role: "Ученица 45+",
+                    initials: "МС"
+                },
+                {
+                    rating: 5,
+                    text: '"Сын занимается хип-хопом. За год из застенчивого мальчика превратился в уверенного в себе подростка. Отличная атмосфера и профессиональные педагоги!"',
+                    author: "Игорь П.",
+                    role: "Папа Максима (14 лет)",
+                    initials: "ИП"
+                },
+                {
+                    rating: 5,
+                    text: '"Хожу на contemporary уже 2 года. Это не просто танцы, это терапия для души. Снимаю стресс после работы, нашла новых друзей. Лучшая студия в городе!"',
+                    author: "Екатерина Л.",
+                    role: "Ученица 28 лет",
+                    initials: "ЕЛ"
+                }
+            ];
+        }
+        
+        function extractGalleryFromHTML() {
+            return [
+                {
+                    image: "https://images.unsplash.com/photo-1518834103328-93d45986dce1?auto=format&fit=crop&w=600&q=80",
+                    title: "Основной зал для занятий",
+                    description: "Профессиональное покрытие, зеркала, современное оборудование"
+                },
+                {
+                    image: "https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?auto=format&fit=crop&w=600&q=80",
+                    title: "Детские занятия",
+                    description: "Яркие и веселые занятия для самых маленьких"
+                },
+                {
+                    image: "https://images.unsplash.com/photo-1547153760-18fc86324498?auto=format&fit=crop&w=600&q=80",
+                    title: "Взрослые группы",
+                    description: "Современные направления для взрослых"
+                },
+                {
+                    image: "https://images.unsplash.com/photo-1519677100203-5f5a1c56b7b3?auto=format&fit=crop&w=600&q=80",
+                    title: "Выступления",
+                    description: "Наши ученики на сцене"
+                },
+                {
+                    image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=80",
+                    title: "Растяжка",
+                    description: "Занятия на гибкость и пластику"
+                },
+                {
+                    image: "https://images.unsplash.com/photo-1536922246289-88c42f957773?auto=format&fit=crop&w=600&q=80",
+                    title: "Хип-хоп",
+                    description: "Энергичные занятия по уличным стилям"
+                }
+            ];
+        }
+        
+        function extractNewsFromHTML() {
+            return [
+                {
+                    id: 1,
+                    title: "Новый набор на детские группы!",
+                    date: "15.12.2024",
+                    image: "https://images.unsplash.com/photo-1518834103328-93d45986dce1?auto=format&fit=crop&w=600&q=80",
+                    description: "Открыт набор в группы для детей 3-6 лет. Танцы-игра, первые па, развитие координации.",
+                    shortText: "Открыт набор в детские группы 3-6 лет",
+                    link: "#directions"
+                },
+                {
+                    id: 2,
+                    title: "Скидка 20% на абонементы",
+                    date: "10.12.2024",
+                    image: "https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?auto=format&fit=crop&w=600&q=80",
+                    description: "Только до конца месяца скидка 20% на все абонементы. Успейте приобрести!",
+                    shortText: "Скидка 20% до конца месяца",
+                    link: "#prices"
+                },
+                {
+                    id: 3,
+                    title: "Мастер-класс по contemporary",
+                    date: "05.12.2024",
+                    image: "https://images.unsplash.com/photo-1519677100203-5f5a1c56b7b3?auto=format&fit=crop&w=600&q=80",
+                    description: "Приглашаем на бесплатный мастер-класс по contemporary dance для взрослых.",
+                    shortText: "Бесплатный мастер-класс 15 декабря",
+                    link: "#contacts"
+                }
+            ];
+        }
+        
+        function extractFAQFromHTML() {
+            return [
+                {
+                    question: "С какого возраста можно начинать заниматься?",
+                    answer: "Мы принимаем детей с 3 лет на программу 'Танцы-игра'. Для каждого возраста разработаны специальные программы с учетом физического и психологического развития."
+                },
+                {
+                    question: "Нужна ли специальная подготовка?",
+                    answer: "Нет, большинство наших групп рассчитаны на начинающих. Педагоги помогают освоить основы с нуля и прогрессировать в комфортном темпе."
+                },
+                {
+                    question: "Что нужно взять с собой на первое занятие?",
+                    answer: "Удобную спортивную одежду, сменную обувь (чешки или носки) и хорошее настроение! Всё остальное предоставляет студия."
+                },
+                {
+                    question: "Можно ли посетить пробное занятие?",
+                    answer: "Да, пробное занятие стоит 300₽. Вы можете выбрать любое направление и возрастную группу. После занятия педагог проконсультирует вас по дальнейшим занятиям."
+                },
+                {
+                    question: "Какой график работы студии?",
+                    answer: "Мы работаем ежедневно с 8:00 до 22:00. Занятия проводятся по расписанию, которое вы можете посмотреть в соответствующем разделе."
+                },
+                {
+                    question: "Есть ли скидки?",
+                    answer: "Да, у нас действуют семейные скидки, скидки при покупке абонемента на несколько месяцев, а также специальные акции. Подробности уточняйте у администратора."
+                }
+            ];
+        }
+        
+        // === УПРАВЛЕНИЕ ВКЛАДКАМИ ===
+        function setupTabs() {
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Скрыть все вкладки
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    
+                    // Убрать активный класс со всех вкладок
+                    tabs.forEach(t => t.classList.remove('active'));
+                    
+                    // Показать выбранную вкладку
+                    document.getElementById(tabId).classList.add('active');
+                    this.classList.add('active');
+                });
+            });
+        }
+        
+        // === ОТОБРАЖЕНИЕ СЧЁТЧИКОВ ===
+        function updateCounters() {
+            document.getElementById('directionsCount').textContent = currentData.directions.length;
+            document.getElementById('pricesCount').textContent = currentData.prices.length;
+            document.getElementById('teamCount').textContent = currentData.team.length;
+            document.getElementById('reviewsCount').textContent = currentData.reviews.length;
+            document.getElementById('galleryCount').textContent = currentData.gallery.length;
+            document.getElementById('newsCount').textContent = currentData.news.length;
+            document.getElementById('faqCount').textContent = currentData.faq.length;
+        }
+        
+        // === ОБНОВЛЕНИЕ ВСЕХ СЕКЦИЙ ===
+        function updateAllSections() {
+            updateMainSection();
+            updateDirectionsSection();
+            updatePricesSection();
+            updateTeamSection();
+            updateReviewsSection();
+            updateGallerySection();
+            updateNewsSection();
+            updateFAQSection();
+            updateCounters();
+        }
+        
+        // === ОБНОВЛЕНИЕ СЕКЦИЙ ===
+        function updateMainSection() {
+            const main = currentData.main;
+            
+            document.getElementById('studioName').value = main.studioName || '';
+            document.getElementById('phone').value = main.phone || '';
+            document.getElementById('email').value = main.email || '';
+            document.getElementById('address').value = main.address || '';
+            document.getElementById('workingHours').value = main.workingHours || '';
+            document.getElementById('trialPrice').value = main.trialPrice || '';
+            
+            updateSocialLinks();
+        }
+        
+        function updateSocialLinks() {
+            const container = document.getElementById('socialLinksList');
+            container.innerHTML = '';
+            
+            currentData.main.socialLinks.forEach((link, index) => {
+                const div = document.createElement('div');
+                div.className = 'form-row';
+                div.innerHTML = `
+                    <div class="form-group">
+                        <label>Название</label>
+                        <input type="text" value="${link.name || ''}" 
+                               onchange="updateSocialLinkField(${index}, 'name', this.value)">
+                    </div>
+                    <div class="form-group">
+                        <label>Ссылка</label>
+                        <input type="text" value="${link.url || ''}" 
+                               onchange="updateSocialLinkField(${index}, 'url', this.value)">
+                    </div>
+                    <div class="form-group">
+                        <label>Иконка (FontAwesome)</label>
+                        <input type="text" value="${link.icon || ''}" 
+                               onchange="updateSocialLinkField(${index}, 'icon', this.value)">
+                    </div>
+                    <div class="form-group" style="flex: 0 0 auto; padding-top: 25px;">
+                        <button class="btn btn-danger btn-small" onclick="removeSocialLink(${index})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+        
+        function updateSocialLinkField(index, field, value) {
+            if (currentData.main.socialLinks[index]) {
+                currentData.main.socialLinks[index][field] = value;
+            }
+        }
+        
+        function addSocialLink() {
+            currentData.main.socialLinks.push({
+                name: 'Новая соцсеть',
+                url: '#',
+                icon: 'fab fa-facebook'
+            });
+            updateSocialLinks();
+        }
+        
+        function removeSocialLink(index) {
+            if (confirm('Удалить эту социальную сеть?')) {
+                currentData.main.socialLinks.splice(index, 1);
+                updateSocialLinks();
+            }
+        }
+        
+        function saveMainSettings() {
+            // Обновляем данные из формы
+            currentData.main.studioName = document.getElementById('studioName').value;
+            currentData.main.phone = document.getElementById('phone').value;
+            currentData.main.email = document.getElementById('email').value;
+            currentData.main.address = document.getElementById('address').value;
+            currentData.main.workingHours = document.getElementById('workingHours').value;
+            currentData.main.trialPrice = document.getElementById('trialPrice').value;
+            
+            saveAllData();
+            showStatus('Основные настройки сохранены', 'success');
+        }
+        
+        // === УПРАВЛЕНИЕ НАПРАВЛЕНИЯМИ ===
+        function updateDirectionsSection() {
+            const container = document.getElementById('directionsList');
+            container.innerHTML = '';
+            
+            currentData.directions.forEach((direction, index) => {
+                const div = document.createElement('div');
+                div.className = 'item';
+                div.innerHTML = `
+                    <div class="item-info">
+                        <h4>${direction.title || 'Новое направление'}</h4>
+                        <p>Возраст: ${direction.age || 'Не указан'} • ${direction.price || 'Цена не указана'}</p>
+                        <p style="font-size: 12px; color: #888; margin-top: 5px;">${direction.description || ''}</p>
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn btn-primary btn-small" onclick="editDirection(${index})">
+                            <i class="fas fa-edit"></i> Редактировать
+                        </button>
+                        <button class="btn btn-danger btn-small" onclick="removeDirection(${index})">
+                            <i class="fas fa-trash"></i> Удалить
+                        </button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+            
+            if (currentData.directions.length === 0) {
+                container.innerHTML = '<p style="text-align: center; padding: 30px; color: #666;">Направлений пока нет</p>';
+            }
+        }
+        
+        function addDirection() {
+            const direction = {
+                id: 'direction-' + Date.now(),
+                title: 'Новое направление',
+                age: '3+ лет',
+                schedule: 'По расписанию',
+                price: 'Цена по запросу',
+                description: 'Описание направления',
+                features: ['Преимущество 1', 'Преимущество 2', 'Преимущество 3']
+            };
+            
+            currentData.directions.push(direction);
+            updateDirectionsSection();
+            updateCounters();
+            editDirection(currentData.directions.length - 1);
+        }
+        
+        function editDirection(index) {
+            const direction = currentData.directions[index];
+            if (!direction) return;
+            
+            const newTitle = prompt('Название направления:', direction.title);
+            if (newTitle !== null) direction.title = newTitle;
+            
+            const newAge = prompt('Возрастная группа:', direction.age);
+            if (newAge !== null) direction.age = newAge;
+            
+            const newSchedule = prompt('Расписание:', direction.schedule);
+            if (newSchedule !== null) direction.schedule = newSchedule;
+            
+            const newPrice = prompt('Цена:', direction.price);
+            if (newPrice !== null) direction.price = newPrice;
+            
+            const newDesc = prompt('Описание:', direction.description);
+            if (newDesc !== null) direction.description = newDesc;
+            
+            updateDirectionsSection();
+        }
+        
+        function removeDirection(index) {
+            if (confirm('Удалить это направление?')) {
+                currentData.directions.splice(index, 1);
+                updateDirectionsSection();
+                updateCounters();
+                showStatus('Направление удалено', 'success');
+            }
+        }
+        
+        function saveDirections() {
+            saveAllData();
+            showStatus('Направления сохранены', 'success');
+        }
+        
+        // === УПРАВЛЕНИЕ ЦЕНАМИ ===
+        function updatePricesSection() {
+            const container = document.getElementById('pricesList');
+            container.innerHTML = '';
+            
+            currentData.prices.forEach((price, index) => {
+                const div = document.createElement('div');
+                div.className = 'item';
+                div.innerHTML = `
+                    <div class="item-info">
+                        <h4>${price.title || 'Новый тариф'} ${price.featured ? '⭐' : ''}</h4>
+                        <p>${price.subtitle || ''} • ${price.price || ''} • ${price.period || ''}</p>
+                        <p style="font-size: 12px; color: #888; margin-top: 5px;">
+                            ${(price.features || []).slice(0, 2).join(', ')}
+                        </p>
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn btn-primary btn-small" onclick="editPrice(${index})">
+                            <i class="fas fa-edit"></i> Редактировать
+                        </button>
+                        <button class="btn btn-danger btn-small" onclick="removePrice(${index})">
+                            <i class="fas fa-trash"></i> Удалить
+                        </button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+            
+            if (currentData.prices.length === 0) {
+                container.innerHTML = '<p style="text-align: center; padding: 30px; color: #666;">Тарифов пока нет</p>';
+            }
+        }
+        
+        function addPrice() {
+            const price = {
+                title: "НОВЫЙ ТАРИФ",
+                subtitle: "Описание",
+                price: "0₽",
+                period: "1 месяц",
+                features: ["Преимущество 1", "Преимущество 2", "Преимущество 3"],
+                featured: false
+            };
+            
+            currentData.prices.push(price);
+            updatePricesSection();
+            updateCounters();
+            editPrice(currentData.prices.length - 1);
+        }
+        
+        function editPrice(index) {
+            const price = currentData.prices[index];
+            if (!price) return;
+            
+            price.title = prompt('Название тарифа:', price.title) || price.title;
+            price.subtitle = prompt('Подзаголовок:', price.subtitle) || price.subtitle;
+            price.price = prompt('Цена:', price.price) || price.price;
+            price.period = prompt('Период:', price.period) || price.period;
+            
+            const featuresStr = prompt('Преимущества (через запятую):', price.features.join(', '));
+            if (featuresStr !== null) {
+                price.features = featuresStr.split(',').map(f => f.trim()).filter(f => f);
+            }
+            
+            price.featured = confirm('Сделать этот тариф рекомендуемым?');
+            
+            updatePricesSection();
+        }
+        
+        function removePrice(index) {
+            if (confirm('Удалить этот тариф?')) {
+                currentData.prices.splice(index, 1);
+                updatePricesSection();
+                updateCounters();
+                showStatus('Тариф удалён', 'success');
+            }
+        }
+        
+        function savePrices() {
+            saveAllData();
+            showStatus('Цены сохранены', 'success');
+        }
+        
+        // === УПРАВЛЕНИЕ КОМАНДОЙ ===
+        function updateTeamSection() {
+            const container = document.getElementById('teamList');
+            container.innerHTML = '';
+            
+            currentData.team.forEach((member, index) => {
+                const div = document.createElement('div');
+                div.className = 'item';
+                div.innerHTML = `
+                    <div class="item-info">
+                        <h4>${member.name || 'Новый участник'}</h4>
+                        <p>${member.role || ''} • Опыт: ${member.experience || ''}</p>
+                        <p style="font-size: 12px; color: #888; margin-top: 5px;">${member.description || ''}</p>
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn btn-primary btn-small" onclick="editTeamMember(${index})">
+                            <i class="fas fa-edit"></i> Редактировать
+                        </button>
+                        <button class="btn btn-danger btn-small" onclick="removeTeamMember(${index})">
+                            <i class="fas fa-trash"></i> Удалить
+                        </button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+            
+            if (currentData.team.length === 0) {
+                container.innerHTML = '<p style="text-align: center; padding: 30px; color: #666;">Участников команды пока нет</p>';
+            }
+        }
+        
+        function addTeamMember() {
+            const member = {
+                initials: "НП",
+                name: "Новый преподаватель",
+                role: "Преподаватель",
+                experience: "1 год",
+                description: "Описание преподавателя"
+            };
+            
+            currentData.team.push(member);
+            updateTeamSection();
+            updateCounters();
+            editTeamMember(currentData.team.length - 1);
+        }
+        
+        function editTeamMember(index) {
+            const member = currentData.team[index];
+            if (!member) return;
+            
+            member.name = prompt('Имя преподавателя:', member.name) || member.name;
+            member.role = prompt('Должность:', member.role) || member.role;
+            member.experience = prompt('Опыт работы:', member.experience) || member.experience;
+            member.description = prompt('Описание:', member.description) || member.description;
+            
+            // Генерируем инициалы из имени
+            const nameParts = member.name.split(' ');
+            member.initials = (nameParts[0][0] + (nameParts[1] ? nameParts[1][0] : nameParts[0][1] || '')).toUpperCase();
+            
+            updateTeamSection();
+        }
+        
+        function removeTeamMember(index) {
+            if (confirm('Удалить этого участника команды?')) {
+                currentData.team.splice(index, 1);
+                updateTeamSection();
+                updateCounters();
+                showStatus('Участник команды удалён', 'success');
+            }
+        }
+        
+        function saveTeam() {
+            saveAllData();
+            showStatus('Команда сохранена', 'success');
+        }
+        
+        // === УПРАВЛЕНИЕ ОТЗЫВАМИ ===
+        function updateReviewsSection() {
+            const container = document.getElementById('reviewsList');
+            container.innerHTML = '';
+            
+            currentData.reviews.forEach((review, index) => {
+                const div = document.createElement('div');
+                div.className = 'item';
+                div.innerHTML = `
+                    <div class="item-info">
+                        <h4>${review.author || 'Аноним'} ⭐ ${'★'.repeat(review.rating || 5)}</h4>
+                        <p>${review.role || ''}</p>
+                        <p style="font-size: 12px; color: #888; margin-top: 5px;">${review.text || ''}</p>
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn btn-primary btn-small" onclick="editReview(${index})">
+                            <i class="fas fa-edit"></i> Редактировать
+                        </button>
+                        <button class="btn btn-danger btn-small" onclick="removeReview(${index})">
+                            <i class="fas fa-trash"></i> Удалить
+                        </button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+            
+            if (currentData.reviews.length === 0) {
+                container.innerHTML = '<p style="text-align: center; padding: 30px; color: #666;">Отзывов пока нет</p>';
+            }
+        }
+        
+        function addReview() {
+            const review = {
+                rating: 5,
+                text: '"Отличная студия! Очень рекомендую."',
+                author: "Новый автор",
+                role: "Ученик",
+                initials: "НА"
+            };
+            
+            currentData.reviews.push(review);
+            updateReviewsSection();
+            updateCounters();
+            editReview(currentData.reviews.length - 1);
+        }
+        
+        function editReview(index) {
+            const review = currentData.reviews[index];
+            if (!review) return;
+            
+            review.author = prompt('Имя автора:', review.author) || review.author;
+            review.role = prompt('Роль (например: "Ученик", "Родитель"):', review.role) || review.role;
+            review.text = prompt('Текст отзыва:', review.text) || review.text;
+            
+            const ratingStr = prompt('Оценка (от 1 до 5):', review.rating);
+            if (ratingStr !== null) {
+                const rating = parseInt(ratingStr);
+                review.rating = rating >= 1 && rating <= 5 ? rating : 5;
+            }
+            
+            // Генерируем инициалы
+            const nameParts = review.author.split(' ');
+            review.initials = (nameParts[0][0] + (nameParts[1] ? nameParts[1][0] : nameParts[0][1] || '')).toUpperCase();
+            
+            updateReviewsSection();
+        }
+        
+        function removeReview(index) {
+            if (confirm('Удалить этот отзыв?')) {
+                currentData.reviews.splice(index, 1);
+                updateReviewsSection();
+                updateCounters();
+                showStatus('Отзыв удалён', 'success');
+            }
+        }
+        
+        function loadPendingReviews() {
+            const savedPendingReviews = localStorage.getItem('pendingReviews');
+            if (savedPendingReviews) {
+                pendingReviews = JSON.parse(savedPendingReviews);
+            }
+            
+            if (pendingReviews.length === 0) {
+                alert('Нет отзывов, ожидающих модерации');
+                return;
+            }
+            
+            let message = 'Ожидающие модерации отзывы:\n\n';
+            pendingReviews.forEach((review, index) => {
+                message += `${index + 1}. ${review.author} (${review.rating}⭐): ${review.text.substring(0, 50)}...\n`;
+            });
+            
+            const action = prompt(`${message}\n\nВведите номер отзыва для публикации, или "все" чтобы опубликовать все, или "удалить" для удаления:`);
+            
+            if (action === 'все') {
+                pendingReviews.forEach(review => {
+                    currentData.reviews.push(review);
+                });
+                pendingReviews = [];
+                localStorage.removeItem('pendingReviews');
+                updateReviewsSection();
+                updateCounters();
+                showStatus('Все отзывы опубликованы', 'success');
+            } else if (action === 'удалить') {
+                pendingReviews = [];
+                localStorage.removeItem('pendingReviews');
+                showStatus('Все отзывы удалены', 'success');
+            } else if (action && !isNaN(action)) {
+                const index = parseInt(action) - 1;
+                if (index >= 0 && index < pendingReviews.length) {
+                    currentData.reviews.push(pendingReviews[index]);
+                    pendingReviews.splice(index, 1);
+                    localStorage.setItem('pendingReviews', JSON.stringify(pendingReviews));
+                    updateReviewsSection();
+                    updateCounters();
+                    showStatus('Отзыв опубликован', 'success');
+                }
+            }
+        }
+        
+        function saveReviews() {
+            saveAllData();
+            showStatus('Отзывы сохранены', 'success');
+        }
+        
+        // === УПРАВЛЕНИЕ ГАЛЕРЕЕЙ ===
+        function updateGallerySection() {
+            const container = document.getElementById('galleryItemsList');
+            container.innerHTML = '';
+            
+            currentData.gallery.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'item';
+                div.innerHTML = `
+                    <div class="item-info">
+                        <h4>${item.title || 'Новое фото'}</h4>
+                        <p style="font-size: 12px; color: #666; margin-top: 5px;">${item.description || ''}</p>
+                        <p style="font-size: 11px; color: #888; margin-top: 5px; word-break: break-all;">
+                            ${item.image ? item.image.substring(0, 50) + '...' : 'Ссылка не указана'}
+                        </p>
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn btn-primary btn-small" onclick="editGalleryItem(${index})">
+                            <i class="fas fa-edit"></i> Редактировать
+                        </button>
+                        <button class="btn btn-danger btn-small" onclick="removeGalleryItem(${index})">
+                            <i class="fas fa-trash"></i> Удалить
+                        </button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+            
+            if (currentData.gallery.length === 0) {
+                container.innerHTML = '<p style="text-align: center; padding: 30px; color: #666;">Фотографий пока нет</p>';
+            }
+        }
+        
+        function addGalleryItem() {
+            const item = {
+                image: "https://images.unsplash.com/photo-1518834103328-93d45986dce1?auto=format&fit=crop&w=600&q=80",
+                title: "Новая фотография",
+                description: "Описание фотографии"
+            };
+            
+            currentData.gallery.push(item);
+            updateGallerySection();
+            updateCounters();
+            editGalleryItem(currentData.gallery.length - 1);
+        }
+        
+        function editGalleryItem(index) {
+            const item = currentData.gallery[index];
+            if (!item) return;
+            
+            item.image = prompt('Ссылка на изображение (URL):', item.image) || item.image;
+            item.title = prompt('Заголовок:', item.title) || item.title;
+            item.description = prompt('Описание:', item.description) || item.description;
+            
+            updateGallerySection();
+        }
+        
+        function removeGalleryItem(index) {
+            if (confirm('Удалить эту фотографию?')) {
+                currentData.gallery.splice(index, 1);
+                updateGallerySection();
+                updateCounters();
+                showStatus('Фотография удалена', 'success');
+            }
+        }
+        
+        function saveGallery() {
+            saveAllData();
+            showStatus('Галерея сохранена', 'success');
+        }
+        
+        // === УПРАВЛЕНИЕ НОВОСТЯМИ ===
+        function updateNewsSection() {
+            const container = document.getElementById('newsList');
+            container.innerHTML = '';
+            
+            currentData.news.forEach((news, index) => {
+                const div = document.createElement('div');
+                div.className = 'item';
+                div.innerHTML = `
+                    <div class="item-info">
+                        <h4>${news.title || 'Новая новость'}</h4>
+                        <p>${news.date || ''}</p>
+                        <p style="font-size: 12px; color: #888; margin-top: 5px;">${news.shortText || news.description || ''}</p>
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn btn-primary btn-small" onclick="editNews(${index})">
+                            <i class="fas fa-edit"></i> Редактировать
+                        </button>
+                        <button class="btn btn-danger btn-small" onclick="removeNews(${index})">
+                            <i class="fas fa-trash"></i> Удалить
+                        </button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+            
+            if (currentData.news.length === 0) {
+                container.innerHTML = '<p style="text-align: center; padding: 30px; color: #666;">Новостей пока нет</p>';
+            }
+        }
+        
+        function addNews() {
+            const news = {
+                title: "Новая новость",
+                date: new Date().toLocaleDateString('ru-RU'),
+                image: "https://images.unsplash.com/photo-1518834103328-93d45986dce1?auto=format&fit=crop&w=600&q=80",
+                description: "Описание новости",
+                shortText: "Краткий текст новости",
+                link: "#"
+            };
+            
+            currentData.news.push(news);
+            updateNewsSection();
+            updateCounters();
+            editNews(currentData.news.length - 1);
+        }
+        
+        function editNews(index) {
+            const news = currentData.news[index];
+            if (!news) return;
+            
+            news.title = prompt('Заголовок новости:', news.title) || news.title;
+            news.date = prompt('Дата (дд.мм.гггг):', news.date) || news.date;
+            news.image = prompt('Ссылка на изображение:', news.image) || news.image;
+            news.description = prompt('Полное описание:', news.description) || news.description;
+            news.shortText = prompt('Краткий текст (для слайдера):', news.shortText) || news.shortText;
+            news.link = prompt('Ссылка (например: #directions):', news.link) || news.link;
+            
+            updateNewsSection();
+        }
+        
+        function removeNews(index) {
+            if (confirm('Удалить эту новость?')) {
+                currentData.news.splice(index, 1);
+                updateNewsSection();
+                updateCounters();
+                showStatus('Новость удалена', 'success');
+            }
+        }
+        
+        function saveNews() {
+            saveAllData();
+            showStatus('Новости сохранены', 'success');
+        }
+        
+        // === УПРАВЛЕНИЕ FAQ ===
+        function updateFAQSection() {
+            const container = document.getElementById('faqList');
+            container.innerHTML = '';
+            
+            currentData.faq.forEach((faq, index) => {
+                const div = document.createElement('div');
+                div.className = 'item';
+                div.innerHTML = `
+                    <div class="item-info">
+                        <h4>${faq.question || 'Новый вопрос'}</h4>
+                        <p style="font-size: 12px; color: #888; margin-top: 5px;">${faq.answer || ''}</p>
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn btn-primary btn-small" onclick="editFAQ(${index})">
+                            <i class="fas fa-edit"></i> Редактировать
+                        </button>
+                        <button class="btn btn-danger btn-small" onclick="removeFAQ(${index})">
+                            <i class="fas fa-trash"></i> Удалить
+                        </button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+            
+            if (currentData.faq.length === 0) {
+                container.innerHTML = '<p style="text-align: center; padding: 30px; color: #666;">Вопросов пока нет</p>';
+            }
+        }
+        
+        function addFAQ() {
+            const faq = {
+                question: "Новый вопрос?",
+                answer: "Ответ на вопрос"
+            };
+            
+            currentData.faq.push(faq);
+            updateFAQSection();
+            updateCounters();
+            editFAQ(currentData.faq.length - 1);
+        }
+        
+        function editFAQ(index) {
+            const faq = currentData.faq[index];
+            if (!faq) return;
+            
+            faq.question = prompt('Вопрос:', faq.question) || faq.question;
+            faq.answer = prompt('Ответ:', faq.answer) || faq.answer;
+            
+            updateFAQSection();
+        }
+        
+        function removeFAQ(index) {
+            if (confirm('Удалить этот вопрос?')) {
+                currentData.faq.splice(index, 1);
+                updateFAQSection();
+                updateCounters();
+                showStatus('Вопрос удалён', 'success');
+            }
+        }
+        
+        function saveFAQ() {
+            saveAllData();
+            showStatus('FAQ сохранён', 'success');
+        }
+        
+        // === ОСНОВНЫЕ ФУНКЦИИ ===
+        function saveAllData() {
+            try {
+                localStorage.setItem('studioData', JSON.stringify(currentData));
+                showStatus('Все данные сохранены на сайт!', 'success');
+            } catch (error) {
+                showStatus('Ошибка сохранения: ' + error.message, 'error');
+            }
+        }
+        
+        function clearAllData() {
+            if (confirm('ВНИМАНИЕ: Это удалит ВСЕ данные на сайте! Продолжить?')) {
+                localStorage.removeItem('studioData');
+                localStorage.removeItem('pendingReviews');
+                currentData = {
+                    main: {
+                        studioName: "",
+                        phone: "",
+                        email: "",
+                        address: "",
+                        workingHours: "",
+                        trialPrice: "",
+                        socialLinks: []
+                    },
+                    directions: [],
+                    prices: [],
+                    team: [],
+                    reviews: [],
+                    gallery: [],
+                    news: [],
+                    faq: []
+                };
+                
+                updateAllSections();
+                showStatus('Все данные очищены', 'success');
+            }
+        }
+        
+        function previewSite() {
+            // Сохраняем данные перед просмотром
+            saveAllData();
+            
+            // Открываем сайт в новом окне
+            window.open('deepseek_html_20260104_dbd9a6.html', '_blank');
+        }
+        
+        function showStatus(message, type = 'success') {
+            const status = document.getElementById('statusMessage');
+            status.textContent = message;
+            status.className = 'status-message ' + (type === 'error' ? 'error' : '');
+            status.classList.add('show');
+            
+            setTimeout(() => {
+                status.classList.remove('show');
+            }, 3000);
+        }
+        
+        // === ЭКСПОРТ/ИМПОРТ ===
+        function exportData() {
+            const dataStr = JSON.stringify(currentData, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = 'studio-data-' + new Date().toISOString().slice(0,10) + '.json';
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            
+            showStatus('Данные экспортированы в JSON файл', 'success');
+        }
+        
+        function importData() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            
+            input.onchange = function(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const importedData = JSON.parse(e.target.result);
+                        currentData = importedData;
+                        updateAllSections();
+                        showStatus('Данные успешно импортированы', 'success');
+                    } catch (error) {
+                        showStatus('Ошибка загрузки файла: ' + error.message, 'error');
+                    }
+                };
+                reader.readAsText(file);
+            };
+            
+            input.click();
+        }
+    </script>
+</body>
+</html>
