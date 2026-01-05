@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -680,6 +681,164 @@
             display: block;
         }
         
+        /* РАСПИСАНИЕ */
+        .schedule-days {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .schedule-day {
+            padding: 10px 20px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            text-align: center;
+            min-width: 80px;
+        }
+        
+        .schedule-day:hover {
+            background: #e0e0e0;
+        }
+        
+        .schedule-day.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .schedule-table th {
+            background: var(--primary);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: 600;
+            border: 1px solid var(--secondary);
+        }
+        
+        .schedule-table td {
+            padding: 15px;
+            border: 1px solid #eee;
+            text-align: center;
+            vertical-align: top;
+        }
+        
+        .schedule-table tr:hover td {
+            background: #f9f9f9;
+        }
+        
+        .schedule-item {
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(52, 152, 219, 0.05));
+            border-radius: 8px;
+            padding: 12px;
+            margin: 5px 0;
+            border-left: 4px solid var(--info);
+            text-align: left;
+            position: relative;
+        }
+        
+        .schedule-item-highlight {
+            background: linear-gradient(135deg, rgba(230, 126, 34, 0.1), rgba(230, 126, 34, 0.05));
+            border-left: 4px solid var(--primary);
+        }
+        
+        .schedule-time {
+            font-weight: bold;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+        
+        .schedule-direction {
+            font-size: 14px;
+            color: var(--primary);
+            margin-bottom: 3px;
+        }
+        
+        .schedule-age {
+            font-size: 12px;
+            color: #666;
+            background: rgba(0,0,0,0.05);
+            padding: 2px 6px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        
+        .schedule-instructor {
+            font-size: 12px;
+            color: #888;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .time-slot {
+            padding: 8px 12px;
+            background: #f0f0f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .time-slot:hover {
+            background: #e0e0e0;
+        }
+        
+        .time-slot.selected {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .schedule-actions {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            display: flex;
+            gap: 5px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .schedule-item:hover .schedule-actions {
+            opacity: 1;
+        }
+        
+        .schedule-action-btn {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            cursor: pointer;
+            border: none;
+            color: white;
+        }
+        
+        .edit-schedule {
+            background: var(--info);
+        }
+        
+        .delete-schedule {
+            background: var(--danger);
+        }
+        
         /* АДАПТИВНОСТЬ */
         @media (max-width: 768px) {
             .form-row {
@@ -732,6 +891,17 @@
             .modal-content {
                 padding: 25px;
                 width: 95vw;
+            }
+            
+            .schedule-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .schedule-days {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                padding-bottom: 10px;
             }
         }
         
@@ -874,6 +1044,10 @@
                 <i class="fas fa-dance"></i> Направления
                 <span class="tab-badge" id="directionsBadge">0</span>
             </div>
+            <div class="tab" data-tab="schedule">
+                <i class="fas fa-calendar-alt"></i> Расписание
+                <span class="tab-badge" id="scheduleBadge">0</span>
+            </div>
             <div class="tab" data-tab="prices">
                 <i class="fas fa-tags"></i> Цены
                 <span class="tab-badge" id="pricesBadge">0</span>
@@ -1001,6 +1175,76 @@
                 </button>
                 <button class="btn btn-danger" onclick="clearDirections()">
                     <i class="fas fa-trash"></i> Очистить все
+                </button>
+            </div>
+        </div>
+        
+        <!-- Вкладка: Расписание -->
+        <div class="tab-content" id="schedule">
+            <div class="info-box">
+                <div class="info-box-title">
+                    <i class="fas fa-calendar-alt"></i> Редактор расписания занятий
+                </div>
+                <div class="info-box-content">
+                    Создайте и управляйте расписанием занятий. Расписание будет отображаться на сайте в удобном виде.
+                </div>
+            </div>
+            
+            <div class="editor-toolbar">
+                <div>
+                    <strong>Расписание занятий</strong>
+                    <span class="counter" id="scheduleCount">0</span>
+                </div>
+                <div>
+                    <button class="btn btn-primary btn-small" onclick="showScheduleModal()">
+                        <i class="fas fa-plus"></i> Добавить занятие
+                    </button>
+                    <button class="btn btn-info btn-small" onclick="importDemoSchedule()">
+                        <i class="fas fa-magic"></i> Демо-расписание
+                    </button>
+                    <button class="btn btn-warning btn-small" onclick="clearSchedule()">
+                        <i class="fas fa-trash"></i> Очистить все
+                    </button>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3><i class="fas fa-filter"></i> Фильтр по дням недели</h3>
+                <div class="schedule-days" id="scheduleDays">
+                    <!-- Дни недели будут добавляться динамически -->
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-small" onclick="showAllDays()">
+                        <i class="fas fa-eye"></i> Показать все дни
+                    </button>
+                    <button class="btn btn-small" onclick="showTodaySchedule()">
+                        <i class="fas fa-calendar-day"></i> Сегодня
+                    </button>
+                </div>
+            </div>
+            
+            <div id="scheduleTableContainer">
+                <!-- Расписание будет отображаться здесь -->
+            </div>
+            
+            <div id="emptySchedule" style="display: none; text-align: center; padding: 60px 20px;">
+                <i class="fas fa-calendar-times" style="font-size: 64px; color: #ddd; margin-bottom: 20px;"></i>
+                <h3 style="color: #666; margin-bottom: 15px;">Расписание пусто</h3>
+                <p style="color: #888; margin-bottom: 25px;">Добавьте занятия, чтобы создать расписание</p>
+                <button class="btn btn-primary" onclick="showScheduleModal()">
+                    <i class="fas fa-plus"></i> Добавить первое занятие
+                </button>
+            </div>
+            
+            <div class="actions">
+                <button class="btn btn-success" onclick="saveSchedule()">
+                    <i class="fas fa-save"></i> Сохранить расписание
+                </button>
+                <button class="btn btn-info" onclick="printSchedule()">
+                    <i class="fas fa-print"></i> Распечатать расписание
+                </button>
+                <button class="btn btn-purple" onclick="exportSchedule()">
+                    <i class="fas fa-download"></i> Экспорт в PDF
                 </button>
             </div>
         </div>
@@ -1232,6 +1476,9 @@
                             <input type="checkbox" id="exportDirections" checked> Направления
                         </label>
                         <label style="display: flex; align-items: center; gap: 8px;">
+                            <input type="checkbox" id="exportSchedule" checked> Расписание
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 8px;">
                             <input type="checkbox" id="exportPrices" checked> Цены
                         </label>
                         <label style="display: flex; align-items: center; gap: 8px;">
@@ -1321,6 +1568,7 @@
                 ]
             },
             directions: [],
+            schedule: [],
             prices: [],
             team: [],
             gallery: [],
@@ -1333,6 +1581,7 @@
         let currentPhotoCategory = 'studio';
         let editingItem = { type: null, index: -1 };
         let currentRating = 5;
+        let currentScheduleDay = 'all';
         
         // === ИНИЦИАЛИЗАЦИЯ ===
         document.addEventListener('DOMContentLoaded', function() {
@@ -1363,6 +1612,8 @@
                     // Обновляем контент в зависимости от вкладки
                     if (tabId === 'photos') {
                         updateGalleryView();
+                    } else if (tabId === 'schedule') {
+                        updateScheduleSection();
                     }
                 });
             });
@@ -1385,7 +1636,7 @@
                         }
                         
                         // Загружаем остальные данные
-                        ['directions', 'prices', 'team', 'gallery', 'reviews', 'news', 'faq'].forEach(key => {
+                        ['directions', 'schedule', 'prices', 'team', 'gallery', 'reviews', 'news', 'faq'].forEach(key => {
                             if (parsedData[key] && Array.isArray(parsedData[key])) {
                                 currentData[key] = parsedData[key];
                             }
@@ -1430,6 +1681,62 @@
                     price: 'Абонемент: 2800₽/мес',
                     description: 'Углубленное изучение основ балета. Укрепление мышечного корсета.',
                     features: ['Осанка', 'Гибкость', 'Дисциплина']
+                }
+            ];
+            
+            // Демо расписание
+            currentData.schedule = [
+                {
+                    id: 's1',
+                    day: 'monday',
+                    dayName: 'Понедельник',
+                    time: '17:00',
+                    duration: '60',
+                    direction: 'Танец-игра / Ритмика',
+                    age: '3-7 лет',
+                    instructor: 'Анна Петрова',
+                    room: 'Зал №1',
+                    maxParticipants: '12',
+                    isHighlighted: true
+                },
+                {
+                    id: 's2',
+                    day: 'monday',
+                    dayName: 'Понедельник',
+                    time: '18:30',
+                    duration: '90',
+                    direction: 'Contemporary для начинающих',
+                    age: '13-17 лет',
+                    instructor: 'Елена Сидорова',
+                    room: 'Зал №2',
+                    maxParticipants: '15',
+                    isHighlighted: false
+                },
+                {
+                    id: 's3',
+                    day: 'wednesday',
+                    dayName: 'Среда',
+                    time: '17:00',
+                    duration: '60',
+                    direction: 'Танец-игра / Ритмика',
+                    age: '3-7 лет',
+                    instructor: 'Анна Петрова',
+                    room: 'Зал №1',
+                    maxParticipants: '12',
+                    isHighlighted: true
+                },
+                {
+                    id: 's4',
+                    day: 'friday',
+                    dayName: 'Пятница',
+                    time: '16:00',
+                    duration: '90',
+                    direction: 'Классическая хореография',
+                    age: '8-12 лет',
+                    instructor: 'Ирина Ковалева',
+                    room: 'Зал №1',
+                    maxParticipants: '10',
+                    isHighlighted: false
                 }
             ];
             
@@ -1556,6 +1863,7 @@
         function updateAllSections() {
             updateMainSection();
             updateDirectionsSection();
+            updateScheduleSection();
             updatePricesSection();
             updateTeamSection();
             updateGallerySection();
@@ -1568,6 +1876,7 @@
         
         function updateCounters() {
             document.getElementById('directionsCount').textContent = currentData.directions.length;
+            document.getElementById('scheduleCount').textContent = currentData.schedule.length;
             document.getElementById('pricesCount').textContent = currentData.prices.length;
             document.getElementById('teamCount').textContent = currentData.team.length;
             document.getElementById('photosCount').textContent = currentData.gallery.length;
@@ -1577,6 +1886,7 @@
             
             // Обновляем бейджи на вкладках
             document.getElementById('directionsBadge').textContent = currentData.directions.length;
+            document.getElementById('scheduleBadge').textContent = currentData.schedule.length;
             document.getElementById('pricesBadge').textContent = currentData.prices.length;
             document.getElementById('teamBadge').textContent = currentData.team.length;
             document.getElementById('photosBadge').textContent = currentData.gallery.length;
@@ -1928,6 +2238,638 @@
         function saveDirections() {
             saveAllData();
             showStatus('Направления сохранены', 'success');
+        }
+        
+        // === СЕКЦИЯ: РАСПИСАНИЕ ===
+        function updateScheduleSection() {
+            updateScheduleDays();
+            updateScheduleTable();
+            updateScheduleEmptyState();
+        }
+        
+        function updateScheduleDays() {
+            const days = [
+                { id: 'all', name: 'Все дни' },
+                { id: 'monday', name: 'Понедельник' },
+                { id: 'tuesday', name: 'Вторник' },
+                { id: 'wednesday', name: 'Среда' },
+                { id: 'thursday', name: 'Четверг' },
+                { id: 'friday', name: 'Пятница' },
+                { id: 'saturday', name: 'Суббота' },
+                { id: 'sunday', name: 'Воскресенье' }
+            ];
+            
+            const container = document.getElementById('scheduleDays');
+            container.innerHTML = '';
+            
+            days.forEach(day => {
+                const count = day.id === 'all' 
+                    ? currentData.schedule.length 
+                    : currentData.schedule.filter(item => item.day === day.id).length;
+                
+                const div = document.createElement('div');
+                div.className = `schedule-day ${currentScheduleDay === day.id ? 'active' : ''}`;
+                div.innerHTML = `
+                    ${day.name}
+                    <span style="font-size: 12px; background: rgba(255,255,255,0.2); padding: 1px 6px; border-radius: 10px; margin-left: 5px;">${count}</span>
+                `;
+                div.onclick = () => filterScheduleByDay(day.id);
+                container.appendChild(div);
+            });
+        }
+        
+        function filterScheduleByDay(dayId) {
+            currentScheduleDay = dayId;
+            updateScheduleDays();
+            updateScheduleTable();
+        }
+        
+        function showAllDays() {
+            filterScheduleByDay('all');
+        }
+        
+        function showTodaySchedule() {
+            const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+            const today = new Date().getDay(); // 0 - воскресенье, 1 - понедельник и т.д.
+            const todayId = days[today];
+            filterScheduleByDay(todayId);
+        }
+        
+        function updateScheduleTable() {
+            const container = document.getElementById('scheduleTableContainer');
+            const empty = document.getElementById('emptySchedule');
+            
+            // Фильтруем занятия по выбранному дню
+            let filteredSchedule = currentData.schedule;
+            if (currentScheduleDay !== 'all') {
+                filteredSchedule = currentData.schedule.filter(item => item.day === currentScheduleDay);
+            }
+            
+            if (filteredSchedule.length === 0) {
+                container.innerHTML = '';
+                empty.style.display = 'block';
+                return;
+            }
+            
+            empty.style.display = 'none';
+            
+            // Сортируем по времени
+            filteredSchedule.sort((a, b) => {
+                const timeA = a.time.replace(':', '');
+                const timeB = b.time.replace(':', '');
+                return timeA - timeB;
+            });
+            
+            // Группируем по времени для таблицы
+            const timeSlots = [...new Set(filteredSchedule.map(item => item.time))].sort();
+            
+            let html = `
+                <table class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>Время</th>
+                            <th>Направление / Группа</th>
+                            <th>Возраст</th>
+                            <th>Преподаватель</th>
+                            <th>Зал</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            timeSlots.forEach(timeSlot => {
+                const items = filteredSchedule.filter(item => item.time === timeSlot);
+                
+                items.forEach((item, index) => {
+                    const isFirst = index === 0;
+                    const rowSpan = items.length;
+                    
+                    html += `
+                        <tr>
+                            ${isFirst ? `<td rowspan="${rowSpan}" style="font-weight: bold; font-size: 16px;">${item.time}</td>` : ''}
+                            <td>
+                                <div class="schedule-item ${item.isHighlighted ? 'schedule-item-highlight' : ''}">
+                                    <div class="schedule-direction">${item.direction}</div>
+                                    <div class="schedule-time">${item.duration} минут</div>
+                                    <div class="schedule-actions">
+                                        <button class="schedule-action-btn edit-schedule" onclick="editScheduleItem('${item.id}')">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="schedule-action-btn delete-schedule" onclick="removeScheduleItem('${item.id}')">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="schedule-age">${item.age}</span>
+                            </td>
+                            <td>
+                                <div class="schedule-instructor">${item.instructor}</div>
+                            </td>
+                            <td>
+                                ${item.room}
+                                ${item.maxParticipants ? `<br><small>до ${item.maxParticipants} чел.</small>` : ''}
+                            </td>
+                            ${isFirst ? `<td rowspan="${rowSpan}">
+                                <button class="btn btn-small btn-primary" onclick="editScheduleItem('${item.id}')">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-small btn-danger" onclick="removeScheduleItem('${item.id}')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>` : ''}
+                        </tr>
+                    `;
+                });
+            });
+            
+            html += `
+                    </tbody>
+                </table>
+            `;
+            
+            container.innerHTML = html;
+        }
+        
+        function updateScheduleEmptyState() {
+            const empty = document.getElementById('emptySchedule');
+            if (currentData.schedule.length === 0) {
+                empty.style.display = 'block';
+            } else {
+                empty.style.display = 'none';
+            }
+        }
+        
+        function showScheduleModal(index = -1) {
+            editingItem = { type: 'schedule', index: index };
+            
+            // Если передали index, ищем по индексу, иначе по id
+            let scheduleItem;
+            if (typeof index === 'number' && index >= 0) {
+                scheduleItem = currentData.schedule[index];
+            } else if (typeof index === 'string') {
+                const itemIndex = currentData.schedule.findIndex(item => item.id === index);
+                if (itemIndex >= 0) {
+                    scheduleItem = currentData.schedule[itemIndex];
+                    editingItem.index = itemIndex;
+                }
+            }
+            
+            const title = scheduleItem ? '<i class="fas fa-edit"></i> Редактировать занятие' : '<i class="fas fa-plus"></i> Добавить занятие';
+            
+            // Подготавливаем списки направлений и преподавателей
+            const directionOptions = currentData.directions.map(dir => 
+                `<option value="${dir.title}" ${scheduleItem && scheduleItem.direction === dir.title ? 'selected' : ''}>${dir.title}</option>`
+            ).join('');
+            
+            const instructorOptions = currentData.team.map(member => 
+                `<option value="${member.name}" ${scheduleItem && scheduleItem.instructor === member.name ? 'selected' : ''}>${member.name}</option>`
+            ).join('');
+            
+            // Стандартные временные слоты
+            const timeSlots = [
+                '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', 
+                '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'
+            ];
+            
+            const timeOptions = timeSlots.map(time => 
+                `<option value="${time}" ${scheduleItem && scheduleItem.time === time ? 'selected' : ''}>${time}</option>`
+            ).join('');
+            
+            const content = `
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>День недели *</label>
+                        <select id="modalScheduleDay" class="modal-input">
+                            <option value="monday" ${scheduleItem && scheduleItem.day === 'monday' ? 'selected' : ''}>Понедельник</option>
+                            <option value="tuesday" ${scheduleItem && scheduleItem.day === 'tuesday' ? 'selected' : ''}>Вторник</option>
+                            <option value="wednesday" ${scheduleItem && scheduleItem.day === 'wednesday' ? 'selected' : ''}>Среда</option>
+                            <option value="thursday" ${scheduleItem && scheduleItem.day === 'thursday' ? 'selected' : ''}>Четверг</option>
+                            <option value="friday" ${scheduleItem && scheduleItem.day === 'friday' ? 'selected' : ''}>Пятница</option>
+                            <option value="saturday" ${scheduleItem && scheduleItem.day === 'saturday' ? 'selected' : ''}>Суббота</option>
+                            <option value="sunday" ${scheduleItem && scheduleItem.day === 'sunday' ? 'selected' : ''}>Воскресенье</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Время начала *</label>
+                        <select id="modalScheduleTime" class="modal-input">
+                            ${timeOptions}
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Продолжительность (минут) *</label>
+                        <select id="modalScheduleDuration" class="modal-input">
+                            <option value="45" ${scheduleItem && scheduleItem.duration === '45' ? 'selected' : ''}>45 минут</option>
+                            <option value="60" ${scheduleItem && scheduleItem.duration === '60' ? 'selected' : ''}>60 минут</option>
+                            <option value="90" ${scheduleItem && scheduleItem.duration === '90' ? 'selected' : ''}>90 минут</option>
+                            <option value="120" ${scheduleItem && scheduleItem.duration === '120' ? 'selected' : ''}>120 минут</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Макс. участников</label>
+                        <input type="number" id="modalScheduleMaxParticipants" value="${scheduleItem ? scheduleItem.maxParticipants : '15'}" class="modal-input" min="1" max="50">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Направление *</label>
+                    <select id="modalScheduleDirection" class="modal-input">
+                        <option value="">Выберите направление</option>
+                        ${directionOptions}
+                        <option value="custom">Другое (ввести вручную)</option>
+                    </select>
+                    <input type="text" id="modalScheduleDirectionCustom" 
+                           value="${scheduleItem && !currentData.directions.some(d => d.title === scheduleItem.direction) ? scheduleItem.direction : ''}" 
+                           placeholder="Введите название направления" 
+                           class="modal-input" 
+                           style="margin-top: 10px; display: ${scheduleItem && !currentData.directions.some(d => d.title === scheduleItem.direction) ? 'block' : 'none'}">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Возрастная группа *</label>
+                        <input type="text" id="modalScheduleAge" value="${scheduleItem ? scheduleItem.age : ''}" placeholder="3-7 лет" class="modal-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Преподаватель</label>
+                        <select id="modalScheduleInstructor" class="modal-input">
+                            <option value="">Выберите преподавателя</option>
+                            ${instructorOptions}
+                            <option value="custom">Другой (ввести вручную)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Зал / Помещение</label>
+                        <input type="text" id="modalScheduleRoom" value="${scheduleItem ? scheduleItem.room : 'Зал №1'}" placeholder="Зал №1" class="modal-input">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="modalScheduleHighlighted" ${scheduleItem && scheduleItem.isHighlighted ? 'checked' : ''}>
+                        Выделить это занятие (рекомендованное / популярное)
+                    </label>
+                </div>
+                
+                <div class="form-group">
+                    <label>Примечание</label>
+                    <textarea id="modalScheduleNote" placeholder="Дополнительная информация..." rows="2" class="modal-input">${scheduleItem ? scheduleItem.note || '' : ''}</textarea>
+                </div>
+                
+                <div class="info-box">
+                    <div class="info-box-title">
+                        <i class="fas fa-info-circle"></i> Подсказка
+                    </div>
+                    <div class="info-box-content">
+                        Создавайте направления и преподавателей в соответствующих разделах, чтобы выбирать их здесь из списка.
+                    </div>
+                </div>
+            `;
+            
+            const footer = `
+                <button class="btn btn-success" onclick="saveScheduleItem()">
+                    <i class="fas fa-save"></i> ${scheduleItem ? 'Сохранить' : 'Добавить'}
+                </button>
+                ${scheduleItem ? `
+                <button class="btn btn-danger" onclick="removeScheduleItem('${scheduleItem.id}'); closeModal();">
+                    <i class="fas fa-trash"></i> Удалить
+                </button>
+                ` : ''}
+                <button class="btn" onclick="closeModal()">
+                    <i class="fas fa-times"></i> Отмена
+                </button>
+            `;
+            
+            showModal(title, content, footer);
+            
+            // Настраиваем переключение между выбранным направлением и ручным вводом
+            document.getElementById('modalScheduleDirection').addEventListener('change', function() {
+                const customInput = document.getElementById('modalScheduleDirectionCustom');
+                if (this.value === 'custom') {
+                    customInput.style.display = 'block';
+                    customInput.required = true;
+                } else {
+                    customInput.style.display = 'none';
+                    customInput.required = false;
+                }
+            });
+            
+            document.getElementById('modalScheduleInstructor').addEventListener('change', function() {
+                if (this.value === 'custom') {
+                    // Создаем поле для ручного ввода преподавателя
+                    const instructorGroup = this.closest('.form-group');
+                    const customInput = document.createElement('input');
+                    customInput.type = 'text';
+                    customInput.id = 'modalScheduleInstructorCustom';
+                    customInput.className = 'modal-input';
+                    customInput.style.marginTop = '10px';
+                    customInput.placeholder = 'Введите имя преподавателя';
+                    customInput.required = true;
+                    
+                    if (!document.getElementById('modalScheduleInstructorCustom')) {
+                        instructorGroup.appendChild(customInput);
+                    }
+                } else {
+                    // Удаляем поле ручного ввода, если оно есть
+                    const customInput = document.getElementById('modalScheduleInstructorCustom');
+                    if (customInput) {
+                        customInput.remove();
+                    }
+                }
+            });
+        }
+        
+        function editScheduleItem(id) {
+            showScheduleModal(id);
+        }
+        
+        function saveScheduleItem() {
+            const day = document.getElementById('modalScheduleDay').value;
+            const time = document.getElementById('modalScheduleTime').value;
+            const duration = document.getElementById('modalScheduleDuration').value;
+            
+            // Получаем направление
+            let direction;
+            const directionSelect = document.getElementById('modalScheduleDirection');
+            if (directionSelect.value === 'custom') {
+                direction = document.getElementById('modalScheduleDirectionCustom').value.trim();
+            } else {
+                direction = directionSelect.value;
+            }
+            
+            // Получаем преподавателя
+            let instructor;
+            const instructorSelect = document.getElementById('modalScheduleInstructor');
+            if (instructorSelect.value === 'custom') {
+                instructor = document.getElementById('modalScheduleInstructorCustom')?.value.trim() || '';
+            } else {
+                instructor = instructorSelect.value;
+            }
+            
+            if (!day || !time || !duration || !direction) {
+                showStatus('Заполните обязательные поля', 'error');
+                return;
+            }
+            
+            // Генерируем имя дня
+            const dayNames = {
+                monday: 'Понедельник',
+                tuesday: 'Вторник',
+                wednesday: 'Среда',
+                thursday: 'Четверг',
+                friday: 'Пятница',
+                saturday: 'Суббота',
+                sunday: 'Воскресенье'
+            };
+            
+            const scheduleData = {
+                id: editingItem.index >= 0 ? currentData.schedule[editingItem.index].id : 'schedule-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9),
+                day: day,
+                dayName: dayNames[day],
+                time: time,
+                duration: duration,
+                direction: direction,
+                age: document.getElementById('modalScheduleAge').value,
+                instructor: instructor,
+                room: document.getElementById('modalScheduleRoom').value,
+                maxParticipants: document.getElementById('modalScheduleMaxParticipants').value,
+                isHighlighted: document.getElementById('modalScheduleHighlighted').checked,
+                note: document.getElementById('modalScheduleNote').value
+            };
+            
+            if (editingItem.index >= 0) {
+                currentData.schedule[editingItem.index] = scheduleData;
+            } else {
+                currentData.schedule.push(scheduleData);
+            }
+            
+            // Сортируем расписание по дню и времени
+            currentData.schedule.sort((a, b) => {
+                const dayOrder = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+                const dayCompare = dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day);
+                if (dayCompare !== 0) return dayCompare;
+                
+                const timeA = a.time.replace(':', '');
+                const timeB = b.time.replace(':', '');
+                return timeA - timeB;
+            });
+            
+            updateScheduleSection();
+            updateCounters();
+            closeModal();
+            showStatus('Занятие сохранено в расписании', 'success');
+        }
+        
+        function removeScheduleItem(id) {
+            const index = currentData.schedule.findIndex(item => item.id === id);
+            if (index === -1) return;
+            
+            if (confirm('Удалить это занятие из расписания?')) {
+                currentData.schedule.splice(index, 1);
+                updateScheduleSection();
+                updateCounters();
+                showStatus('Занятие удалено из расписания', 'success');
+            }
+        }
+        
+        function importDemoSchedule() {
+            const demoSchedule = [
+                {
+                    id: 'demo1',
+                    day: 'monday',
+                    dayName: 'Понедельник',
+                    time: '17:00',
+                    duration: '60',
+                    direction: 'Танец-игра / Ритмика',
+                    age: '3-7 лет',
+                    instructor: 'Анна Петрова',
+                    room: 'Зал №1',
+                    maxParticipants: '12',
+                    isHighlighted: true
+                },
+                {
+                    id: 'demo2',
+                    day: 'wednesday',
+                    dayName: 'Среда',
+                    time: '17:00',
+                    duration: '60',
+                    direction: 'Танец-игра / Ритмика',
+                    age: '3-7 лет',
+                    instructor: 'Анна Петрова',
+                    room: 'Зал №1',
+                    maxParticipants: '12',
+                    isHighlighted: true
+                },
+                {
+                    id: 'demo3',
+                    day: 'friday',
+                    dayName: 'Пятница',
+                    time: '16:00',
+                    duration: '90',
+                    direction: 'Классическая хореография',
+                    age: '8-12 лет',
+                    instructor: 'Ирина Ковалева',
+                    room: 'Зал №1',
+                    maxParticipants: '10',
+                    isHighlighted: false
+                },
+                {
+                    id: 'demo4',
+                    day: 'saturday',
+                    dayName: 'Суббота',
+                    time: '11:00',
+                    duration: '60',
+                    direction: 'Хип-хоп для подростков',
+                    age: '13-17 лет',
+                    instructor: 'Дмитрий Волков',
+                    room: 'Зал №2',
+                    maxParticipants: '15',
+                    isHighlighted: false
+                }
+            ];
+            
+            currentData.schedule = [...currentData.schedule, ...demoSchedule];
+            updateScheduleSection();
+            updateCounters();
+            showStatus('Демо-расписание добавлено', 'success');
+        }
+        
+        function clearSchedule() {
+            if (currentData.schedule.length === 0) {
+                showStatus('Расписание уже пусто', 'warning');
+                return;
+            }
+            
+            if (confirm('Очистить всё расписание? Это действие нельзя отменить.')) {
+                currentData.schedule = [];
+                updateScheduleSection();
+                updateCounters();
+                showStatus('Расписание очищено', 'success');
+            }
+        }
+        
+        function saveSchedule() {
+            saveAllData();
+            showStatus('Расписание сохранено', 'success');
+        }
+        
+        function printSchedule() {
+            // Создаем HTML для печати
+            const printWindow = window.open('', '_blank');
+            const printContent = `
+                <html>
+                <head>
+                    <title>Расписание - ${currentData.main.studioName}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 20px; }
+                        h1 { color: #E67E22; text-align: center; }
+                        .schedule-print { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                        .schedule-print th { background: #E67E22; color: white; padding: 10px; text-align: center; }
+                        .schedule-print td { padding: 10px; border: 1px solid #ddd; text-align: center; }
+                        .highlight { background: #FFF8F0; font-weight: bold; }
+                        .day-header { background: #f5f5f5; font-weight: bold; padding: 15px; text-align: center; }
+                        @media print {
+                            body { padding: 10px; }
+                            .no-print { display: none; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h1>Расписание занятий<br>${currentData.main.studioName}</h1>
+                    <p style="text-align: center;">${currentData.main.address}<br>Тел: ${currentData.main.phone}</p>
+                    <p style="text-align: center; color: #666;">Распечатано: ${new Date().toLocaleDateString('ru-RU')}</p>
+                    
+                    ${generateSchedulePrintTable()}
+                    
+                    <div style="margin-top: 30px; text-align: center; font-size: 12px; color: #888;" class="no-print">
+                        <button onclick="window.print()">Распечатать</button>
+                        <button onclick="window.close()">Закрыть</button>
+                    </div>
+                </body>
+                </html>
+            `;
+            
+            printWindow.document.write(printContent);
+            printWindow.document.close();
+        }
+        
+        function generateSchedulePrintTable() {
+            // Группируем по дням
+            const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+            const dayNames = {
+                monday: 'Понедельник',
+                tuesday: 'Вторник',
+                wednesday: 'Среда',
+                thursday: 'Четверг',
+                friday: 'Пятница',
+                saturday: 'Суббота',
+                sunday: 'Воскресенье'
+            };
+            
+            let html = '';
+            
+            days.forEach(day => {
+                const daySchedule = currentData.schedule.filter(item => item.day === day);
+                if (daySchedule.length === 0) return;
+                
+                // Сортируем по времени
+                daySchedule.sort((a, b) => {
+                    const timeA = a.time.replace(':', '');
+                    const timeB = b.time.replace(':', '');
+                    return timeA - timeB;
+                });
+                
+                html += `
+                    <div class="day-header">${dayNames[day]}</div>
+                    <table class="schedule-print">
+                        <thead>
+                            <tr>
+                                <th>Время</th>
+                                <th>Направление</th>
+                                <th>Возраст</th>
+                                <th>Преподаватель</th>
+                                <th>Зал</th>
+                                <th>Длительность</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+                
+                daySchedule.forEach(item => {
+                    html += `
+                        <tr ${item.isHighlighted ? 'class="highlight"' : ''}>
+                            <td>${item.time}</td>
+                            <td>${item.direction}</td>
+                            <td>${item.age}</td>
+                            <td>${item.instructor}</td>
+                            <td>${item.room}</td>
+                            <td>${item.duration} мин</td>
+                        </tr>
+                    `;
+                });
+                
+                html += `
+                        </tbody>
+                    </table>
+                    <br>
+                `;
+            });
+            
+            return html;
+        }
+        
+        function exportSchedule() {
+            // В реальном приложении здесь был бы экспорт в PDF
+            // Для демонстрации просто показываем сообщение
+            showStatus('Экспорт в PDF доступен в полной версии редактора', 'info');
         }
         
         // === СЕКЦИЯ: ЦЕНЫ ===
@@ -3261,6 +4203,7 @@
             
             if (document.getElementById('exportMain').checked) exportData.main = currentData.main;
             if (document.getElementById('exportDirections').checked) exportData.directions = currentData.directions;
+            if (document.getElementById('exportSchedule').checked) exportData.schedule = currentData.schedule;
             if (document.getElementById('exportPrices').checked) exportData.prices = currentData.prices;
             if (document.getElementById('exportTeam').checked) exportData.team = currentData.team;
             if (document.getElementById('exportPhotos').checked) exportData.gallery = currentData.gallery;
@@ -3339,6 +4282,7 @@
                         socialLinks: []
                     },
                     directions: [],
+                    schedule: [],
                     prices: [],
                     team: [],
                     gallery: [],
@@ -3407,6 +4351,10 @@
                                 <p>Количество направлений: ${currentData.directions.length}</p>
                             </div>
                             <div class="section">
+                                <h2>Расписание (${currentData.schedule.length})</h2>
+                                <p>Количество занятий в расписании: ${currentData.schedule.length}</p>
+                            </div>
+                            <div class="section">
                                 <h2>Фотогалерея (${currentData.gallery.length})</h2>
                                 <p>Количество фото: ${currentData.gallery.length}</p>
                             </div>
@@ -3431,21 +4379,21 @@
                             </div>
                         </div>
                         <div style="background: rgba(39, 174, 96, 0.1); padding: 15px; border-radius: 10px;">
-                            <div style="font-size: 12px; color: #666;">Тарифы</div>
+                            <div style="font-size: 12px; color: #666;">Занятия в расписании</div>
                             <div style="font-size: 32px; font-weight: bold; color: var(--success);">
-                                ${currentData.prices.length}
+                                ${currentData.schedule.length}
                             </div>
                         </div>
                         <div style="background: rgba(52, 152, 219, 0.1); padding: 15px; border-radius: 10px;">
-                            <div style="font-size: 12px; color: #666;">Команда</div>
+                            <div style="font-size: 12px; color: #666;">Тарифы</div>
                             <div style="font-size: 32px; font-weight: bold; color: var(--info);">
-                                ${currentData.team.length}
+                                ${currentData.prices.length}
                             </div>
                         </div>
                         <div style="background: rgba(155, 89, 182, 0.1); padding: 15px; border-radius: 10px;">
-                            <div style="font-size: 12px; color: #666;">Фото</div>
+                            <div style="font-size: 12px; color: #666;">Команда</div>
                             <div style="font-size: 32px; font-weight: bold; color: var(--purple);">
-                                ${currentData.gallery.length}
+                                ${currentData.team.length}
                             </div>
                         </div>
                     </div>
