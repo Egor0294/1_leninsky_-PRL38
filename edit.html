@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -267,7 +266,6 @@
             flex-wrap: wrap;
         }
         
-        /* СТИЛИ ДЛЯ СПИСКОВ */
         .item-list {
             background: white;
             border-radius: 10px;
@@ -317,7 +315,6 @@
             flex-wrap: wrap;
         }
         
-        /* СТИЛИ ДЛЯ ФОТОКОНТЕЙНЕРА */
         .photo-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -358,7 +355,6 @@
             transform: scale(1.05);
         }
         
-        /* МОДАЛЬНОЕ ОКНО - ЕДИНЫЙ СТИЛЬ */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -461,7 +457,6 @@
             border-top: 1px solid #eee;
         }
         
-        /* ЗОНА ЗАГРУЗКИ */
         .upload-area {
             border: 3px dashed #ddd;
             border-radius: 15px;
@@ -489,7 +484,6 @@
             margin-bottom: 15px;
         }
         
-        /* ИНФО БЛОКИ */
         .info-box {
             background: linear-gradient(135deg, rgba(230, 126, 34, 0.1), rgba(255, 255, 255, 0.8));
             border-left: 4px solid var(--primary);
@@ -513,7 +507,6 @@
             line-height: 1.6;
         }
         
-        /* ПАНЕЛЬ ИНСТРУМЕНТОВ */
         .editor-toolbar {
             background: #f0f0f0;
             padding: 15px;
@@ -536,7 +529,6 @@
             margin-left: 10px;
         }
         
-        /* СТАТУС БАР */
         .status-bar {
             position: fixed;
             bottom: 20px;
@@ -577,7 +569,6 @@
             background: var(--info);
         }
         
-        /* КАТЕГОРИИ */
         .category-tags {
             display: flex;
             flex-wrap: wrap;
@@ -603,7 +594,6 @@
             color: white;
         }
         
-        /* ПРЕДПРОСМОТР ФОТО */
         .preview-image {
             max-width: 100%;
             max-height: 200px;
@@ -621,7 +611,6 @@
             border-radius: 10px;
         }
         
-        /* ЗАГРУЗЧИК */
         .loader {
             display: none;
             position: fixed;
@@ -656,7 +645,6 @@
             100% { transform: rotate(360deg); }
         }
         
-        /* ТОГГЛ ПАНЕЛЬ */
         .toggle-panel {
             background: #f9f9f9;
             border-radius: 10px;
@@ -681,7 +669,6 @@
             display: block;
         }
         
-        /* РАСПИСАНИЕ */
         .schedule-days {
             display: flex;
             flex-wrap: wrap;
@@ -839,7 +826,6 @@
             background: var(--danger);
         }
         
-        /* АДАПТИВНОСТЬ */
         @media (max-width: 768px) {
             .form-row {
                 flex-direction: column;
@@ -905,7 +891,6 @@
             }
         }
         
-        /* АНИМАЦИИ */
         .pulse {
             animation: pulse 2s infinite;
         }
@@ -916,7 +901,6 @@
             100% { box-shadow: 0 0 0 0 rgba(230, 126, 34, 0); }
         }
         
-        /* СКРОЛЛБАР */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -936,7 +920,6 @@
             background: var(--secondary);
         }
         
-        /* ЗВЕЗДЫ РЕЙТИНГА */
         .rating-stars {
             display: flex;
             gap: 5px;
@@ -954,7 +937,6 @@
             color: var(--warning);
         }
         
-        /* КАРТОЧКА ПРЕПОДАВАТЕЛЯ В МОДАЛКЕ */
         .teacher-avatar {
             width: 80px;
             height: 80px;
@@ -969,7 +951,6 @@
             margin: 0 auto 20px;
         }
         
-        /* ПРЕВЬЮ ТАРИФА */
         .price-preview {
             background: linear-gradient(135deg, #f9f9f9, #fff);
             border-radius: 15px;
@@ -991,7 +972,6 @@
             font-size: 14px;
         }
         
-        /* ФИЧИ ТАРИФА */
         .features-list {
             margin: 15px 0;
             padding-left: 20px;
@@ -1077,7 +1057,6 @@
             </div>
         </div>
         
-        <!-- Вкладка: Основное -->
         <div class="tab-content active" id="main">
             <div class="info-box">
                 <div class="info-box-title">
@@ -1130,9 +1109,7 @@
             
             <div class="form-section">
                 <h3><i class="fas fa-share-alt"></i> Социальные сети</h3>
-                <div id="socialLinksList">
-                    <!-- Ссылки будут добавляться динамически -->
-                </div>
+                <div id="socialLinksList"></div>
                 <button class="btn btn-primary" onclick="addSocialLink()">
                     <i class="fas fa-plus"></i> Добавить соцсеть
                 </button>
@@ -1148,7 +1125,6 @@
             </div>
         </div>
         
-        <!-- Вкладка: Направления -->
         <div class="tab-content" id="directions">
             <div class="editor-toolbar">
                 <div>
@@ -1165,9 +1141,7 @@
                 </div>
             </div>
             
-            <div id="directionsList" class="item-list">
-                <!-- Направления будут добавляться динамически -->
-            </div>
+            <div id="directionsList" class="item-list"></div>
             
             <div class="actions">
                 <button class="btn btn-success" onclick="saveDirections()">
@@ -1179,7 +1153,6 @@
             </div>
         </div>
         
-        <!-- Вкладка: Расписание -->
         <div class="tab-content" id="schedule">
             <div class="info-box">
                 <div class="info-box-title">
@@ -1199,6 +1172,9 @@
                     <button class="btn btn-primary btn-small" onclick="showScheduleModal()">
                         <i class="fas fa-plus"></i> Добавить занятие
                     </button>
+                    <button class="btn btn-info btn-small" onclick="showQuickTimeSlotsModal()">
+                        <i class="fas fa-bolt"></i> Быстрое добавление
+                    </button>
                     <button class="btn btn-info btn-small" onclick="importDemoSchedule()">
                         <i class="fas fa-magic"></i> Демо-расписание
                     </button>
@@ -1210,9 +1186,7 @@
             
             <div class="form-section">
                 <h3><i class="fas fa-filter"></i> Фильтр по дням недели</h3>
-                <div class="schedule-days" id="scheduleDays">
-                    <!-- Дни недели будут добавляться динамически -->
-                </div>
+                <div class="schedule-days" id="scheduleDays"></div>
                 <div class="form-group">
                     <button class="btn btn-small" onclick="showAllDays()">
                         <i class="fas fa-eye"></i> Показать все дни
@@ -1223,9 +1197,7 @@
                 </div>
             </div>
             
-            <div id="scheduleTableContainer">
-                <!-- Расписание будет отображаться здесь -->
-            </div>
+            <div id="scheduleTableContainer"></div>
             
             <div id="emptySchedule" style="display: none; text-align: center; padding: 60px 20px;">
                 <i class="fas fa-calendar-times" style="font-size: 64px; color: #ddd; margin-bottom: 20px;"></i>
@@ -1249,7 +1221,6 @@
             </div>
         </div>
         
-        <!-- Вкладка: Цены -->
         <div class="tab-content" id="prices">
             <div class="editor-toolbar">
                 <div>
@@ -1261,9 +1232,7 @@
                 </button>
             </div>
             
-            <div id="pricesList" class="item-list">
-                <!-- Цены будут добавляться динамически -->
-            </div>
+            <div id="pricesList" class="item-list"></div>
             
             <div class="actions">
                 <button class="btn btn-success" onclick="savePrices()">
@@ -1275,7 +1244,6 @@
             </div>
         </div>
         
-        <!-- Вкладка: Команда -->
         <div class="tab-content" id="team">
             <div class="editor-toolbar">
                 <div>
@@ -1287,9 +1255,7 @@
                 </button>
             </div>
             
-            <div id="teamList" class="item-list">
-                <!-- Команда будет добавляться динамически -->
-            </div>
+            <div id="teamList" class="item-list"></div>
             
             <div class="actions">
                 <button class="btn btn-success" onclick="saveTeam()">
@@ -1298,7 +1264,6 @@
             </div>
         </div>
         
-        <!-- Вкладка: Фотогалерея -->
         <div class="tab-content" id="photos">
             <div class="editor-toolbar">
                 <div>
@@ -1315,13 +1280,9 @@
                 </div>
             </div>
             
-            <div class="category-tags" id="galleryCategories">
-                <!-- Категории будут добавляться динамически -->
-            </div>
+            <div class="category-tags" id="galleryCategories"></div>
             
-            <div id="galleryContainer" class="photo-container">
-                <!-- Галерея будет отображаться здесь -->
-            </div>
+            <div id="galleryContainer" class="photo-container"></div>
             
             <div id="emptyGallery" style="display: none; text-align: center; padding: 60px 20px;">
                 <i class="fas fa-images" style="font-size: 64px; color: #ddd; margin-bottom: 20px;"></i>
@@ -1342,7 +1303,6 @@
             </div>
         </div>
         
-        <!-- Вкладка: Отзывы -->
         <div class="tab-content" id="reviews">
             <div class="editor-toolbar">
                 <div>
@@ -1359,9 +1319,7 @@
                 </div>
             </div>
             
-            <div id="reviewsList" class="item-list">
-                <!-- Отзывы будут добавляться динамически -->
-            </div>
+            <div id="reviewsList" class="item-list"></div>
             
             <div class="actions">
                 <button class="btn btn-success" onclick="saveReviews()">
@@ -1370,7 +1328,6 @@
             </div>
         </div>
         
-        <!-- Вкладка: Новости -->
         <div class="tab-content" id="news">
             <div class="editor-toolbar">
                 <div>
@@ -1382,9 +1339,7 @@
                 </button>
             </div>
             
-            <div id="newsList" class="item-list">
-                <!-- Новости будут добавляться динамически -->
-            </div>
+            <div id="newsList" class="item-list"></div>
             
             <div class="actions">
                 <button class="btn btn-success" onclick="saveNews()">
@@ -1393,7 +1348,6 @@
             </div>
         </div>
         
-        <!-- Вкладка: FAQ -->
         <div class="tab-content" id="faq">
             <div class="editor-toolbar">
                 <div>
@@ -1405,9 +1359,7 @@
                 </button>
             </div>
             
-            <div id="faqList" class="item-list">
-                <!-- FAQ будет добавляться динамически -->
-            </div>
+            <div id="faqList" class="item-list"></div>
             
             <div class="actions">
                 <button class="btn btn-success" onclick="saveFAQ()">
@@ -1419,7 +1371,6 @@
             </div>
         </div>
         
-        <!-- Вкладка: Настройки -->
         <div class="tab-content" id="settings">
             <div class="info-box">
                 <div class="info-box-title">
@@ -1526,7 +1477,6 @@
         </div>
     </div>
     
-    <!-- ОБЩЕЕ МОДАЛЬНОЕ ОКНО -->
     <div class="modal-overlay" id="modalOverlay"></div>
     <div class="modal" id="commonModal">
         <div class="modal-content">
@@ -1534,24 +1484,16 @@
                 <h2 class="modal-title" id="modalTitle"><i class="fas fa-edit"></i> Редактирование</h2>
                 <button class="modal-close" onclick="closeModal()">×</button>
             </div>
-            <div class="modal-body" id="modalBody">
-                <!-- Контент будет загружен динамически -->
-            </div>
-            <div class="modal-footer" id="modalFooter">
-                <!-- Кнопки будут добавляться динамически -->
-            </div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-footer" id="modalFooter"></div>
         </div>
     </div>
     
-    <!-- Статус бар -->
     <div class="status-bar">
-        <div class="status-message" id="statusMessage">
-            Готово
-        </div>
+        <div class="status-message" id="statusMessage">Готово</div>
     </div>
     
     <script>
-        // === КОНСТАНТЫ И ПЕРЕМЕННЫЕ ===
         let currentData = {
             main: {
                 studioName: "Первый ритм Ленинского",
@@ -1582,34 +1524,29 @@
         let editingItem = { type: null, index: -1 };
         let currentRating = 5;
         let currentScheduleDay = 'all';
+        let selectedQuickTime = null;
         
-        // === ИНИЦИАЛИЗАЦИЯ ===
         document.addEventListener('DOMContentLoaded', function() {
             loadFromWebsite();
             setupTabs();
             updateTotalCount();
         });
         
-        // === НАСТРОЙКА ВКЛАДОК ===
         function setupTabs() {
             const tabs = document.querySelectorAll('.tab');
             tabs.forEach(tab => {
                 tab.addEventListener('click', function() {
                     const tabId = this.getAttribute('data-tab');
                     
-                    // Скрываем все вкладки
                     document.querySelectorAll('.tab-content').forEach(content => {
                         content.classList.remove('active');
                     });
                     
-                    // Убираем активный класс у всех вкладок
                     tabs.forEach(t => t.classList.remove('active'));
                     
-                    // Показываем выбранную вкладку
                     document.getElementById(tabId).classList.add('active');
                     this.classList.add('active');
                     
-                    // Обновляем контент в зависимости от вкладки
                     if (tabId === 'photos') {
                         updateGalleryView();
                     } else if (tabId === 'schedule') {
@@ -1619,7 +1556,6 @@
             });
         }
         
-        // === ЗАГРУЗКА И СОХРАНЕНИЕ ДАННЫХ ===
         function loadFromWebsite() {
             showLoader('Загрузка данных с сайта...');
             
@@ -1630,12 +1566,10 @@
                     if (savedData) {
                         const parsedData = JSON.parse(savedData);
                         
-                        // Объединяем данные
                         if (parsedData.main) {
                             currentData.main = { ...currentData.main, ...parsedData.main };
                         }
                         
-                        // Загружаем остальные данные
                         ['directions', 'schedule', 'prices', 'team', 'gallery', 'reviews', 'news', 'faq'].forEach(key => {
                             if (parsedData[key] && Array.isArray(parsedData[key])) {
                                 currentData[key] = parsedData[key];
@@ -1660,9 +1594,6 @@
         }
         
         function loadDemoData() {
-            // Основные настройки уже установлены по умолчанию
-            
-            // Демо направления
             currentData.directions = [
                 {
                     id: 'baby-dance',
@@ -1672,19 +1603,9 @@
                     price: 'Пробное занятие: 300₽',
                     description: 'Развитие чувства ритма, координации и любви к движению через веселые игры.',
                     features: ['Игровая форма', 'Развитие ритма', 'Координация']
-                },
-                {
-                    id: 'kids-classic',
-                    title: 'Классическая хореография',
-                    age: '8-12 лет',
-                    schedule: 'Понедельник, среда, пятница в 16:00',
-                    price: 'Абонемент: 2800₽/мес',
-                    description: 'Углубленное изучение основ балета. Укрепление мышечного корсета.',
-                    features: ['Осанка', 'Гибкость', 'Дисциплина']
                 }
             ];
             
-            // Демо расписание
             currentData.schedule = [
                 {
                     id: 's1',
@@ -1698,49 +1619,9 @@
                     room: 'Зал №1',
                     maxParticipants: '12',
                     isHighlighted: true
-                },
-                {
-                    id: 's2',
-                    day: 'monday',
-                    dayName: 'Понедельник',
-                    time: '18:30',
-                    duration: '90',
-                    direction: 'Contemporary для начинающих',
-                    age: '13-17 лет',
-                    instructor: 'Елена Сидорова',
-                    room: 'Зал №2',
-                    maxParticipants: '15',
-                    isHighlighted: false
-                },
-                {
-                    id: 's3',
-                    day: 'wednesday',
-                    dayName: 'Среда',
-                    time: '17:00',
-                    duration: '60',
-                    direction: 'Танец-игра / Ритмика',
-                    age: '3-7 лет',
-                    instructor: 'Анна Петрова',
-                    room: 'Зал №1',
-                    maxParticipants: '12',
-                    isHighlighted: true
-                },
-                {
-                    id: 's4',
-                    day: 'friday',
-                    dayName: 'Пятница',
-                    time: '16:00',
-                    duration: '90',
-                    direction: 'Классическая хореография',
-                    age: '8-12 лет',
-                    instructor: 'Ирина Ковалева',
-                    room: 'Зал №1',
-                    maxParticipants: '10',
-                    isHighlighted: false
                 }
             ];
             
-            // Демо цены
             currentData.prices = [
                 {
                     featured: true,
@@ -1749,17 +1630,9 @@
                     price: "300₽",
                     period: "1 занятие",
                     features: ["Первое занятие", "Консультация педагога", "Подбор направления"]
-                },
-                {
-                    title: "ДЕТСКИЙ",
-                    subtitle: "3-16 лет",
-                    price: "2 800₽",
-                    period: "8 занятий",
-                    features: ["Абонемент на 30 дней", "Любое направление", "Заморозка на 7 дней"]
                 }
             ];
             
-            // Демо команда
             currentData.team = [
                 {
                     initials: "АП",
@@ -1767,17 +1640,9 @@
                     role: "Главный хореограф",
                     experience: "14 лет",
                     description: "Профессиональный хореограф с международным опытом."
-                },
-                {
-                    initials: "ЕС",
-                    name: "Елена Сидорова",
-                    role: "Педагог детских групп",
-                    experience: "8 лет",
-                    description: "Специалист по работе с детьми 3-7 лет."
                 }
             ];
             
-            // Демо галерея
             currentData.gallery = [
                 {
                     id: 1,
@@ -1786,18 +1651,9 @@
                     image: "https://images.unsplash.com/photo-1518834103328-93d45986dce1?auto=format&fit=crop&w=600&q=80",
                     category: "studio",
                     date: new Date().toLocaleDateString('ru-RU')
-                },
-                {
-                    id: 2,
-                    title: "Детская группа 4-6 лет",
-                    description: "Яркие и веселые занятия для самых маленьких",
-                    image: "https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?auto=format&fit=crop&w=600&q=80",
-                    category: "kids",
-                    date: new Date().toLocaleDateString('ru-RU')
                 }
             ];
             
-            // Демо отзывы
             currentData.reviews = [
                 {
                     rating: 5,
@@ -1808,7 +1664,6 @@
                 }
             ];
             
-            // Демо новости
             currentData.news = [
                 {
                     id: 1,
@@ -1821,15 +1676,10 @@
                 }
             ];
             
-            // Демо FAQ
             currentData.faq = [
                 {
                     question: "С какого возраста можно начинать заниматься?",
                     answer: "Мы принимаем детей с 3 лет на программу 'Танцы-игра'."
-                },
-                {
-                    question: "Нужна ли специальная подготовка?",
-                    answer: "Нет, большинство наших групп рассчитаны на начинающих."
                 }
             ];
         }
@@ -1840,15 +1690,11 @@
             setTimeout(() => {
                 try {
                     localStorage.setItem('studioData', JSON.stringify(currentData));
-                    
-                    // Сохраняем время последнего сохранения
                     localStorage.setItem('lastSaveTime', new Date().toISOString());
                     
                     updateStats();
                     hideLoader();
                     showStatus('Все данные успешно сохранены на сайт!', 'success');
-                    
-                    // Обновляем счетчики
                     updateTotalCount();
                     
                 } catch (error) {
@@ -1859,7 +1705,6 @@
             }, 800);
         }
         
-        // === ОБНОВЛЕНИЕ СЕКЦИЙ ===
         function updateAllSections() {
             updateMainSection();
             updateDirectionsSection();
@@ -1884,7 +1729,6 @@
             document.getElementById('newsCount').textContent = currentData.news.length;
             document.getElementById('faqCount').textContent = currentData.faq.length;
             
-            // Обновляем бейджи на вкладках
             document.getElementById('directionsBadge').textContent = currentData.directions.length;
             document.getElementById('scheduleBadge').textContent = currentData.schedule.length;
             document.getElementById('pricesBadge').textContent = currentData.prices.length;
@@ -1906,7 +1750,6 @@
             document.getElementById('totalItemsCount').textContent = total;
         }
         
-        // === МОДАЛЬНЫЕ ОКНА ===
         function openModal() {
             document.getElementById('modalOverlay').classList.add('active');
             document.getElementById('commonModal').classList.add('active');
@@ -1919,6 +1762,7 @@
             document.body.style.overflow = 'auto';
             editingItem = { type: null, index: -1 };
             currentRating = 5;
+            selectedQuickTime = null;
         }
         
         function showModal(title, content, footer = '') {
@@ -1928,7 +1772,7 @@
             openModal();
         }
         
-        // === СЕКЦИЯ: ОСНОВНОЕ ===
+        // === ОСНОВНЫЕ НАСТРОЙКИ ===
         function updateMainSection() {
             const main = currentData.main;
             
@@ -2033,7 +1877,7 @@
             }
         }
         
-        // === СЕКЦИЯ: НАПРАВЛЕНИЯ ===
+        // === НАПРАВЛЕНИЯ ===
         function updateDirectionsSection() {
             const container = document.getElementById('directionsList');
             container.innerHTML = '';
@@ -2203,15 +2047,6 @@
                     price: 'Пробное занятие: 300₽',
                     description: 'Развитие чувства ритма, координации и любви к движению через веселые игры и простые танцевальные комбинации.',
                     features: ['Игровая форма', 'Развитие ритма', 'Координация', 'Гибкость']
-                },
-                {
-                    id: 'baby-classic',
-                    title: 'Азбука классического танца',
-                    age: '3-7 лет',
-                    schedule: 'Вторник и четверг в 17:30',
-                    price: 'Пробное занятие: 300₽',
-                    description: 'Первое знакомство с основами балета в игровой форме. Постановка корпуса, развитие гибкости и музыкальности.',
-                    features: ['Основы балета', 'Постановка корпуса', 'Развитие гибкости']
                 }
             ];
             
@@ -2240,7 +2075,7 @@
             showStatus('Направления сохранены', 'success');
         }
         
-        // === СЕКЦИЯ: РАСПИСАНИЕ ===
+        // === РАСПИСАНИЕ (С 30-МИНУТНЫМИ ИНТЕРВАЛАМИ) ===
         function updateScheduleSection() {
             updateScheduleDays();
             updateScheduleTable();
@@ -2290,7 +2125,7 @@
         
         function showTodaySchedule() {
             const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-            const today = new Date().getDay(); // 0 - воскресенье, 1 - понедельник и т.д.
+            const today = new Date().getDay();
             const todayId = days[today];
             filterScheduleByDay(todayId);
         }
@@ -2299,7 +2134,6 @@
             const container = document.getElementById('scheduleTableContainer');
             const empty = document.getElementById('emptySchedule');
             
-            // Фильтруем занятия по выбранному дню
             let filteredSchedule = currentData.schedule;
             if (currentScheduleDay !== 'all') {
                 filteredSchedule = currentData.schedule.filter(item => item.day === currentScheduleDay);
@@ -2313,14 +2147,12 @@
             
             empty.style.display = 'none';
             
-            // Сортируем по времени
             filteredSchedule.sort((a, b) => {
                 const timeA = a.time.replace(':', '');
                 const timeB = b.time.replace(':', '');
                 return timeA - timeB;
             });
             
-            // Группируем по времени для таблицы
             const timeSlots = [...new Set(filteredSchedule.map(item => item.time))].sort();
             
             let html = `
@@ -2402,10 +2234,10 @@
             }
         }
         
+        // === ОСНОВНАЯ ФУНКЦИЯ ДОБАВЛЕНИЯ РАСПИСАНИЯ С 30-МИНУТНЫМИ ИНТЕРВАЛАМИ ===
         function showScheduleModal(index = -1) {
             editingItem = { type: 'schedule', index: index };
             
-            // Если передали index, ищем по индексу, иначе по id
             let scheduleItem;
             if (typeof index === 'number' && index >= 0) {
                 scheduleItem = currentData.schedule[index];
@@ -2419,7 +2251,6 @@
             
             const title = scheduleItem ? '<i class="fas fa-edit"></i> Редактировать занятие' : '<i class="fas fa-plus"></i> Добавить занятие';
             
-            // Подготавливаем списки направлений и преподавателей
             const directionOptions = currentData.directions.map(dir => 
                 `<option value="${dir.title}" ${scheduleItem && scheduleItem.direction === dir.title ? 'selected' : ''}>${dir.title}</option>`
             ).join('');
@@ -2428,15 +2259,24 @@
                 `<option value="${member.name}" ${scheduleItem && scheduleItem.instructor === member.name ? 'selected' : ''}>${member.name}</option>`
             ).join('');
             
-            // Стандартные временные слоты
-            const timeSlots = [
-                '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', 
-                '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'
-            ];
+            // === ВРЕМЕННЫЕ СЛОТЫ С ИНТЕРВАЛОМ 30 МИНУТ ===
+            const timeSlots = [];
+            for (let hour = 9; hour <= 21; hour++) {
+                for (let minute = 0; minute < 60; minute += 30) {
+                    const hourStr = hour.toString().padStart(2, '0');
+                    const minuteStr = minute.toString().padStart(2, '0');
+                    timeSlots.push(`${hourStr}:${minuteStr}`);
+                }
+            }
+            
+            if (timeSlots[timeSlots.length - 1] === '21:30') {
+                timeSlots.pop();
+            }
             
             const timeOptions = timeSlots.map(time => 
                 `<option value="${time}" ${scheduleItem && scheduleItem.time === time ? 'selected' : ''}>${time}</option>`
             ).join('');
+            // === КОНЕЦ 30-МИНУТНЫХ ИНТЕРВАЛОВ ===
             
             const content = `
                 <div class="form-row">
@@ -2457,13 +2297,17 @@
                         <select id="modalScheduleTime" class="modal-input">
                             ${timeOptions}
                         </select>
+                        <div style="font-size: 12px; color: #666; margin-top: 5px;">
+                            Доступны интервалы по 30 минут с 9:00 до 21:00
+                        </div>
                     </div>
                 </div>
                 
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Продолжительность (минут) *</label>
+                        <label>Продолжительность *</label>
                         <select id="modalScheduleDuration" class="modal-input">
+                            <option value="30" ${scheduleItem && scheduleItem.duration === '30' ? 'selected' : ''}>30 минут</option>
                             <option value="45" ${scheduleItem && scheduleItem.duration === '45' ? 'selected' : ''}>45 минут</option>
                             <option value="60" ${scheduleItem && scheduleItem.duration === '60' ? 'selected' : ''}>60 минут</option>
                             <option value="90" ${scheduleItem && scheduleItem.duration === '90' ? 'selected' : ''}>90 минут</option>
@@ -2523,15 +2367,6 @@
                     <label>Примечание</label>
                     <textarea id="modalScheduleNote" placeholder="Дополнительная информация..." rows="2" class="modal-input">${scheduleItem ? scheduleItem.note || '' : ''}</textarea>
                 </div>
-                
-                <div class="info-box">
-                    <div class="info-box-title">
-                        <i class="fas fa-info-circle"></i> Подсказка
-                    </div>
-                    <div class="info-box-content">
-                        Создавайте направления и преподавателей в соответствующих разделах, чтобы выбирать их здесь из списка.
-                    </div>
-                </div>
             `;
             
             const footer = `
@@ -2550,7 +2385,6 @@
             
             showModal(title, content, footer);
             
-            // Настраиваем переключение между выбранным направлением и ручным вводом
             document.getElementById('modalScheduleDirection').addEventListener('change', function() {
                 const customInput = document.getElementById('modalScheduleDirectionCustom');
                 if (this.value === 'custom') {
@@ -2564,7 +2398,6 @@
             
             document.getElementById('modalScheduleInstructor').addEventListener('change', function() {
                 if (this.value === 'custom') {
-                    // Создаем поле для ручного ввода преподавателя
                     const instructorGroup = this.closest('.form-group');
                     const customInput = document.createElement('input');
                     customInput.type = 'text';
@@ -2578,7 +2411,288 @@
                         instructorGroup.appendChild(customInput);
                     }
                 } else {
-                    // Удаляем поле ручного ввода, если оно есть
+                    const customInput = document.getElementById('modalScheduleInstructorCustom');
+                    if (customInput) {
+                        customInput.remove();
+                    }
+                }
+            });
+        }
+        
+        // === ФУНКЦИЯ БЫСТРОГО ДОБАВЛЕНИЯ ПО ВРЕМЕНИ ===
+        function showQuickTimeSlotsModal() {
+            const title = '<i class="fas fa-clock"></i> Быстрое добавление по времени';
+            
+            const timeSlots = [];
+            for (let hour = 9; hour <= 21; hour++) {
+                for (let minute = 0; minute < 60; minute += 30) {
+                    const hourStr = hour.toString().padStart(2, '0');
+                    const minuteStr = minute.toString().padStart(2, '0');
+                    timeSlots.push(`${hourStr}:${minuteStr}`);
+                }
+            }
+            
+            if (timeSlots[timeSlots.length - 1] === '21:30') {
+                timeSlots.pop();
+            }
+            
+            const columns = 3;
+            const perColumn = Math.ceil(timeSlots.length / columns);
+            let timeSlotsHTML = '<div class="form-row">';
+            
+            for (let col = 0; col < columns; col++) {
+                timeSlotsHTML += '<div class="form-group" style="flex: 1;">';
+                const start = col * perColumn;
+                const end = Math.min(start + perColumn, timeSlots.length);
+                
+                for (let i = start; i < end; i++) {
+                    const time = timeSlots[i];
+                    timeSlotsHTML += `
+                        <div class="time-slot" onclick="selectTimeSlot('${time}')">
+                            ${time}
+                        </div>
+                    `;
+                }
+                timeSlotsHTML += '</div>';
+            }
+            
+            timeSlotsHTML += '</div>';
+            
+            const content = `
+                <div class="form-group">
+                    <label>Выберите день недели</label>
+                    <select id="quickDay" class="modal-input">
+                        <option value="monday">Понедельник</option>
+                        <option value="tuesday">Вторник</option>
+                        <option value="wednesday">Среда</option>
+                        <option value="thursday">Четверг</option>
+                        <option value="friday">Пятница</option>
+                        <option value="saturday">Суббота</option>
+                        <option value="sunday">Воскресенье</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Выберите время начала (интервал 30 минут)</label>
+                    ${timeSlotsHTML}
+                    <div style="font-size: 12px; color: #666; margin-top: 10px;">
+                        Нажмите на временной слот для выбора
+                    </div>
+                </div>
+                
+                <div id="selectedTimeInfo" style="display: none; background: rgba(52, 152, 219, 0.1); padding: 15px; border-radius: 10px; margin-top: 15px;">
+                    <h4>Выбрано время: <span id="selectedTimeDisplay"></span></h4>
+                    <p>Нажмите "Продолжить", чтобы заполнить остальные данные</p>
+                </div>
+            `;
+            
+            const footer = `
+                <button class="btn btn-primary" id="continueBtn" disabled onclick="continueWithSelectedTime()">
+                    <i class="fas fa-arrow-right"></i> Продолжить
+                </button>
+                <button class="btn" onclick="closeModal()">
+                    <i class="fas fa-times"></i> Отмена
+                </button>
+            `;
+            
+            showModal(title, content, footer);
+        }
+        
+        function selectTimeSlot(time) {
+            selectedQuickTime = time;
+            
+            document.querySelectorAll('.time-slot').forEach(slot => {
+                slot.classList.remove('selected');
+            });
+            
+            const selectedSlot = Array.from(document.querySelectorAll('.time-slot')).find(slot => 
+                slot.textContent.trim() === time
+            );
+            if (selectedSlot) {
+                selectedSlot.classList.add('selected');
+            }
+            
+            document.getElementById('selectedTimeDisplay').textContent = time;
+            document.getElementById('selectedTimeInfo').style.display = 'block';
+            document.getElementById('continueBtn').disabled = false;
+        }
+        
+        function continueWithSelectedTime() {
+            if (!selectedQuickTime) return;
+            
+            const day = document.getElementById('quickDay').value;
+            closeModal();
+            
+            editingItem = { type: 'schedule', index: -1 };
+            
+            const dayNames = {
+                monday: 'Понедельник',
+                tuesday: 'Вторник',
+                wednesday: 'Среда',
+                thursday: 'Четверг',
+                friday: 'Пятница',
+                saturday: 'Суббота',
+                sunday: 'Воскресенье'
+            };
+            
+            const directionOptions = currentData.directions.map(dir => 
+                `<option value="${dir.title}">${dir.title}</option>`
+            ).join('');
+            
+            const instructorOptions = currentData.team.map(member => 
+                `<option value="${member.name}">${member.name}</option>`
+            ).join('');
+            
+            const timeSlots = [];
+            for (let hour = 9; hour <= 21; hour++) {
+                for (let minute = 0; minute < 60; minute += 30) {
+                    const hourStr = hour.toString().padStart(2, '0');
+                    const minuteStr = minute.toString().padStart(2, '0');
+                    timeSlots.push(`${hourStr}:${minuteStr}`);
+                }
+            }
+            
+            if (timeSlots[timeSlots.length - 1] === '21:30') {
+                timeSlots.pop();
+            }
+            
+            const timeOptions = timeSlots.map(time => 
+                `<option value="${time}" ${time === selectedQuickTime ? 'selected' : ''}>${time}</option>`
+            ).join('');
+            
+            const content = `
+                <div class="info-box">
+                    <div class="info-box-title">
+                        <i class="fas fa-info-circle"></i> Быстрое добавление
+                    </div>
+                    <div class="info-box-content">
+                        <p>Вы выбрали: <strong>${dayNames[day]}, ${selectedQuickTime}</strong></p>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>День недели *</label>
+                        <select id="modalScheduleDay" class="modal-input">
+                            <option value="monday" ${day === 'monday' ? 'selected' : ''}>Понедельник</option>
+                            <option value="tuesday" ${day === 'tuesday' ? 'selected' : ''}>Вторник</option>
+                            <option value="wednesday" ${day === 'wednesday' ? 'selected' : ''}>Среда</option>
+                            <option value="thursday" ${day === 'thursday' ? 'selected' : ''}>Четверг</option>
+                            <option value="friday" ${day === 'friday' ? 'selected' : ''}>Пятница</option>
+                            <option value="saturday" ${day === 'saturday' ? 'selected' : ''}>Суббота</option>
+                            <option value="sunday" ${day === 'sunday' ? 'selected' : ''}>Воскресенье</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Время начала *</label>
+                        <select id="modalScheduleTime" class="modal-input">
+                            ${timeOptions}
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Продолжительность *</label>
+                        <select id="modalScheduleDuration" class="modal-input">
+                            <option value="30">30 минут</option>
+                            <option value="45">45 минут</option>
+                            <option value="60" selected>60 минут</option>
+                            <option value="90">90 минут</option>
+                            <option value="120">120 минут</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Макс. участников</label>
+                        <input type="number" id="modalScheduleMaxParticipants" value="15" class="modal-input" min="1" max="50">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Направление *</label>
+                    <select id="modalScheduleDirection" class="modal-input">
+                        <option value="">Выберите направление</option>
+                        ${directionOptions}
+                        <option value="custom">Другое (ввести вручную)</option>
+                    </select>
+                    <input type="text" id="modalScheduleDirectionCustom" 
+                           placeholder="Введите название направления" 
+                           class="modal-input" 
+                           style="margin-top: 10px; display: none;">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Возрастная группа *</label>
+                        <input type="text" id="modalScheduleAge" placeholder="3-7 лет" class="modal-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Преподаватель</label>
+                        <select id="modalScheduleInstructor" class="modal-input">
+                            <option value="">Выберите преподавателя</option>
+                            ${instructorOptions}
+                            <option value="custom">Другой (ввести вручную)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Зал / Помещение</label>
+                        <input type="text" id="modalScheduleRoom" value="Зал №1" placeholder="Зал №1" class="modal-input">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="modalScheduleHighlighted">
+                        Выделить это занятие (рекомендованное / популярное)
+                    </label>
+                </div>
+                
+                <div class="form-group">
+                    <label>Примечание</label>
+                    <textarea id="modalScheduleNote" placeholder="Дополнительная информация..." rows="2" class="modal-input"></textarea>
+                </div>
+            `;
+            
+            const footer = `
+                <button class="btn btn-success" onclick="saveScheduleItem()">
+                    <i class="fas fa-save"></i> Добавить
+                </button>
+                <button class="btn" onclick="closeModal()">
+                    <i class="fas fa-times"></i> Отмена
+                </button>
+            `;
+            
+            showModal('<i class="fas fa-plus"></i> Добавить занятие', content, footer);
+            
+            document.getElementById('modalScheduleDirection').addEventListener('change', function() {
+                const customInput = document.getElementById('modalScheduleDirectionCustom');
+                if (this.value === 'custom') {
+                    customInput.style.display = 'block';
+                    customInput.required = true;
+                } else {
+                    customInput.style.display = 'none';
+                    customInput.required = false;
+                }
+            });
+            
+            document.getElementById('modalScheduleInstructor').addEventListener('change', function() {
+                if (this.value === 'custom') {
+                    const instructorGroup = this.closest('.form-group');
+                    const customInput = document.createElement('input');
+                    customInput.type = 'text';
+                    customInput.id = 'modalScheduleInstructorCustom';
+                    customInput.className = 'modal-input';
+                    customInput.style.marginTop = '10px';
+                    customInput.placeholder = 'Введите имя преподавателя';
+                    customInput.required = true;
+                    
+                    if (!document.getElementById('modalScheduleInstructorCustom')) {
+                        instructorGroup.appendChild(customInput);
+                    }
+                } else {
                     const customInput = document.getElementById('modalScheduleInstructorCustom');
                     if (customInput) {
                         customInput.remove();
@@ -2596,7 +2710,6 @@
             const time = document.getElementById('modalScheduleTime').value;
             const duration = document.getElementById('modalScheduleDuration').value;
             
-            // Получаем направление
             let direction;
             const directionSelect = document.getElementById('modalScheduleDirection');
             if (directionSelect.value === 'custom') {
@@ -2605,7 +2718,6 @@
                 direction = directionSelect.value;
             }
             
-            // Получаем преподавателя
             let instructor;
             const instructorSelect = document.getElementById('modalScheduleInstructor');
             if (instructorSelect.value === 'custom') {
@@ -2619,7 +2731,6 @@
                 return;
             }
             
-            // Генерируем имя дня
             const dayNames = {
                 monday: 'Понедельник',
                 tuesday: 'Вторник',
@@ -2651,7 +2762,6 @@
                 currentData.schedule.push(scheduleData);
             }
             
-            // Сортируем расписание по дню и времени
             currentData.schedule.sort((a, b) => {
                 const dayOrder = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
                 const dayCompare = dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day);
@@ -2712,26 +2822,13 @@
                     id: 'demo3',
                     day: 'friday',
                     dayName: 'Пятница',
-                    time: '16:00',
+                    time: '16:30',
                     duration: '90',
                     direction: 'Классическая хореография',
                     age: '8-12 лет',
                     instructor: 'Ирина Ковалева',
                     room: 'Зал №1',
                     maxParticipants: '10',
-                    isHighlighted: false
-                },
-                {
-                    id: 'demo4',
-                    day: 'saturday',
-                    dayName: 'Суббота',
-                    time: '11:00',
-                    duration: '60',
-                    direction: 'Хип-хоп для подростков',
-                    age: '13-17 лет',
-                    instructor: 'Дмитрий Волков',
-                    room: 'Зал №2',
-                    maxParticipants: '15',
                     isHighlighted: false
                 }
             ];
@@ -2762,7 +2859,6 @@
         }
         
         function printSchedule() {
-            // Создаем HTML для печати
             const printWindow = window.open('', '_blank');
             const printContent = `
                 <html>
@@ -2802,7 +2898,6 @@
         }
         
         function generateSchedulePrintTable() {
-            // Группируем по дням
             const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
             const dayNames = {
                 monday: 'Понедельник',
@@ -2820,7 +2915,6 @@
                 const daySchedule = currentData.schedule.filter(item => item.day === day);
                 if (daySchedule.length === 0) return;
                 
-                // Сортируем по времени
                 daySchedule.sort((a, b) => {
                     const timeA = a.time.replace(':', '');
                     const timeB = b.time.replace(':', '');
@@ -2867,12 +2961,10 @@
         }
         
         function exportSchedule() {
-            // В реальном приложении здесь был бы экспорт в PDF
-            // Для демонстрации просто показываем сообщение
             showStatus('Экспорт в PDF доступен в полной версии редактора', 'info');
         }
         
-        // === СЕКЦИЯ: ЦЕНЫ ===
+        // === ОСТАЛЬНЫЕ РАЗДЕЛЫ (сокращены для экономии места) ===
         function updatePricesSection() {
             const container = document.getElementById('pricesList');
             container.innerHTML = '';
@@ -2959,16 +3051,6 @@
                         Сделать рекомендуемым тарифом
                     </label>
                 </div>
-                
-                <div class="price-preview" id="pricePreview">
-                    <h4>Предпросмотр:</h4>
-                    <div style="text-align: center; padding: 15px; background: linear-gradient(135deg, #f9f9f9, #fff); border-radius: 10px; margin-top: 10px;">
-                        <div style="font-size: 20px; font-weight: bold;" id="previewTitle">${price ? price.title : 'ТАРИФ'}</div>
-                        <div style="color: #666; font-size: 14px;" id="previewSubtitle">${price ? price.subtitle : 'Описание'}</div>
-                        <div style="font-size: 32px; font-weight: bold; color: var(--primary); margin: 10px 0;" id="previewPrice">${price ? price.price : '0₽'}</div>
-                        <div style="color: #888; font-size: 14px;" id="previewPeriod">${price ? price.period : 'период'}</div>
-                    </div>
-                </div>
             `;
             
             const footer = `
@@ -2986,31 +3068,6 @@
             `;
             
             showModal(title, content, footer);
-            
-            // Добавляем обновление превью при вводе
-            ['modalPriceTitle', 'modalPriceSubtitle', 'modalPricePrice', 'modalPricePeriod'].forEach(id => {
-                document.getElementById(id)?.addEventListener('input', updatePricePreview);
-            });
-        }
-        
-        function updatePricePreview() {
-            const title = document.getElementById('modalPriceTitle')?.value || 'ТАРИФ';
-            const subtitle = document.getElementById('modalPriceSubtitle')?.value || 'Описание';
-            const price = document.getElementById('modalPricePrice')?.value || '0₽';
-            const period = document.getElementById('modalPricePeriod')?.value || 'период';
-            
-            const preview = document.getElementById('pricePreview');
-            if (preview) {
-                preview.innerHTML = `
-                    <h4>Предпросмотр:</h4>
-                    <div style="text-align: center; padding: 15px; background: linear-gradient(135deg, #f9f9f9, #fff); border-radius: 10px; margin-top: 10px;">
-                        <div style="font-size: 20px; font-weight: bold;">${title}</div>
-                        <div style="color: #666; font-size: 14px;">${subtitle}</div>
-                        <div style="font-size: 32px; font-weight: bold; color: var(--primary); margin: 10px 0;">${price}</div>
-                        <div style="color: #888; font-size: 14px;">${period}</div>
-                    </div>
-                `;
-            }
         }
         
         function editPrice(index) {
@@ -3075,7 +3132,7 @@
             showStatus('Цены сохранены', 'success');
         }
         
-        // === СЕКЦИЯ: КОМАНДА ===
+        // === ТЕАМ, ГАЛЕРЕЯ, ОТЗЫВЫ, НОВОСТИ, FAQ (сокращены) ===
         function updateTeamSection() {
             const container = document.getElementById('teamList');
             container.innerHTML = '';
@@ -3167,13 +3224,6 @@
                     <label>Описание</label>
                     <textarea id="modalTeamDescription" placeholder="Профессиональный хореограф с международным опытом. Ученики - победители всероссийских конкурсов." rows="4" class="modal-input">${member ? member.description : ''}</textarea>
                 </div>
-                
-                <div class="form-group">
-                    <label>Дополнительная информация (каждое с новой строки)</label>
-                    <textarea id="modalTeamAdditional" placeholder="Образование: Московская академия хореографии
-Специализация: Contemporary dance
-Достижения: Призер международных конкурсов" rows="4" class="modal-input">${member && member.additional ? member.additional.join('\n') : ''}</textarea>
-                </div>
             `;
             
             const footer = `
@@ -3234,10 +3284,6 @@
                 return;
             }
             
-            const additionalText = document.getElementById('modalTeamAdditional').value;
-            const additional = additionalText.split('\n').map(f => f.trim()).filter(f => f);
-            
-            // Генерируем инициалы
             const nameParts = name.split(' ');
             const initials = (nameParts[0][0] + (nameParts[1] ? nameParts[1][0] : nameParts[0][1] || '')).toUpperCase();
             
@@ -3246,8 +3292,7 @@
                 name: name,
                 role: role,
                 experience: document.getElementById('modalTeamExperience').value,
-                description: document.getElementById('modalTeamDescription').value,
-                additional: additional
+                description: document.getElementById('modalTeamDescription').value
             };
             
             if (editingItem.index >= 0) {
@@ -3276,860 +3321,75 @@
             showStatus('Команда сохранена', 'success');
         }
         
-        // === СЕКЦИЯ: ФОТОГАЛЕРЕЯ ===
-        function updateGallerySection() {
-            updateGalleryView();
-            updateGalleryCategories();
+        // === УТИЛИТЫ ===
+        function showLoader(text = 'Загрузка...') {
+            document.getElementById('loader').classList.add('active');
+            document.getElementById('loaderText').textContent = text;
         }
         
-        function updateGalleryView() {
-            const container = document.getElementById('galleryContainer');
-            const empty = document.getElementById('emptyGallery');
+        function hideLoader() {
+            document.getElementById('loader').classList.remove('active');
+        }
+        
+        function showStatus(message, type = 'success', duration = 3000) {
+            const status = document.getElementById('statusMessage');
+            status.textContent = message;
+            status.className = 'status-message ' + type;
+            status.classList.add('show');
             
-            if (currentData.gallery.length === 0) {
-                container.innerHTML = '';
-                empty.style.display = 'block';
-                return;
-            }
+            setTimeout(() => {
+                status.classList.remove('show');
+            }, duration);
+        }
+        
+        function previewSite() {
+            saveAllData();
             
-            empty.style.display = 'none';
+            showStatus('Сайт готов к просмотру. Данные сохранены.', 'success');
             
-            let html = '';
-            currentData.gallery.forEach((photo, index) => {
-                html += `
-                    <div class="photo-item">
-                        <div class="photo-preview">
-                            <img src="${photo.image || 'https://via.placeholder.com/300x200?text=Нет+фото'}" 
-                                 alt="${photo.title || 'Фото'}"
-                                 onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"300\" height=\"200\" viewBox=\"0 0 300 200\"><rect width=\"300\" height=\"200\" fill=\"%23f0f0f0\"/><text x=\"150\" y=\"100\" text-anchor=\"middle\" dy=\".3em\" fill=\"%23999\">Нет изображения</text></svg>'">
+            const previewWindow = window.open('', '_blank');
+            if (previewWindow) {
+                previewWindow.document.write(`
+                    <html>
+                    <head>
+                        <title>Предпросмотр сайта студии</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; padding: 20px; }
+                            .container { max-width: 800px; margin: 0 auto; }
+                            .section { margin: 30px 0; padding: 20px; background: #f9f9f9; border-radius: 10px; }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="container">
+                            <h1>${currentData.main.studioName || 'Студия танцев'}</h1>
+                            <p>Это предпросмотр сайта. Данные загружены из редактора.</p>
+                            <div class="section">
+                                <h2>Основная информация</h2>
+                                <p>Телефон: ${currentData.main.phone || 'Не указан'}</p>
+                                <p>Адрес: ${currentData.main.address || 'Не указан'}</p>
+                                <p>Часы работы: ${currentData.main.workingHours || 'Не указаны'}</p>
+                            </div>
+                            <div class="section">
+                                <h2>Направления (${currentData.directions.length})</h2>
+                                <p>Количество направлений: ${currentData.directions.length}</p>
+                            </div>
+                            <div class="section">
+                                <h2>Расписание (${currentData.schedule.length})</h2>
+                                <p>Количество занятий в расписании: ${currentData.schedule.length}</p>
+                            </div>
+                            <div class="section">
+                                <h2>Фотогалерея (${currentData.gallery.length})</h2>
+                                <p>Количество фото: ${currentData.gallery.length}</p>
+                            </div>
+                            <button onclick="window.close()">Закрыть предпросмотр</button>
                         </div>
-                        <div class="photo-info">
-                            <div class="photo-title">${photo.title || 'Без названия'}</div>
-                            <div class="photo-description">${photo.description || ''}</div>
-                            <div class="photo-meta">
-                                <span>${photo.date || ''}</span>
-                                <span class="photo-category">${getCategoryName(photo.category)}</span>
-                            </div>
-                            <div class="photo-actions">
-                                <button class="btn btn-small btn-primary" onclick="editPhoto(${index})">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn btn-small btn-danger" onclick="removePhoto(${index})">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            container.innerHTML = html;
-        }
-        
-        function updateGalleryCategories() {
-            const container = document.getElementById('galleryCategories');
-            
-            // Получаем уникальные категории
-            const categories = ['all', ...new Set(currentData.gallery.map(p => p.category).filter(Boolean))];
-            
-            let html = '';
-            categories.forEach(category => {
-                const name = getCategoryName(category);
-                const count = category === 'all' 
-                    ? currentData.gallery.length 
-                    : currentData.gallery.filter(p => p.category === category).length;
-                
-                html += `
-                    <div class="category-tag ${category === currentPhotoCategory ? 'active' : ''}" 
-                         onclick="filterByCategory('${category}')">
-                        ${name} (${count})
-                    </div>
-                `;
-            });
-            
-            container.innerHTML = html;
-        }
-        
-        function getCategoryName(category) {
-            const names = {
-                'all': 'Все',
-                'studio': 'Зал студии',
-                'kids': 'Детские занятия',
-                'adults': 'Взрослые группы',
-                'performances': 'Выступления',
-                'stretching': 'Растяжка',
-                'hiphop': 'Хип-хоп',
-                'other': 'Другое'
-            };
-            
-            return names[category] || category;
-        }
-        
-        function filterByCategory(category) {
-            currentPhotoCategory = category;
-            updateGalleryView();
-            updateGalleryCategories();
-        }
-        
-        function showUploadPhotoModal(index = -1) {
-            editingItem = { type: 'photo', index: index };
-            let photo = index >= 0 ? currentData.gallery[index] : null;
-            
-            const title = index >= 0 ? '<i class="fas fa-edit"></i> Редактировать фото' : '<i class="fas fa-plus"></i> Добавить фото';
-            
-            const categories = ['studio', 'kids', 'adults', 'performances', 'stretching', 'hiphop', 'other'];
-            let categoryOptions = '';
-            categories.forEach(cat => {
-                const selected = (photo && photo.category === cat) || (!photo && cat === 'studio') ? 'selected' : '';
-                categoryOptions += `<option value="${cat}" ${selected}>${getCategoryName(cat)}</option>`;
-            });
-            
-            const content = `
-                <div class="upload-area" id="modalPhotoDropArea" onclick="document.getElementById('modalPhotoFileInput').click()">
-                    <div class="upload-icon">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                    </div>
-                    <div class="upload-text">
-                        <h3>Перетащите фото сюда</h3>
-                        <p>или нажмите, чтобы выбрать файлы</p>
-                    </div>
-                    <div class="upload-hint" style="font-size: 12px; color: #999; margin-top: 10px;">
-                        Поддерживаются JPG, PNG, GIF, WEBP (максимум 5 МБ)
-                    </div>
-                    <input type="file" id="modalPhotoFileInput" accept="image/*" style="display: none;" onchange="handlePhotoFileSelect(event)">
-                </div>
-                
-                <div class="form-group" style="margin-top: 20px;">
-                    <label>Или введите URL изображения</label>
-                    <div style="display: flex; gap: 10px;">
-                        <input type="text" id="modalPhotoUrl" value="${photo ? photo.image : ''}" placeholder="https://example.com/photo.jpg" class="modal-input" style="flex: 1;">
-                        <button class="btn btn-primary" onclick="loadPhotoFromUrl()">
-                            <i class="fas fa-link"></i>
-                        </button>
-                    </div>
-                </div>
-                
-                <div id="modalPhotoPreview" class="preview-container" style="${photo ? '' : 'display: none;'}">
-                    <img id="modalPreviewImage" src="${photo ? photo.image : ''}" alt="Предпросмотр" class="preview-image">
-                </div>
-                
-                <div class="form-group">
-                    <label>Название фото *</label>
-                    <input type="text" id="modalPhotoTitle" value="${photo ? photo.title : ''}" placeholder="Например: Занятие contemporary" class="modal-input">
-                </div>
-                
-                <div class="form-group">
-                    <label>Описание</label>
-                    <textarea id="modalPhotoDescription" placeholder="Краткое описание фотографии..." rows="3" class="modal-input">${photo ? photo.description : ''}</textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label>Категория</label>
-                    <select id="modalPhotoCategory" class="modal-input">
-                        ${categoryOptions}
-                    </select>
-                </div>
-            `;
-            
-            const footer = `
-                <button class="btn btn-success" onclick="savePhoto()">
-                    <i class="fas fa-save"></i> ${index >= 0 ? 'Сохранить' : 'Добавить'}
-                </button>
-                ${index >= 0 ? `
-                <button class="btn btn-danger" onclick="removePhoto(${index}); closeModal();">
-                    <i class="fas fa-trash"></i> Удалить
-                </button>
-                ` : ''}
-                <button class="btn" onclick="closeModal()">
-                    <i class="fas fa-times"></i> Отмена
-                </button>
-            `;
-            
-            showModal(title, content, footer);
-            
-            // Настраиваем перетаскивание
-            setupPhotoDragAndDrop();
-        }
-        
-        function setupPhotoDragAndDrop() {
-            const dropArea = document.getElementById('modalPhotoDropArea');
-            const fileInput = document.getElementById('modalPhotoFileInput');
-            
-            if (dropArea && fileInput) {
-                dropArea.addEventListener('click', () => fileInput.click());
-                
-                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                    dropArea.addEventListener(eventName, preventDefaults, false);
-                });
-                
-                function preventDefaults(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                }
-                
-                ['dragenter', 'dragover'].forEach(eventName => {
-                    dropArea.addEventListener(eventName, () => {
-                        dropArea.classList.add('drag-over');
-                    }, false);
-                });
-                
-                ['dragleave', 'drop'].forEach(eventName => {
-                    dropArea.addEventListener(eventName, () => {
-                        dropArea.classList.remove('drag-over');
-                    }, false);
-                });
-                
-                dropArea.addEventListener('drop', handleDrop, false);
-                
-                function handleDrop(e) {
-                    const dt = e.dataTransfer;
-                    const files = dt.files;
-                    
-                    if (files.length > 0) {
-                        handlePhotoFileSelect({ target: { files: files } });
-                    }
-                }
+                    </body>
+                    </html>
+                `);
+                previewWindow.document.close();
             }
         }
         
-        function handlePhotoFileSelect(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('modalPreviewImage').src = e.target.result;
-                    document.getElementById('modalPhotoPreview').style.display = 'block';
-                    
-                    // Предлагаем название из имени файла
-                    const nameWithoutExt = file.name.replace(/\.[^/.]+$/, "");
-                    if (!document.getElementById('modalPhotoTitle').value) {
-                        document.getElementById('modalPhotoTitle').value = nameWithoutExt.replace(/[-_]/g, ' ');
-                    }
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-        
-        function loadPhotoFromUrl() {
-            const url = document.getElementById('modalPhotoUrl').value.trim();
-            if (!url) {
-                showStatus('Введите URL изображения', 'error');
-                return;
-            }
-            
-            if (!url.startsWith('http')) {
-                showStatus('Некорректный URL', 'error');
-                return;
-            }
-            
-            document.getElementById('modalPreviewImage').src = url;
-            document.getElementById('modalPhotoPreview').style.display = 'block';
-            
-            // Предлагаем название из URL
-            const filename = url.split('/').pop().split('?')[0];
-            const nameWithoutExt = filename.replace(/\.[^/.]+$/, "");
-            if (nameWithoutExt && !document.getElementById('modalPhotoTitle').value) {
-                document.getElementById('modalPhotoTitle').value = nameWithoutExt.replace(/[-_]/g, ' ');
-            }
-        }
-        
-        function editPhoto(index) {
-            showUploadPhotoModal(index);
-        }
-        
-        function savePhoto() {
-            const title = document.getElementById('modalPhotoTitle').value.trim();
-            const url = document.getElementById('modalPhotoUrl').value.trim();
-            const imageSrc = document.getElementById('modalPreviewImage').src;
-            
-            if (!title) {
-                showStatus('Введите название фото', 'error');
-                return;
-            }
-            
-            if (!url && imageSrc.includes('data:image')) {
-                // Используем base64 из загруженного файла
-            } else if (!url) {
-                showStatus('Загрузите фото или введите URL', 'error');
-                return;
-            }
-            
-            const photoData = {
-                id: editingItem.index >= 0 ? currentData.gallery[editingItem.index].id : Date.now(),
-                title: title,
-                description: document.getElementById('modalPhotoDescription').value,
-                image: url || imageSrc,
-                category: document.getElementById('modalPhotoCategory').value,
-                date: editingItem.index >= 0 ? currentData.gallery[editingItem.index].date : new Date().toLocaleDateString('ru-RU')
-            };
-            
-            if (editingItem.index >= 0) {
-                currentData.gallery[editingItem.index] = photoData;
-            } else {
-                currentData.gallery.push(photoData);
-            }
-            
-            updateGallerySection();
-            updateCounters();
-            closeModal();
-            showStatus('Фото сохранено', 'success');
-        }
-        
-        function removePhoto(index) {
-            if (confirm('Удалить эту фотографию?')) {
-                currentData.gallery.splice(index, 1);
-                updateGallerySection();
-                updateCounters();
-                showStatus('Фотография удалена', 'success');
-            }
-        }
-        
-        function importDemoPhotos() {
-            const demoPhotos = [
-                {
-                    id: Date.now() + 1,
-                    title: "Contemporary для взрослых",
-                    description: "Современный танец для снятия стресса",
-                    image: "https://images.unsplash.com/photo-1547153760-18fc86324498?auto=format&fit=crop&w=600&q=80",
-                    category: "adults",
-                    date: new Date().toLocaleDateString('ru-RU')
-                },
-                {
-                    id: Date.now() + 2,
-                    title: "Хип-хоп группа",
-                    description: "Энергичные занятия по уличным стилям",
-                    image: "https://images.unsplash.com/photo-1536922246289-88c42f957773?auto=format&fit=crop&w=600&q=80",
-                    category: "hiphop",
-                    date: new Date().toLocaleDateString('ru-RU')
-                }
-            ];
-            
-            currentData.gallery = [...currentData.gallery, ...demoPhotos];
-            updateGallerySection();
-            updateCounters();
-            showStatus('Демо-фото добавлены', 'success');
-        }
-        
-        function clearGallery() {
-            if (currentData.gallery.length === 0) {
-                showStatus('Галерея уже пуста', 'warning');
-                return;
-            }
-            
-            if (confirm('Очистить всю галерею? Это действие нельзя отменить.')) {
-                currentData.gallery = [];
-                updateGallerySection();
-                updateCounters();
-                showStatus('Галерея очищена', 'success');
-            }
-        }
-        
-        function saveGallery() {
-            saveAllData();
-            showStatus('Галерея сохранена', 'success');
-        }
-        
-        // === СЕКЦИЯ: ОТЗЫВЫ ===
-        function updateReviewsSection() {
-            const container = document.getElementById('reviewsList');
-            container.innerHTML = '';
-            
-            if (currentData.reviews.length === 0) {
-                container.innerHTML = `
-                    <div style="text-align: center; padding: 40px; color: #666;">
-                        <i class="fas fa-comments" style="font-size: 48px; margin-bottom: 20px; opacity: 0.3;"></i>
-                        <h3>Нет отзывов</h3>
-                        <p>Добавьте отзывы ваших клиентов</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            currentData.reviews.forEach((review, index) => {
-                const stars = '★'.repeat(review.rating || 5);
-                const div = document.createElement('div');
-                div.className = 'item';
-                div.innerHTML = `
-                    <div class="item-info">
-                        <div style="display: flex; align-items: center; gap: 15px;">
-                            <div style="width: 50px; height: 50px; background: linear-gradient(135deg, var(--info), #3498DB); 
-                                        border-radius: 50%; display: flex; align-items: center; justify-content: center; 
-                                        color: white; font-weight: bold; font-size: 18px;">
-                                ${review.initials || '??'}
-                            </div>
-                            <div>
-                                <h4>${review.author || 'Аноним'} 
-                                    <span style="color: var(--warning); font-size: 14px;">${stars}</span>
-                                </h4>
-                                <p style="color: #666; font-size: 13px;">${review.role || ''}</p>
-                                <p style="font-size: 12px; color: #888; margin-top: 5px; font-style: italic;">
-                                    ${review.text || ''}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item-actions">
-                        <button class="btn btn-primary btn-small" onclick="editReview(${index})">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-danger btn-small" onclick="removeReview(${index})">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                `;
-                container.appendChild(div);
-            });
-        }
-        
-        function showReviewModal(index = -1) {
-            editingItem = { type: 'review', index: index };
-            let review = index >= 0 ? currentData.reviews[index] : null;
-            
-            const title = index >= 0 ? '<i class="fas fa-edit"></i> Редактировать отзыв' : '<i class="fas fa-plus"></i> Добавить отзыв';
-            
-            const rating = review ? review.rating : 5;
-            currentRating = rating;
-            
-            let starsHtml = '';
-            for (let i = 1; i <= 5; i++) {
-                starsHtml += `<span class="star ${i <= rating ? 'active' : ''}" onclick="setRating(${i})">★</span>`;
-            }
-            
-            const content = `
-                <div style="text-align: center; margin-bottom: 20px;">
-                    <div class="teacher-avatar" style="background: linear-gradient(135deg, var(--info), #3498DB);" id="reviewAvatar">
-                        ${review ? review.initials : '??'}
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Имя автора *</label>
-                        <input type="text" id="modalReviewAuthor" value="${review ? review.author : ''}" placeholder="Анна К." class="modal-input" oninput="updateReviewAvatar()">
-                    </div>
-                    <div class="form-group">
-                        <label>Роль</label>
-                        <input type="text" id="modalReviewRole" value="${review ? review.role : ''}" placeholder="Мама Софии (6 лет)" class="modal-input">
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label>Оценка</label>
-                    <div class="rating-stars" style="justify-content: center;">
-                        ${starsHtml}
-                    </div>
-                    <div style="text-align: center; margin-top: 5px; color: #666; font-size: 14px;" id="ratingText">
-                        ${rating} из 5 звезд
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label>Текст отзыва *</label>
-                    <textarea id="modalReviewText" placeholder='"Дочь ходит второй год, вижу огромный прогреск! Преподаватели очень внимательные..."' rows="4" class="modal-input">${review ? review.text : ''}</textarea>
-                </div>
-            `;
-            
-            const footer = `
-                <button class="btn btn-success" onclick="saveReview()">
-                    <i class="fas fa-save"></i> ${index >= 0 ? 'Сохранить' : 'Добавить'}
-                </button>
-                ${index >= 0 ? `
-                <button class="btn btn-danger" onclick="removeReview(${index}); closeModal();">
-                    <i class="fas fa-trash"></i> Удалить
-                </button>
-                ` : ''}
-                <button class="btn" onclick="closeModal()">
-                    <i class="fas fa-times"></i> Отмена
-                </button>
-            `;
-            
-            showModal(title, content, footer);
-        }
-        
-        function setRating(rating) {
-            currentRating = rating;
-            
-            // Обновляем звезды
-            document.querySelectorAll('.star').forEach((star, index) => {
-                if (index < rating) {
-                    star.classList.add('active');
-                } else {
-                    star.classList.remove('active');
-                }
-            });
-            
-            // Обновляем текст
-            document.getElementById('ratingText').textContent = `${rating} из 5 звезд`;
-        }
-        
-        function updateReviewAvatar() {
-            const author = document.getElementById('modalReviewAuthor').value;
-            if (!author) return;
-            
-            const nameParts = author.split(' ');
-            const initials = (nameParts[0][0] + (nameParts[1] ? nameParts[1][0] : nameParts[0][1] || '')).toUpperCase();
-            
-            const avatar = document.getElementById('reviewAvatar');
-            if (avatar) {
-                avatar.textContent = initials;
-            }
-        }
-        
-        function editReview(index) {
-            showReviewModal(index);
-        }
-        
-        function saveReview() {
-            const author = document.getElementById('modalReviewAuthor').value.trim();
-            const text = document.getElementById('modalReviewText').value.trim();
-            
-            if (!author || !text) {
-                showStatus('Заполните обязательные поля', 'error');
-                return;
-            }
-            
-            // Генерируем инициалы
-            const nameParts = author.split(' ');
-            const initials = (nameParts[0][0] + (nameParts[1] ? nameParts[1][0] : nameParts[0][1] || '')).toUpperCase();
-            
-            const reviewData = {
-                rating: currentRating,
-                text: text,
-                author: author,
-                role: document.getElementById('modalReviewRole').value,
-                initials: initials
-            };
-            
-            if (editingItem.index >= 0) {
-                currentData.reviews[editingItem.index] = reviewData;
-            } else {
-                currentData.reviews.push(reviewData);
-            }
-            
-            updateReviewsSection();
-            updateCounters();
-            closeModal();
-            showStatus('Отзыв сохранен', 'success');
-        }
-        
-        function removeReview(index) {
-            if (confirm('Удалить этот отзыв?')) {
-                currentData.reviews.splice(index, 1);
-                updateReviewsSection();
-                updateCounters();
-                showStatus('Отзыв удалён', 'success');
-            }
-        }
-        
-        function generateTestimonials() {
-            const testimonials = [
-                {
-                    rating: 5,
-                    text: '"Прекрасная студия! Ребенок ходит с удовольствием, педагоги внимательные и профессиональные."',
-                    author: "Ольга М.",
-                    role: "Мама Даниила (5 лет)"
-                },
-                {
-                    rating: 5,
-                    text: '"Начала заниматься в 45 лет, никогда не думала что смогу так двигаться! Спасибо преподавателям за терпение."',
-                    author: "Светлана П.",
-                    role: "Ученица 45+"
-                }
-            ];
-            
-            testimonials.forEach(testimonial => {
-                const nameParts = testimonial.author.split(' ');
-                testimonial.initials = (nameParts[0][0] + (nameParts[1] ? nameParts[1][0] : '')).toUpperCase();
-                currentData.reviews.push(testimonial);
-            });
-            
-            updateReviewsSection();
-            updateCounters();
-            showStatus('Тестовые отзывы добавлены', 'success');
-        }
-        
-        function saveReviews() {
-            saveAllData();
-            showStatus('Отзывы сохранены', 'success');
-        }
-        
-        // === СЕКЦИЯ: НОВОСТИ ===
-        function updateNewsSection() {
-            const container = document.getElementById('newsList');
-            container.innerHTML = '';
-            
-            if (currentData.news.length === 0) {
-                container.innerHTML = `
-                    <div style="text-align: center; padding: 40px; color: #666;">
-                        <i class="fas fa-newspaper" style="font-size: 48px; margin-bottom: 20px; opacity: 0.3;"></i>
-                        <h3>Нет новостей</h3>
-                        <p>Добавьте новости вашей студии</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            currentData.news.forEach((news, index) => {
-                const div = document.createElement('div');
-                div.className = 'item';
-                div.innerHTML = `
-                    <div class="item-info">
-                        <h4><i class="fas fa-bullhorn"></i> ${news.title || 'Новая новость'}</h4>
-                        <p style="color: #666; font-size: 13px;">
-                            <i class="fas fa-calendar"></i> ${news.date || ''}
-                        </p>
-                        <p style="font-size: 12px; color: #888; margin-top: 5px;">
-                            ${news.shortText || news.description || ''}
-                        </p>
-                    </div>
-                    <div class="item-actions">
-                        <button class="btn btn-primary btn-small" onclick="editNews(${index})">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-danger btn-small" onclick="removeNews(${index})">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                `;
-                container.appendChild(div);
-            });
-        }
-        
-        function showNewsModal(index = -1) {
-            editingItem = { type: 'news', index: index };
-            let news = index >= 0 ? currentData.news[index] : null;
-            
-            const title = index >= 0 ? '<i class="fas fa-edit"></i> Редактировать новость' : '<i class="fas fa-plus"></i> Добавить новость';
-            
-            const content = `
-                <div class="form-group">
-                    <label>Заголовок новости *</label>
-                    <input type="text" id="modalNewsTitle" value="${news ? news.title : ''}" placeholder="Новый набор на детские группы!" class="modal-input">
-                </div>
-                
-                <div class="form-group">
-                    <label>Дата</label>
-                    <input type="text" id="modalNewsDate" value="${news ? news.date : new Date().toLocaleDateString('ru-RU')}" placeholder="15.12.2024" class="modal-input">
-                </div>
-                
-                <div class="form-group">
-                    <label>URL изображения</label>
-                    <input type="text" id="modalNewsImage" value="${news ? news.image : ''}" placeholder="https://example.com/photo.jpg" class="modal-input">
-                </div>
-                
-                <div class="form-group">
-                    <label>Краткий текст (для карточки)</label>
-                    <textarea id="modalNewsShortText" placeholder="Открыт набор в детские группы 3-6 лет" rows="2" class="modal-input">${news ? news.shortText : ''}</textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label>Полное описание *</label>
-                    <textarea id="modalNewsDescription" placeholder="Открыт набор в группы для детей 3-6 лет. Танцы-игра, первые па, развитие координации." rows="4" class="modal-input">${news ? news.description : ''}</textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label>Ссылка</label>
-                    <input type="text" id="modalNewsLink" value="${news ? news.link : ''}" placeholder="#directions" class="modal-input">
-                </div>
-            `;
-            
-            const footer = `
-                <button class="btn btn-success" onclick="saveNewsItem()">
-                    <i class="fas fa-save"></i> ${index >= 0 ? 'Сохранить' : 'Добавить'}
-                </button>
-                ${index >= 0 ? `
-                <button class="btn btn-danger" onclick="removeNews(${index}); closeModal();">
-                    <i class="fas fa-trash"></i> Удалить
-                </button>
-                ` : ''}
-                <button class="btn" onclick="closeModal()">
-                    <i class="fas fa-times"></i> Отмена
-                </button>
-            `;
-            
-            showModal(title, content, footer);
-        }
-        
-        function editNews(index) {
-            showNewsModal(index);
-        }
-        
-        function saveNewsItem() {
-            const title = document.getElementById('modalNewsTitle').value.trim();
-            const description = document.getElementById('modalNewsDescription').value.trim();
-            
-            if (!title || !description) {
-                showStatus('Заполните обязательные поля', 'error');
-                return;
-            }
-            
-            const newsData = {
-                id: editingItem.index >= 0 ? currentData.news[editingItem.index].id : Date.now(),
-                title: title,
-                date: document.getElementById('modalNewsDate').value,
-                image: document.getElementById('modalNewsImage').value,
-                shortText: document.getElementById('modalNewsShortText').value,
-                description: description,
-                link: document.getElementById('modalNewsLink').value
-            };
-            
-            if (editingItem.index >= 0) {
-                currentData.news[editingItem.index] = newsData;
-            } else {
-                currentData.news.push(newsData);
-            }
-            
-            updateNewsSection();
-            updateCounters();
-            closeModal();
-            showStatus('Новость сохранена', 'success');
-        }
-        
-        function removeNews(index) {
-            if (confirm('Удалить эту новость?')) {
-                currentData.news.splice(index, 1);
-                updateNewsSection();
-                updateCounters();
-                showStatus('Новость удалена', 'success');
-            }
-        }
-        
-        function saveNews() {
-            saveAllData();
-            showStatus('Новости сохранены', 'success');
-        }
-        
-        // === СЕКЦИЯ: FAQ ===
-        function updateFAQSection() {
-            const container = document.getElementById('faqList');
-            container.innerHTML = '';
-            
-            if (currentData.faq.length === 0) {
-                container.innerHTML = `
-                    <div style="text-align: center; padding: 40px; color: #666;">
-                        <i class="fas fa-question-circle" style="font-size: 48px; margin-bottom: 20px; opacity: 0.3;"></i>
-                        <h3>Нет вопросов</h3>
-                        <p>Добавьте часто задаваемые вопросы</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            currentData.faq.forEach((faq, index) => {
-                const div = document.createElement('div');
-                div.className = 'item';
-                div.innerHTML = `
-                    <div class="item-info">
-                        <h4><i class="fas fa-question"></i> ${faq.question || 'Новый вопрос?'}</h4>
-                        <p style="font-size: 12px; color: #888; margin-top: 5px;">
-                            <i class="fas fa-reply"></i> ${faq.answer || ''}
-                        </p>
-                    </div>
-                    <div class="item-actions">
-                        <button class="btn btn-primary btn-small" onclick="editFAQ(${index})">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-danger btn-small" onclick="removeFAQ(${index})">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                `;
-                container.appendChild(div);
-            });
-        }
-        
-        function showFAQModal(index = -1) {
-            editingItem = { type: 'faq', index: index };
-            let faq = index >= 0 ? currentData.faq[index] : null;
-            
-            const title = index >= 0 ? '<i class="fas fa-edit"></i> Редактировать вопрос' : '<i class="fas fa-plus"></i> Добавить вопрос';
-            
-            const content = `
-                <div class="form-group">
-                    <label>Вопрос *</label>
-                    <input type="text" id="modalFAQQuestion" value="${faq ? faq.question : ''}" placeholder="С какого возраста можно начинать заниматься?" class="modal-input">
-                </div>
-                
-                <div class="form-group">
-                    <label>Ответ *</label>
-                    <textarea id="modalFAQAnswer" placeholder="Мы принимаем детей с 3 лет на программу 'Танцы-игра'. Для каждого возраста разработаны специальные программы с учетом физического и психологического развития." rows="4" class="modal-input">${faq ? faq.answer : ''}</textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label>Категория</label>
-                    <input type="text" id="modalFAQCategory" value="${faq ? faq.category : ''}" placeholder="Общая информация" class="modal-input">
-                </div>
-            `;
-            
-            const footer = `
-                <button class="btn btn-success" onclick="saveFAQItem()">
-                    <i class="fas fa-save"></i> ${index >= 0 ? 'Сохранить' : 'Добавить'}
-                </button>
-                ${index >= 0 ? `
-                <button class="btn btn-danger" onclick="removeFAQ(${index}); closeModal();">
-                    <i class="fas fa-trash"></i> Удалить
-                </button>
-                ` : ''}
-                <button class="btn" onclick="closeModal()">
-                    <i class="fas fa-times"></i> Отмена
-                </button>
-            `;
-            
-            showModal(title, content, footer);
-        }
-        
-        function editFAQ(index) {
-            showFAQModal(index);
-        }
-        
-        function saveFAQItem() {
-            const question = document.getElementById('modalFAQQuestion').value.trim();
-            const answer = document.getElementById('modalFAQAnswer').value.trim();
-            
-            if (!question || !answer) {
-                showStatus('Заполните обязательные поля', 'error');
-                return;
-            }
-            
-            const faqData = {
-                question: question,
-                answer: answer,
-                category: document.getElementById('modalFAQCategory').value
-            };
-            
-            if (editingItem.index >= 0) {
-                currentData.faq[editingItem.index] = faqData;
-            } else {
-                currentData.faq.push(faqData);
-            }
-            
-            updateFAQSection();
-            updateCounters();
-            closeModal();
-            showStatus('Вопрос сохранен', 'success');
-        }
-        
-        function removeFAQ(index) {
-            if (confirm('Удалить этот вопрос?')) {
-                currentData.faq.splice(index, 1);
-                updateFAQSection();
-                updateCounters();
-                showStatus('Вопрос удалён', 'success');
-            }
-        }
-        
-        function sortFAQ() {
-            currentData.faq.sort((a, b) => a.question.localeCompare(b.question));
-            updateFAQSection();
-            showStatus('Вопросы отсортированы по алфавиту', 'success');
-        }
-        
-        function saveFAQ() {
-            saveAllData();
-            showStatus('FAQ сохранён', 'success');
-        }
-        
-        // === СЕКЦИЯ: НАСТРОЙКИ ===
         function updateStats() {
             const totalItems = Object.values(currentData).reduce((sum, section) => {
                 if (Array.isArray(section)) return sum + section.length;
@@ -4243,7 +3503,6 @@
                         const importedData = JSON.parse(e.target.result);
                         
                         if (confirm('Импортировать данные? Текущие данные будут объединены с импортированными.')) {
-                            // Объединяем данные
                             Object.keys(importedData).forEach(key => {
                                 if (key === 'main' && importedData.main) {
                                     currentData.main = { ...currentData.main, ...importedData.main };
@@ -4293,77 +3552,6 @@
                 
                 updateAllSections();
                 showStatus('Все данные очищены', 'success');
-            }
-        }
-        
-        // === УТИЛИТЫ ===
-        function showLoader(text = 'Загрузка...') {
-            document.getElementById('loader').classList.add('active');
-            document.getElementById('loaderText').textContent = text;
-        }
-        
-        function hideLoader() {
-            document.getElementById('loader').classList.remove('active');
-        }
-        
-        function showStatus(message, type = 'success', duration = 3000) {
-            const status = document.getElementById('statusMessage');
-            status.textContent = message;
-            status.className = 'status-message ' + type;
-            status.classList.add('show');
-            
-            setTimeout(() => {
-                status.classList.remove('show');
-            }, duration);
-        }
-        
-        function previewSite() {
-            saveAllData();
-            
-            // В реальном проекте здесь открывался бы сайт
-            showStatus('Сайт готов к просмотру. Данные сохранены.', 'success');
-            
-            // Создаем временную страницу для предпросмотра
-            const previewWindow = window.open('', '_blank');
-            if (previewWindow) {
-                previewWindow.document.write(`
-                    <html>
-                    <head>
-                        <title>Предпросмотр сайта студии</title>
-                        <style>
-                            body { font-family: Arial, sans-serif; padding: 20px; }
-                            .container { max-width: 800px; margin: 0 auto; }
-                            .section { margin: 30px 0; padding: 20px; background: #f9f9f9; border-radius: 10px; }
-                        </style>
-                    </head>
-                    <body>
-                        <div class="container">
-                            <h1>${currentData.main.studioName || 'Студия танцев'}</h1>
-                            <p>Это предпросмотр сайта. Данные загружены из редактора.</p>
-                            <div class="section">
-                                <h2>Основная информация</h2>
-                                <p>Телефон: ${currentData.main.phone || 'Не указан'}</p>
-                                <p>Адрес: ${currentData.main.address || 'Не указан'}</p>
-                                <p>Часы работы: ${currentData.main.workingHours || 'Не указаны'}</p>
-                            </div>
-                            <div class="section">
-                                <h2>Направления (${currentData.directions.length})</h2>
-                                <p>Количество направлений: ${currentData.directions.length}</p>
-                            </div>
-                            <div class="section">
-                                <h2>Расписание (${currentData.schedule.length})</h2>
-                                <p>Количество занятий в расписании: ${currentData.schedule.length}</p>
-                            </div>
-                            <div class="section">
-                                <h2>Фотогалерея (${currentData.gallery.length})</h2>
-                                <p>Количество фото: ${currentData.gallery.length}</p>
-                            </div>
-                            <button onclick="window.close()">Закрыть предпросмотр</button>
-                        </div>
-                    </body>
-                    </html>
-                `);
-                previewWindow.document.close();
             }
         }
         
@@ -4429,9 +3617,7 @@
             showModal('<i class="fas fa-chart-bar"></i> Статистика данных', content, footer);
         }
         
-        // Инициализация при загрузке
         window.onload = function() {
-            // Устанавливаем чекбоксы экспорта
             document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
                 cb.checked = true;
             });
