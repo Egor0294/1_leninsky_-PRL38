@@ -1592,7 +1592,7 @@
         }
         
         .footer-links a {
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 0, 0.8);
             text-decoration: none;
             transition: all 0.3s ease;
             display: inline-flex;
@@ -1609,8 +1609,8 @@
         .copyright {
             text-align: center;
             padding-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.6);
+            border-top: 1px solid rgba(255, 255, 0, 0.1);
+            color: rgba(255, 255, 0, 0.6);
             font-size: 14px;
         }
         
@@ -1846,8 +1846,8 @@
             <div class="hero-content">
                 <h1 class="hero-title">Танцуют <span class="highlight">все</span> возрасты!</h1>
                 <p class="hero-subtitle" id="heroSubtitle">
-                    Профессиональная студия танцев в Иркутске для детей от 3 лет и взрослых до 65+. 
-                    Пробное занятие всего за 300₽. Запишись прямо сейчас!
+                    Профессиональная студия танцев в Ленинском районе для детей от 3 лет и взрослых до 65+. 
+                    Пробное занятие всего от 350₽. Запишись прямо сейчас!
                 </p>
                 
                 <div class="hero-stats">
@@ -1856,12 +1856,12 @@
                         <span class="stat-label">Направлений</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-number">500+</span>
-                        <span class="stat-label">Учеников</span>
+                        <span class="stat-number">Набор</span>
+                        <span class="stat-label">Учеников от новичков до пофи</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-number">12+</span>
-                        <span class="stat-label">Лет опыта</span>
+                        <span class="stat-number">НОВОЕ</span>
+                        <span class="stat-label">место</span>
                     </div>
                     <div class="stat-item">
                         <span class="stat-number">3-65</span>
@@ -1871,7 +1871,7 @@
                 
                 <div class="btn-group">
                     <button class="btn btn-primary" onclick="openModal('enroll')">
-                        <i class="fas fa-pen"></i> Записаться от 300₽
+                        <i class="fas fa-pen"></i> Записаться от 350₽
                     </button>
                     <button class="btn btn-accent" onclick="callPhone()">
                         <i class="fas fa-phone"></i> Позвонить
@@ -2135,7 +2135,7 @@
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title"><i class="fas fa-calendar-alt"></i> <span class="highlight">Расписание</span></h2>
-                <p class="section-subtitle" id="scheduleSubtitle">Выберите удобное время для занятий. Работаем с 8:00 до 22:00 ежедневно</p>
+                <p class="section-subtitle" id="scheduleSubtitle">Выберите удобное время для занятий. Работаем с 7:00 до 22:00 ежедневно</p>
             </div>
             
             <div class="schedule-container">
@@ -2244,7 +2244,7 @@
                         г. Иркутск<br>
                         ул. 1-й Ленинский квартал, д. 1
                     </p>
-                    <button class="btn btn-primary" onclick="openMap()">
+                    <button class="btn btn-primary" onclick="openMap(52.328663, 104.208882)">
                         <i class="fas fa-map"></i> Построить маршрут
                     </button>
                 </div>
@@ -2256,7 +2256,7 @@
                         <a href="tel:+79041233175" style="color: var(--primary); font-weight: 600; text-decoration: none;" id="phoneLink">
                             +7 (904) 123-31-75
                         </a><br>
-                        <span id="workingHours">Ежедневно с 8:00 до 22:00</span>
+                        <span id="workingHours">Ежедневно с 7:00 до 22:00</span>
                     </p>
                     <button class="btn btn-success" onclick="callPhone()">
                         <i class="fas fa-phone-alt"></i> Позвонить сейчас
@@ -2278,7 +2278,7 @@
             <!-- Карта -->
             <div class="contact-card mt-40">
                 <h3 class="contact-title text-center mb-20">Мы на карте</h3>
-                <div id="mapContainer" style="height: 300px; background: linear-gradient(rgba(255, 179, 71, 0.1), rgba(255, 179, 71, 0.2)), url('https://images.unsplash.com/photo-1518834103328-93d45986dce1?auto=format&fit=crop&w=800&q=80'); background-size: cover; background-position: center; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; color: var(--warm-brown); font-weight: 600; font-size: 18px; backdrop-filter: blur(5px); border: 1px solid rgba(255, 179, 71, 0.3);">
+                <div id="mapContainer" style="height: 300px; background: linear-gradient(rgba(255, 179, 71, 0.1), rgba(255, 179, 71, 0.2)), url('https://github.com/Egor0294/perviy-ritm/blob/main/geo.jpg?raw=true'); background-size: cover; background-position: center; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; color: var(--warm-brown); font-weight: 600; font-size: 18px; backdrop-filter: blur(5px); border: 1px solid rgba(255, 179, 71, 0.3);">
                     <i class="fas fa-map-marked-alt" style="font-size: 48px; margin-right: 15px;"></i>
                     <span>Карта с расположением студии</span>
                 </div>
@@ -2325,13 +2325,13 @@
                     <ul class="footer-links">
                         <li id="footerPhone"><i class="fas fa-phone"></i> +7 (904) 123-31-75</li>
                         <li id="footerAddress"><i class="fas fa-map-marker-alt"></i> Иркутск, ул. 1-й Ленинский кв., д. 1</li>
-                        <li id="footerHours"><i class="fas fa-clock"></i> 8:00-22:00 ежедневно</li>
+                        <li id="footerHours"><i class="fas fa-clock"></i> 7:00-22:00 ежедневно</li>
                     </ul>
                 </div>
             </div>
             
             <div class="copyright">
-                <p>© 2024 <span id="copyrightName">Студия танцев "Первый ритм Ленинского"</span>. Все права защищены.</p>
+                <p>© 2025 <span id="copyrightName">Студия танцев "Первый ритм Ленинского"</span>. Все права защищены.</p>
                 <p style="margin-top: 10px; font-size: 12px;">
                     <a href="#privacy" style="color: rgba(255, 255, 255, 0.6); text-decoration: underline;">Политика конфиденциальности</a>
                 </p>
@@ -2474,7 +2474,7 @@
             </div>
             
             <div class="direction-modal-price" id="modalDirectionPrice">
-                Пробное занятие: 300₽
+                Пробное занятие: от 350₽
             </div>
             
             <div class="modal-features">
