@@ -1856,12 +1856,12 @@
                         <span class="stat-label">Направлений</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-number">500+</span>
+                        <span class="stat-number">Набор</span>
                         <span class="stat-label">Учеников</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-number">12+</span>
-                        <span class="stat-label">Лет опыта</span>
+                        <span class="stat-number">Многолетний</span>
+                        <span class="stat-label">Опыт тренеров</span>
                     </div>
                     <div class="stat-item">
                         <span class="stat-number">3-65</span>
@@ -1871,9 +1871,9 @@
                 
                 <div class="btn-group">
                     <button class="btn btn-primary" onclick="openModal('enroll')">
-                        <i class="fas fa-pen"></i> Записаться от 300₽
+                        <i class="fas fa-pen"></i> Записаться от 350₽
                     </button>
-                    <button class="btn btn-accent" onclick="callPhone()">
+                    <button class="btn btn-accent" onclick="callPhone('+79041233175')">
                         <i class="fas fa-phone"></i> Позвонить
                     </button>
                     <button class="btn btn-success" onclick="scrollToDirections()">
@@ -3246,34 +3246,7 @@
             if (!container) return;
             
             const reviews = CONFIG.reviews.length > 0 ? CONFIG.reviews : [
-                {
-                    rating: 5,
-                    text: '"Дочь ходит второй год, вижу огромный прогреск! Преподаватели очень внимательные, находят подход к каждому ребенку. Рекомендую!"',
-                    author: "Анна К.",
-                    role: "Мама Софии (6 лет)",
-                    initials: "АК"
-                },
-                {
-                    rating: 5,
-                    text: '"После 40 лет начала заниматься body ballet. За полгода улучшилась осанка, стала чувствовать себя моложе и увереннее. Спасибо преподавателям!"',
-                    author: "Марина С.",
-                    role: "Ученица 45+",
-                    initials: "МС"
-                },
-                {
-                    rating: 5,
-                    text: '"Сын занимается хип-хопом. За год из застенчивого мальчика превратился в уверенного в себе подростка. Отличная атмосфера и профессиональные педагоги!"',
-                    author: "Игорь П.",
-                    role: "Папа Максима (14 лет)",
-                    initials: "ИП"
-                },
-                {
-                    rating: 5,
-                    text: '"Хожу на contemporary уже 2 года. Это не просто танцы, это терапия для души. Снимаю стресс после работы, нашла новых друзей. Лучшая студия в городе!"',
-                    author: "Екатерина Л.",
-                    role: "Ученица 28 лет",
-                    initials: "ЕЛ"
-                }
+               
             ];
             
             container.innerHTML = reviews.map(review => `
