@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -40,6 +41,8 @@
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
         .section { padding: 80px 0; }
         .text-center { text-align: center; }
+        .mt-40 { margin-top: 40px; }
+        .mb-20 { margin-bottom: 20px; }
         .hidden { display: none; }
         
         /* ===== TYPOGRAPHY ===== */
@@ -98,11 +101,6 @@
         /* ===== TEAM ===== */
         .team-avatar { width: 150px; height: 150px; border-radius: 50%; background: var(--gradient); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem; font-weight: bold; }
         
-        /* ===== REVIEWS ===== */
-        .review-rating { color: #FFD700; font-size: 1.25rem; margin-bottom: 10px; }
-        .review-author { display: flex; align-items: center; gap: 15px; margin-top: 20px; }
-        .author-avatar { width: 50px; height: 50px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; }
-        
         /* ===== FORMS ===== */
         .form-group { margin-bottom: 20px; }
         .form-control { width: 100%; padding: 12px 15px; border: 2px solid #ddd; border-radius: 8px; font-size: 1rem; }
@@ -113,12 +111,6 @@
         .gallery-item { aspect-ratio: 4/3; border-radius: var(--radius); overflow: hidden; position: relative; }
         .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
         .gallery-item:hover img { transform: scale(1.1); }
-        
-        /* ===== FAQ ===== */
-        .faq-item { margin-bottom: 10px; }
-        .faq-question { background: white; padding: 20px; border-radius: var(--radius); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; }
-        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
-        .faq-answer.active { max-height: 500px; padding: 20px; background: white; margin-top: -10px; border-radius: 0 0 var(--radius) var(--radius); }
         
         /* ===== FOOTER ===== */
         .footer { background: var(--dark); color: white; padding: 60px 0 30px; }
@@ -174,34 +166,34 @@
     <section class="hero" id="home">
         <div class="container">
             <div class="hero-content">
-                <h1 class="hero-title">Танцуют <span class="highlight">все</span> возрасты!</h1>
-                <p class="hero-subtitle">
+                <h1 class="hero-title" id="heroTitle">Танцуют <span class="highlight">все</span> возрасты!</h1>
+                <p class="hero-subtitle" id="heroSubtitle">
                     Профессиональная студия танцев в Иркутске для детей от 3 лет и взрослых до 65+. 
                     Пробное занятие всего за 300₽. Запишись прямо сейчас!
                 </p>
                 
                 <div class="hero-stats">
                     <div class="stat-item">
-                        <span class="stat-number">15+</span>
+                        <span class="stat-number" id="statDirections">0+</span>
                         <span>Направлений</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-number">500+</span>
+                        <span class="stat-number" id="statStudents">0+</span>
                         <span>Учеников</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-number">12+</span>
+                        <span class="stat-number" id="statExperience">0+</span>
                         <span>Лет опыта</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-number">3-65</span>
+                        <span class="stat-number" id="statAge">0-0</span>
                         <span>Возраст</span>
                     </div>
                 </div>
                 
                 <div class="btn-group">
                     <button class="btn btn-primary" onclick="openEnrollModal()">
-                        <i class="fas fa-pen"></i> Записаться от 300₽
+                        <i class="fas fa-pen"></i> Записаться от <span id="trialPrice">300₽</span>
                     </button>
                     <button class="btn btn-primary" onclick="callPhone()">
                         <i class="fas fa-phone"></i> Позвонить
@@ -248,10 +240,12 @@
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">Наши направления</h2>
-                <p>Выбирайте из 15+ танцевальных направлений для любого возраста и уровня подготовки</p>
+                <p>Выбирайте из танцевальных направлений для любого возраста и уровня подготовки</p>
             </div>
             
-            <div class="grid" id="directionsGrid"></div>
+            <div class="grid" id="directionsGrid">
+                <!-- Направления будут загружены из localStorage -->
+            </div>
         </div>
     </section>
 
@@ -263,7 +257,9 @@
             </div>
             
             <div class="schedule-container">
-                <table class="schedule-table" id="scheduleTable"></table>
+                <table class="schedule-table" id="scheduleTable">
+                    <!-- Расписание будет загружено из localStorage -->
+                </table>
             </div>
         </div>
     </section>
@@ -273,10 +269,12 @@
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">Цены</h2>
-                <p>Доступные цены и гибкие абонементы. Экономия до 30%</p>
+                <p>Доступные цены и гибкие абонементы</p>
             </div>
             
-            <div class="grid" id="pricesGrid"></div>
+            <div class="grid" id="pricesGrid">
+                <!-- Цены будут загружены из localStorage -->
+            </div>
         </div>
     </section>
 
@@ -285,10 +283,12 @@
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">Наша команда</h2>
-                <p>Профессиональные педагоги с опытом работы от 3 до 14 лет</p>
+                <p>Профессиональные педагоги с опытом работы</p>
             </div>
             
-            <div class="grid" id="teamGrid"></div>
+            <div class="grid" id="teamGrid">
+                <!-- Команда будет загружена из localStorage -->
+            </div>
         </div>
     </section>
 
@@ -300,7 +300,9 @@
                 <p>Наша студия, занятия и выступления</p>
             </div>
             
-            <div class="gallery-grid" id="galleryGrid"></div>
+            <div class="gallery-grid" id="galleryGrid">
+                <!-- Галерея будет загружена из localStorage -->
+            </div>
         </div>
     </section>
 
@@ -316,20 +318,20 @@
                 <div class="card text-center">
                     <i class="fas fa-map-marker-alt" style="font-size: 48px; color: var(--primary); margin-bottom: 20px;"></i>
                     <h3>Адрес</h3>
-                    <p>г. Иркутск, ул. 1-й Ленинский квартал, д. 1</p>
+                    <p id="studioAddress">г. Иркутск, ул. 1-й Ленинский квартал, д. 1</p>
                 </div>
                 
                 <div class="card text-center">
                     <i class="fas fa-phone" style="font-size: 48px; color: var(--primary); margin-bottom: 20px;"></i>
                     <h3>Телефон</h3>
-                    <p><a href="tel:+79041233175" style="color: var(--primary); font-weight: 600;">+7 (904) 123-31-75</a></p>
+                    <p><a href="tel:+79041233175" id="studioPhone" style="color: var(--primary); font-weight: 600;">+7 (904) 123-31-75</a></p>
                     <button class="btn btn-primary" onclick="callPhone()">Позвонить</button>
                 </div>
                 
                 <div class="card text-center">
                     <i class="fas fa-tag" style="font-size: 48px; color: var(--primary); margin-bottom: 20px;"></i>
                     <h3>Пробное занятие</h3>
-                    <p style="font-size: 24px; font-weight: bold; color: var(--primary);">300₽</p>
+                    <p style="font-size: 24px; font-weight: bold; color: var(--primary);" id="trialPriceContact">300₽</p>
                     <button class="btn btn-primary" onclick="openEnrollModal()">Записаться</button>
                 </div>
             </div>
@@ -339,7 +341,7 @@
                 <h3 class="text-center mb-20">Мы на карте</h3>
                 <div id="mapContainer" style="height: 300px; background: linear-gradient(rgba(255, 179, 71, 0.1), rgba(255, 179, 71, 0.2)), url('https://images.unsplash.com/photo-1518834103328-93d45986dce1?auto=format&fit=crop&w=800&q=80'); background-size: cover; background-position: center; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; color: var(--warm-brown); font-weight: 600; font-size: 18px;">
                     <i class="fas fa-map-marked-alt" style="font-size: 48px; margin-right: 15px;"></i>
-                    <span>г. Иркутск, ул. 1-й Ленинский квартал, д. 1</span>
+                    <span id="mapAddress">г. Иркутск, ул. 1-й Ленинский квартал, д. 1</span>
                 </div>
             </div>
         </div>
@@ -350,24 +352,24 @@
         <div class="container">
             <div class="footer-grid">
                 <div>
-                    <h3>Первый ритм Ленинского</h3>
-                    <p>Профессиональная студия танцев для всех возрастов в Иркутске.</p>
+                    <h3 id="footerStudioName">Первый ритм Ленинского</h3>
+                    <p id="footerDescription">Профессиональная студия танцев для всех возрастов в Иркутске.</p>
                 </div>
                 
                 <div>
                     <h3>Контакты</h3>
-                    <p><i class="fas fa-phone"></i> +7 (904) 123-31-75</p>
-                    <p><i class="fas fa-map-marker-alt"></i> г. Иркутск, ул. 1-й Ленинский квартал, д. 1</p>
+                    <p><i class="fas fa-phone"></i> <span id="footerPhone">+7 (904) 123-31-75</span></p>
+                    <p><i class="fas fa-map-marker-alt"></i> <span id="footerAddress">г. Иркутск, ул. 1-й Ленинский квартал, д. 1</span></p>
                 </div>
                 
                 <div>
                     <h3>Часы работы</h3>
-                    <p><i class="fas fa-clock"></i> Ежедневно с 8:00 до 22:00</p>
+                    <p><i class="fas fa-clock"></i> <span id="footerHours">Ежедневно с 8:00 до 22:00</span></p>
                 </div>
             </div>
             
             <div style="text-align: center; padding-top: 30px;">
-                <p>© 2024 Студия танцев "Первый ритм Ленинского". Все права защищены.</p>
+                <p id="footerCopyright">© 2024 Студия танцев "Первый ритм Ленинского". Все права защищены.</p>
             </div>
         </div>
     </footer>
@@ -402,7 +404,7 @@
                 </div>
                 
                 <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 20px;">
-                    <i class="fas fa-paper-plane"></i> Отправить заявку в Telegram
+                    <i class="fas fa-paper-plane"></i> Отправить заявку
                 </button>
                 
                 <p style="text-align: center; margin-top: 15px; font-size: 14px; color: #666;">
@@ -422,249 +424,95 @@
 
     <script>
         // ===== TELEGRAM BOT CONFIG =====
-        const TELEGRAM_BOT_TOKEN = 'YOUR_BOT_TOKEN_HERE'; // Замените на ваш токен
-        const TELEGRAM_CHAT_ID = 'YOUR_CHAT_ID_HERE'; // Замените на ваш chat_id
+        const TELEGRAM_BOT_TOKEN = localStorage.getItem('telegram_bot_token') || '';
+        const TELEGRAM_CHAT_ID = localStorage.getItem('telegram_chat_id') || '';
         
-        // ===== DATA CONFIGURATION =====
-        const CONFIG = {
-            studio: {
-                name: "Первый ритм Ленинского",
-                phone: "+79041233175",
-                address: "г. Иркутск, ул. 1-й Ленинский квартал, д. 1",
-                hours: "Ежедневно с 8:00 до 22:00",
-                trialPrice: "300₽"
-            },
+        // ===== DATA LOADING =====
+        function loadData() {
+            // Загружаем данные из localStorage
+            const studioData = JSON.parse(localStorage.getItem('studio_data') || '{}');
+            const directions = JSON.parse(localStorage.getItem('directions') || '[]');
+            const schedule = JSON.parse(localStorage.getItem('schedule') || '[]');
+            const prices = JSON.parse(localStorage.getItem('prices') || '[]');
+            const team = JSON.parse(localStorage.getItem('team') || '[]');
+            const gallery = JSON.parse(localStorage.getItem('gallery') || '[]');
             
-            directions: [
-                {
-                    id: "baby-dance",
-                    title: "Танец-игра / Ритмика",
-                    age: "3-7 лет",
-                    schedule: "Понедельник и среда в 17:00",
-                    price: "300₽ (пробное), 2500₽/мес",
-                    description: "Развитие чувства ритма, координации и любви к движению через веселые игры и простые танцевальные комбинации.",
-                    fullDescription: "Программа разработана специально для самых маленьких. Занятия проходят в игровой форме, что помогает детям раскрепоститься, развить музыкальный слух и координацию движений. Педагоги используют интересные игровые методики, чтобы привить любовь к танцам с самого детства.",
-                    benefits: ["Развитие координации", "Улучшение чувства ритма", "Раскрепощение", "Социализация"],
-                    icon: "fas fa-music"
-                },
-                {
-                    id: "classic",
-                    title: "Классическая хореография",
-                    age: "8-12 лет",
-                    schedule: "Пн, Ср, Пт в 16:00",
-                    price: "2800₽/мес (8 занятий)",
-                    description: "Углубленное изучение основ балета. Укрепление мышечного корсета, развитие выносливости и грации.",
-                    fullDescription: "Классический балет - основа всех танцевальных направлений. На занятиях дети изучают базовые позиции, упражнения у станка и на середине зала. Программа способствует формированию правильной осанки, развитию гибкости, силы и выносливости.",
-                    benefits: ["Правильная осанка", "Развитие гибкости", "Укрепление мышц", "Дисциплина"],
-                    icon: "fas fa-ballet-shoes"
-                },
-                {
-                    id: "contemporary",
-                    title: "Contemporary Dance",
-                    age: "13-16 лет",
-                    schedule: "Понедельник и среда в 18:00",
-                    price: "3200₽/мес (8 занятий)",
-                    description: "Современная хореография, развитие пластики, гибкости и творческого самовыражения.",
-                    fullDescription: "Contemporary - это современный танец, сочетающий в себе элементы классического балета, джаза и модерна. Направление помогает выражать эмоции через движение, развивает пластику и артистизм. Идеально подходит для подростков, желающих самовыражаться.",
-                    benefits: ["Развитие пластики", "Самовыражение", "Снятие напряжения", "Артистизм"],
-                    icon: "fas fa-water"
-                },
-                {
-                    id: "hiphop",
-                    title: "Хип-хоп",
-                    age: "13-25 лет",
-                    schedule: "Вторник и четверг в 17:30",
-                    price: "3200₽/мес (8 занятий)",
-                    description: "Энергичные уличные танцы. Изучение различных стилей хип-хопа, развитие ритма и уверенности.",
-                    fullDescription: "Хип-хоп - одно из самых популярных уличных направлений. Занятия включают изучение базовых движений, комбинаций и связок. Отлично развивает чувство ритма, координацию и уверенность в себе. Подходит как для начинающих, так и для продолжающих.",
-                    benefits: ["Энергичность", "Развитие ритма", "Уверенность", "Стиль"],
-                    icon: "fas fa-street-view"
-                },
-                {
-                    id: "heels",
-                    title: "High Heels / Lady Dance",
-                    age: "17+ лет",
-                    schedule: "Пятница в 19:00, Суббота в 13:00",
-                    price: "3200₽/мес (8 занятий)",
-                    description: "Элегантный танец на каблуках. Развитие грации, женственности и уверенности в себе.",
-                    fullDescription: "Lady Dance - направление для женщин, желающих развить грацию, пластику и женственность. Занятия проходят на каблуках, что помогает улучшить осанку и походку. В программе: элементы джаза, латины и современных стилей.",
-                    benefits: ["Грация", "Уверенность", "Женственность", "Пластика"],
-                    icon: "fas fa-female"
-                },
-                {
-                    id: "senior",
-                    title: "Body Ballet 45+",
-                    age: "45+ лет",
-                    schedule: "Понедельник и среда в 10:00",
-                    price: "2800₽/мес (8 занятий)",
-                    description: "Щадящие нагрузки, укрепление мышц, улучшение осанки и гибкости.",
-                    fullDescription: "Специальная программа для взрослых 45+. Адаптированные упражнения из классического балета помогают укрепить мышцы, улучшить осанку и гибкость без чрезмерных нагрузок. Идеально для поддержания формы и здоровья.",
-                    benefits: ["Укрепление здоровья", "Улучшение осанки", "Гибкость", "Релаксация"],
-                    icon: "fas fa-heartbeat"
-                }
-            ],
+            // Заполняем основную информацию студии
+            if (studioData.name) {
+                document.querySelector('.logo span:nth-child(2)').textContent = studioData.name;
+                document.getElementById('footerStudioName').textContent = studioData.name;
+                document.title = `${studioData.name} | Танцевальная студия | Иркутск`;
+            }
             
-            schedule: [
-                { day: "Пн", time: "17:00", direction: "Танец-игра", age: "3-7 лет", duration: "60 мин" },
-                { day: "Пн", time: "18:00", direction: "Contemporary", age: "13-16 лет", duration: "90 мин" },
-                { day: "Вт", time: "17:30", direction: "Хип-хоп", age: "13-25 лет", duration: "90 мин" },
-                { day: "Ср", time: "17:00", direction: "Танец-игра", age: "3-7 лет", duration: "60 мин" },
-                { day: "Ср", time: "10:00", direction: "Body Ballet 45+", age: "45+ лет", duration: "60 мин" },
-                { day: "Чт", time: "17:30", direction: "Хип-хоп", age: "13-25 лет", duration: "90 мин" },
-                { day: "Пт", time: "19:00", direction: "High Heels", age: "17+ лет", duration: "90 мин" },
-                { day: "Сб", time: "13:00", direction: "High Heels", age: "17+ лет", duration: "90 мин" }
-            ],
+            if (studioData.heroTitle) document.getElementById('heroTitle').innerHTML = studioData.heroTitle;
+            if (studioData.heroSubtitle) document.getElementById('heroSubtitle').textContent = studioData.heroSubtitle;
+            if (studioData.stats) {
+                const stats = studioData.stats;
+                if (stats.directions) document.getElementById('statDirections').textContent = stats.directions;
+                if (stats.students) document.getElementById('statStudents').textContent = stats.students;
+                if (stats.experience) document.getElementById('statExperience').textContent = stats.experience;
+                if (stats.age) document.getElementById('statAge').textContent = stats.age;
+            }
+            if (studioData.trialPrice) {
+                document.getElementById('trialPrice').textContent = studioData.trialPrice;
+                document.getElementById('trialPriceContact').textContent = studioData.trialPrice;
+            }
+            if (studioData.phone) {
+                document.getElementById('studioPhone').textContent = studioData.phone;
+                document.getElementById('studioPhone').href = `tel:${studioData.phone}`;
+                document.getElementById('footerPhone').textContent = studioData.phone;
+            }
+            if (studioData.address) {
+                document.getElementById('studioAddress').textContent = studioData.address;
+                document.getElementById('mapAddress').textContent = studioData.address;
+                document.getElementById('footerAddress').textContent = studioData.address;
+            }
+            if (studioData.hours) document.getElementById('footerHours').textContent = studioData.hours;
+            if (studioData.description) document.getElementById('footerDescription').textContent = studioData.description;
+            if (studioData.copyright) document.getElementById('footerCopyright').textContent = studioData.copyright;
             
-            prices: [
-                {
-                    title: "ПРОБНОЕ ЗАНЯТИЕ",
-                    price: "300₽",
-                    period: "1 занятие",
-                    features: ["Первое занятие", "Консультация педагога", "Подбор направления"],
-                    buttonText: "Записаться",
-                    telegramData: "trial"
-                },
-                {
-                    title: "ДЕТСКИЙ АБОНЕМЕНТ",
-                    price: "2 800₽",
-                    period: "8 занятий",
-                    features: ["Абонемент на 30 дней", "Любое направление", "Заморозка на 7 дней"],
-                    buttonText: "Купить",
-                    telegramData: "child_abonement"
-                },
-                {
-                    title: "ВЗРОСЛЫЙ АБОНЕМЕНТ",
-                    price: "3 200₽",
-                    period: "8 занятий",
-                    features: ["Абонемент на 30 дней", "Любое направление", "Индивидуальный подход"],
-                    buttonText: "Купить",
-                    telegramData: "adult_abonement"
-                },
-                {
-                    title: "БЕЗЛИМИТНЫЙ",
-                    price: "4 500₽",
-                    period: "30 дней",
-                    features: ["Неограниченное количество", "Все направления", "Персональный коврик"],
-                    buttonText: "Купить",
-                    telegramData: "unlimited"
-                }
-            ],
-            
-            team: [
-                { initials: "АП", name: "Анна Петрова", role: "Главный хореограф", experience: "14 лет" },
-                { initials: "МК", name: "Михаил Козлов", role: "Преподаватель хип-хопа", experience: "6 лет" },
-                { initials: "ЕС", name: "Елена Сидорова", role: "Педагог классической хореографии", experience: "8 лет" }
-            ],
-            
-            gallery: [
-                {
-                    image: "https://images.unsplash.com/photo-1518834103328-93d45986dce1?auto=format&fit=crop&w=800&q=80",
-                    title: "Основной зал",
-                    description: "Профессиональное покрытие, зеркала"
-                },
-                {
-                    image: "https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?auto=format&fit=crop&w=800&q=80",
-                    title: "Детские занятия",
-                    description: "Яркие и веселые занятия"
-                },
-                {
-                    image: "https://images.unsplash.com/photo-1547153760-18fc86324498?auto=format&fit=crop&w=800&q=80",
-                    title: "Взрослые группы",
-                    description: "Современные направления"
-                },
-                {
-                    image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80",
-                    title: "Растяжка",
-                    description: "Занятия на гибкость"
-                },
-                {
-                    image: "https://images.unsplash.com/photo-1536922246289-88c42f957773?auto=format&fit=crop&w=800&q=80",
-                    title: "Хип-хоп",
-                    description: "Энергичные занятия"
-                },
-                {
-                    image: "https://images.unsplash.com/photo-1519677100203-5f5a1c56b7b3?auto=format&fit=crop&w=800&q=80",
-                    title: "Выступления",
-                    description: "Наши ученики на сцене"
-                }
-            ]
-        };
-
-        // ===== INITIALIZATION =====
-        document.addEventListener('DOMContentLoaded', function() {
-            initWebsite();
-            renderAll();
-        });
-
-        function initWebsite() {
-            // Mobile menu
-            document.querySelector('.mobile-menu-btn').addEventListener('click', toggleMenu);
-            
-            // Navigation links
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.addEventListener('click', function() {
-                    document.querySelector('.nav').classList.remove('active');
-                });
-            });
-            
-            // Smooth scroll
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        window.scrollTo({
-                            top: target.offsetTop - 80,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
-            
-            // Modal close on background click
-            document.querySelectorAll('.modal').forEach(modal => {
-                modal.addEventListener('click', function(e) {
-                    if (e.target === this) closeModal();
-                });
-            });
-        }
-
-        function renderAll() {
-            renderDirections();
-            renderSchedule();
-            renderPrices();
-            renderTeam();
-            renderGallery();
+            // Рендерим остальные блоки
+            renderDirections(directions);
+            renderSchedule(schedule);
+            renderPrices(prices);
+            renderTeam(team);
+            renderGallery(gallery);
         }
 
         // ===== RENDER FUNCTIONS =====
-        function renderDirections() {
+        function renderDirections(directions) {
             const container = document.getElementById('directionsGrid');
-            container.innerHTML = CONFIG.directions.map(dir => `
+            
+            if (!directions || directions.length === 0) {
+                container.innerHTML = '<p class="text-center" style="grid-column: 1/-1;">Направления пока не добавлены</p>';
+                return;
+            }
+            
+            container.innerHTML = directions.map(dir => `
                 <div class="card">
                     <div style="display: flex; align-items: center; margin-bottom: 15px;">
                         <div style="width: 60px; height: 60px; background: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 15px;">
-                            <i class="${dir.icon}" style="font-size: 24px; color: white;"></i>
+                            <i class="${dir.icon || 'fas fa-dance'}" style="font-size: 24px; color: white;"></i>
                         </div>
                         <div>
                             <h3 style="color: var(--primary); margin: 0 0 5px 0;">${dir.title}</h3>
                             <p style="color: #666; margin: 0;">
-                                <i class="fas fa-user"></i> ${dir.age}
+                                <i class="fas fa-user"></i> ${dir.age || 'Все возрасты'}
                             </p>
                         </div>
                     </div>
                     
-                    <p style="color: #666; margin-bottom: 15px;">${dir.description}</p>
+                    <p style="color: #666; margin-bottom: 15px;">${dir.description || ''}</p>
                     
                     <div style="background: #f9f9f9; padding: 10px 15px; border-radius: 8px; margin-bottom: 15px;">
                         <p style="margin: 0; font-size: 14px; color: #666;">
-                            <i class="fas fa-calendar-alt"></i> <strong>Расписание:</strong> ${dir.schedule}
+                            <i class="fas fa-calendar-alt"></i> <strong>Расписание:</strong> ${dir.schedule || 'Уточняйте'}
                         </p>
                     </div>
                     
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <div style="font-size: 20px; font-weight: bold; color: var(--primary-dark);">
-                            ${dir.price}
+                            ${dir.price || 'Уточняйте'}
                         </div>
                         <div style="display: flex; gap: 10px;">
                             <button class="btn btn-primary" onclick="openDirectionModal('${dir.id}')" style="padding: 8px 16px; font-size: 14px;">
@@ -679,10 +527,17 @@
             `).join('');
         }
 
-        function renderSchedule() {
+        function renderSchedule(schedule) {
             const table = document.getElementById('scheduleTable');
+            
+            if (!schedule || schedule.length === 0) {
+                table.innerHTML = '<tr><td colspan="8" class="text-center">Расписание пока не добавлено</td></tr>';
+                return;
+            }
+            
+            // Группируем по дням
             const days = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
-            const times = ['10:00', '14:00', '17:00', '18:30', '20:00'];
+            const times = [...new Set(schedule.map(item => item.time))].sort();
             
             let html = '<thead><tr><th>Время</th>';
             days.forEach(day => html += `<th>${day}</th>`);
@@ -691,12 +546,12 @@
             times.forEach(time => {
                 html += `<tr><td>${time}</td>`;
                 days.forEach(day => {
-                    const classes = CONFIG.schedule.filter(c => c.day === day && c.time === time);
+                    const classes = schedule.filter(c => c.day === day && c.time === time);
                     html += `<td>${classes.map(c => `
                         <div class="class-item" onclick="openEnrollModal('${c.direction}')">
                             <strong>${c.direction}</strong><br>
-                            ${c.age}<br>
-                            <small>${c.duration}</small>
+                            ${c.age || ''}<br>
+                            <small>${c.duration || ''}</small>
                         </div>
                     `).join('')}</td>`;
                 });
@@ -707,47 +562,65 @@
             table.innerHTML = html;
         }
 
-        function renderPrices() {
+        function renderPrices(prices) {
             const container = document.getElementById('pricesGrid');
-            container.innerHTML = CONFIG.prices.map(price => `
-                <div class="card price-card ${price.featured ? 'featured' : ''}">
+            
+            if (!prices || prices.length === 0) {
+                container.innerHTML = '<p class="text-center" style="grid-column: 1/-1;">Цены пока не добавлены</p>';
+                return;
+            }
+            
+            container.innerHTML = prices.map(price => `
+                <div class="card price-card">
                     <div class="price-header">
                         <h3>${price.title}</h3>
-                        <p style="color: #666;">${price.period}</p>
+                        <p style="color: #666;">${price.period || ''}</p>
                     </div>
-                    <div class="price-amount">${price.price}</div>
+                    <div class="price-amount">${price.price || ''}</div>
                     
                     <ul style="text-align: left; margin: 20px 0; padding-left: 20px;">
-                        ${price.features.map(feature => `<li style="margin-bottom: 8px;">${feature}</li>`).join('')}
+                        ${(price.features || []).map(feature => `<li style="margin-bottom: 8px;">${feature}</li>`).join('')}
                     </ul>
                     
                     <button class="btn btn-primary" onclick="openEnrollModal('${price.title}')" style="width: 100%;">
-                        <i class="fas fa-shopping-cart"></i> ${price.buttonText}
+                        <i class="fas fa-shopping-cart"></i> ${price.buttonText || 'Купить'}
                     </button>
                 </div>
             `).join('');
         }
 
-        function renderTeam() {
+        function renderTeam(team) {
             const container = document.getElementById('teamGrid');
-            container.innerHTML = CONFIG.team.map(member => `
+            
+            if (!team || team.length === 0) {
+                container.innerHTML = '<p class="text-center" style="grid-column: 1/-1;">Информация о команде пока не добавлена</p>';
+                return;
+            }
+            
+            container.innerHTML = team.map(member => `
                 <div class="card text-center">
-                    <div class="team-avatar">${member.initials}</div>
+                    <div class="team-avatar">${member.initials || member.name.charAt(0)}</div>
                     <h3>${member.name}</h3>
-                    <p style="color: var(--primary); font-weight: 600;">${member.role}</p>
-                    <p>Опыт: ${member.experience}</p>
+                    <p style="color: var(--primary); font-weight: 600;">${member.role || ''}</p>
+                    <p>${member.experience ? `Опыт: ${member.experience}` : ''}</p>
                 </div>
             `).join('');
         }
 
-        function renderGallery() {
+        function renderGallery(gallery) {
             const container = document.getElementById('galleryGrid');
-            container.innerHTML = CONFIG.gallery.map(item => `
+            
+            if (!gallery || gallery.length === 0) {
+                container.innerHTML = '<p class="text-center" style="grid-column: 1/-1;">Галерея пока пуста</p>';
+                return;
+            }
+            
+            container.innerHTML = gallery.map(item => `
                 <div class="gallery-item">
-                    <img src="${item.image}" alt="${item.title}" loading="lazy">
+                    <img src="${item.image || 'https://images.unsplash.com/photo-1518834103328-93d45986dce1?auto=format&fit=crop&w=800&q=80'}" alt="${item.title || ''}" loading="lazy">
                     <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.7)); color: white; padding: 10px; text-align: center;">
-                        <strong>${item.title}</strong>
-                        <p style="margin: 5px 0 0 0; font-size: 12px;">${item.description}</p>
+                        <strong>${item.title || ''}</strong>
+                        <p style="margin: 5px 0 0 0; font-size: 12px;">${item.description || ''}</p>
                     </div>
                 </div>
             `).join('');
@@ -755,8 +628,13 @@
 
         // ===== MODAL FUNCTIONS =====
         function openDirectionModal(directionId) {
-            const direction = CONFIG.directions.find(d => d.id === directionId);
-            if (!direction) return;
+            const directions = JSON.parse(localStorage.getItem('directions') || '[]');
+            const direction = directions.find(d => d.id === directionId);
+            
+            if (!direction) {
+                alert('Направление не найдено');
+                return;
+            }
             
             const modalContent = document.getElementById('directionModalContent');
             modalContent.innerHTML = `
@@ -764,26 +642,28 @@
                 
                 <div style="display: flex; align-items: center; margin-bottom: 20px;">
                     <div style="width: 80px; height: 80px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 20px;">
-                        <i class="${direction.icon}" style="font-size: 32px; color: white;"></i>
+                        <i class="${direction.icon || 'fas fa-dance'}" style="font-size: 32px; color: white;"></i>
                     </div>
                     <div>
-                        <p><strong>Возраст:</strong> ${direction.age}</p>
-                        <p><strong>Расписание:</strong> ${direction.schedule}</p>
-                        <p><strong>Стоимость:</strong> ${direction.price}</p>
+                        <p><strong>Возраст:</strong> ${direction.age || 'Все возрасты'}</p>
+                        <p><strong>Расписание:</strong> ${direction.schedule || 'Уточняйте'}</p>
+                        <p><strong>Стоимость:</strong> ${direction.price || 'Уточняйте'}</p>
                     </div>
                 </div>
                 
                 <h3 style="color: var(--primary); margin: 20px 0 10px 0;">Описание</h3>
-                <p>${direction.fullDescription}</p>
+                <p>${direction.fullDescription || direction.description || 'Описание отсутствует'}</p>
                 
-                <h3 style="color: var(--primary); margin: 20px 0 10px 0;">Преимущества</h3>
-                <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;">
-                    ${direction.benefits.map(benefit => `
-                        <span style="background: rgba(255, 179, 71, 0.1); color: var(--primary); padding: 5px 15px; border-radius: 20px; font-size: 14px;">
-                            ${benefit}
-                        </span>
-                    `).join('')}
-                </div>
+                ${direction.benefits ? `
+                    <h3 style="color: var(--primary); margin: 20px 0 10px 0;">Преимущества</h3>
+                    <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;">
+                        ${direction.benefits.map(benefit => `
+                            <span style="background: rgba(255, 179, 71, 0.1); color: var(--primary); padding: 5px 15px; border-radius: 20px; font-size: 14px;">
+                                ${benefit}
+                            </span>
+                        `).join('')}
+                    </div>
+                ` : ''}
                 
                 <div style="display: flex; gap: 10px; margin-top: 30px;">
                     <button class="btn btn-primary" onclick="openEnrollModal('${direction.title}')" style="flex: 1;">
@@ -804,14 +684,14 @@
             modal.style.display = 'flex';
             document.body.style.overflow = 'hidden';
             
-            // Fill directions dropdown
+            // Заполняем направления
+            const directions = JSON.parse(localStorage.getItem('directions') || '[]');
             const select = document.getElementById('enrollDirection');
             select.innerHTML = '<option value="">Выберите направление</option>' +
-                CONFIG.directions.map(dir => `<option value="${dir.title}" ${direction === dir.title ? 'selected' : ''}>${dir.title} (${dir.age})</option>`).join('');
+                directions.map(dir => `<option value="${dir.title}" ${direction === dir.title ? 'selected' : ''}>${dir.title} (${dir.age || ''})</option>`).join('');
             
-            // If direction is provided from price button
-            if (direction.includes('ПРОБНОЕ') || direction.includes('300')) {
-                document.getElementById('enrollComment').value = 'Интересую пробное занятие за 300₽';
+            if (direction) {
+                document.getElementById('enrollComment').value = `Хочу записаться на "${direction}"`;
             }
         }
 
@@ -822,7 +702,7 @@
             document.body.style.overflow = 'auto';
         }
 
-        // ===== TELEGRAM FUNCTIONS =====
+        // ===== FORM SUBMISSION =====
         async function submitEnrollForm(e) {
             e.preventDefault();
             
@@ -835,41 +715,37 @@
                 source: 'website'
             };
             
-            // Validation
+            // Валидация
             if (!formData.name || !formData.phone) {
                 alert('Пожалуйста, заполните имя и телефон');
                 return;
             }
             
-            // Send to Telegram
-            try {
-                await sendToTelegram(formData);
-                
-                // Show success message
-                alert('✅ Заявка отправлена!\n\nМы свяжемся с вами в ближайшее время для подтверждения записи.');
-                
-                // Close modal and reset form
-                closeModal();
-                document.getElementById('enrollForm').reset();
-                
-            } catch (error) {
-                console.error('Error sending to Telegram:', error);
-                
-                // Fallback: save to localStorage
-                const applications = JSON.parse(localStorage.getItem('applications') || '[]');
-                applications.push(formData);
-                localStorage.setItem('applications', JSON.stringify(applications));
-                
-                alert('⚠️ Заявка сохранена локально. Мы свяжемся с вами позже.');
-                closeModal();
-                document.getElementById('enrollForm').reset();
+            // Отправка в Telegram
+            if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID) {
+                try {
+                    await sendToTelegram(formData);
+                    alert('✅ Заявка отправлена!\n\nМы свяжемся с вами в ближайшее время для подтверждения записи.');
+                } catch (error) {
+                    console.error('Error sending to Telegram:', error);
+                    saveToLocalStorage(formData);
+                    alert('⚠️ Заявка сохранена локально. Мы свяжемся с вами позже.');
+                }
+            } else {
+                // Сохраняем в localStorage если Telegram не настроен
+                saveToLocalStorage(formData);
+                alert('✅ Заявка сохранена!\n\nМы свяжемся с вами в ближайшее время.');
             }
+            
+            // Закрываем модальное окно и сбрасываем форму
+            closeModal();
+            document.getElementById('enrollForm').reset();
         }
 
         async function sendToTelegram(data) {
-            // Format message for Telegram
+            const studioData = JSON.parse(localStorage.getItem('studio_data') || '{}');
             const message = `
-🎯 НОВАЯ ЗАЯВКА С САЙТА
+🎯 НОВАЯ ЗАЯВКА С САЙТА ${studioData.name || ''}
 
 👤 Имя: ${data.name}
 📞 Телефон: ${data.phone}
@@ -878,7 +754,6 @@
 📅 Дата: ${data.date}
             `.trim();
             
-            // Send message to Telegram bot
             const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
             
             const response = await fetch(url, {
@@ -900,16 +775,55 @@
             return await response.json();
         }
 
+        function saveToLocalStorage(data) {
+            const applications = JSON.parse(localStorage.getItem('applications') || '[]');
+            applications.push(data);
+            localStorage.setItem('applications', JSON.stringify(applications));
+        }
+
         // ===== UI FUNCTIONS =====
         function toggleMenu() {
             document.getElementById('mainNav').classList.toggle('active');
         }
 
         function callPhone() {
-            window.location.href = `tel:${CONFIG.studio.phone}`;
+            const studioData = JSON.parse(localStorage.getItem('studio_data') || '{}');
+            const phone = studioData.phone || '+79041233175';
+            window.location.href = `tel:${phone}`;
         }
 
-        // Expose functions to global scope
+        // ===== INITIALIZATION =====
+        document.addEventListener('DOMContentLoaded', function() {
+            // Инициализация меню
+            document.querySelector('.mobile-menu-btn').addEventListener('click', toggleMenu);
+            
+            // Плавная прокрутка
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        window.scrollTo({
+                            top: target.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                        document.querySelector('.nav').classList.remove('active');
+                    }
+                });
+            });
+            
+            // Закрытие модальных окон
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) closeModal();
+                });
+            });
+            
+            // Загрузка данных
+            loadData();
+        });
+
+        // Экспортируем функции в глобальную область видимости
         window.toggleMenu = toggleMenu;
         window.callPhone = callPhone;
         window.openEnrollModal = openEnrollModal;
