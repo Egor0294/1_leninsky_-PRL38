@@ -897,7 +897,11 @@
                         <option value="45+ лет">45+ лет (Взрослые 45+)</option>
                     </select>
                 </div>
-                
+                <div class="form-group">
+    <label class="form-label">Telegram (необязательно)</label>
+    <input type="text" class="form-control" id="telegram" 
+           placeholder="Ваш @username">
+</div>
                 <div class="form-group">
                     <label class="form-label">Комментарий (необязательно)</label>
                     <textarea class="form-control" id="comment" rows="3" placeholder="Пожелания по времени или направлению..."></textarea>
@@ -1761,6 +1765,7 @@ schedule: {
     const formData = {
         name: document.getElementById('name').value.trim(),
         phone: document.getElementById('phone').value.trim(),
+		telegram: document.getElementById('telegram').value.trim(),
         direction: document.getElementById('direction').value,
         ageGroup: document.getElementById('ageGroup').value,
         comment: document.getElementById('comment').value.trim(),
