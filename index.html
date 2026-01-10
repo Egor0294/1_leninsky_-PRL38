@@ -1784,7 +1784,7 @@ schedule: {
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
                     chat_id: TELEGRAM_CONFIG.chatId,
-                    text: `Заявка от ${formData.name}\nТелефон: ${formData.phone}\nНаправление: ${formData.direction || '-'${data.telegram || 'Не указан'}`
+                    text: `Заявка от ${formData.name}\nТелефон: ${formData.phone}\nНаправление: ${formData.direction || '-'}`
                 })
             });
         }
