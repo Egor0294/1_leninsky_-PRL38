@@ -1,0 +1,2161 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM с управлением Telegram ботом</title>
+    <style>
+        /* ========== ОСНОВНЫЕ СТИЛИ ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0088cc 0%, #00cccc 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            padding: 18px 25px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #6c757d;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+            font-size: 14px;
+        }
+        
+        .tab.active {
+            color: #0088cc;
+            border-bottom-color: #0088cc;
+            background: white;
+        }
+        
+        .content {
+            padding: 25px;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* ========== КНОПКИ ========== */
+        .btn {
+            background: linear-gradient(135deg, #0088cc 0%, #00cccc 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 136, 204, 0.3);
+        }
+        
+        .btn-telegram {
+            background: linear-gradient(135deg, #0088cc 0%, #34b7f1 100%);
+        }
+        
+        .btn-success {
+            background: #28a745;
+        }
+        
+        .btn-warning {
+            background: #ffc107;
+            color: #212529;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+        }
+        
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+        
+        /* ========== ФОРМЫ ========== */
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #0088cc;
+            box-shadow: 0 0 0 3px rgba(0, 136, 204, 0.1);
+        }
+        
+        /* ========== TELEGRAM ПАНЕЛЬ ========== */
+        .telegram-panel {
+            background: linear-gradient(135deg, #0088cc 0%, #34b7f1 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .bot-status {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #dc3545;
+        }
+        
+        .status-indicator.active {
+            background: #28a745;
+            box-shadow: 0 0 10px #28a745;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        /* ========== КАНБАН ДОСКА ========== */
+        .kanban-board {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+        
+        .kanban-column {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 500px;
+        }
+        
+        .kanban-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            cursor: move;
+            transition: all 0.3s;
+            border-left: 4px solid;
+        }
+        
+        .kanban-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        /* ========== ТАБЛИЦЫ ========== */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 10px;
+            border: 1px solid #e1e5e9;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th {
+            background: #f8f9fa;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #495057;
+            border-bottom: 2px solid #e1e5e9;
+            font-size: 13px;
+        }
+        
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e1e5e9;
+            vertical-align: top;
+        }
+        
+        /* ========== НАСТРОЙКИ БОТА ========== */
+        .bot-config {
+            background: #f0f9ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #0088cc;
+        }
+        
+        .config-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .message-templates {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .template-item {
+            padding: 12px;
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .template-item:hover {
+            background: #f8f9fa;
+            border-color: #0088cc;
+        }
+        
+        /* ========== УВЕДОМЛЕНИЯ ========== */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            animation: slideIn 0.3s ease-out;
+            max-width: 400px;
+            font-size: 14px;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        /* ========== МОДАЛЬНЫЕ ОКНА ========== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1001;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        /* ========== ЧАТ ========== */
+        .chat-container {
+            display: flex;
+            height: 500px;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .chat-sidebar {
+            width: 300px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            overflow-y: auto;
+            border: 1px solid #e1e5e9;
+        }
+        
+        .message {
+            padding: 10px 15px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            max-width: 80%;
+            font-size: 14px;
+        }
+        
+        .message-incoming {
+            background: #e9ecef;
+            align-self: flex-start;
+        }
+        
+        .message-outgoing {
+            background: #0088cc;
+            color: white;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+        
+        /* ========== АДАПТИВНОСТЬ ========== */
+        @media (max-width: 768px) {
+            .container {
+                border-radius: 10px;
+            }
+            
+            .tab {
+                padding: 12px;
+                font-size: 12px;
+                flex: 1;
+                text-align: center;
+            }
+            
+            .content {
+                padding: 15px;
+            }
+            
+            .kanban-board {
+                grid-template-columns: 1fr;
+            }
+            
+            .chat-container {
+                flex-direction: column;
+                height: auto;
+            }
+            
+            .chat-sidebar {
+                width: 100%;
+                height: 200px;
+            }
+            
+            .config-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .notification {
+                left: 20px;
+                right: 20px;
+                max-width: none;
+            }
+        }
+    </style>
+    <script>
+        // Добавляем Font Awesome иконки
+        const faIcons = document.createElement('link');
+        faIcons.rel = 'stylesheet';
+        faIcons.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css';
+        document.head.appendChild(faIcons);
+    </script>
+</head>
+<body>
+    <div class="container">
+        <!-- ВКЛАДКИ -->
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('bot')">
+                <i class="fas fa-robot"></i> Управление ботом
+            </div>
+            <div class="tab" onclick="switchTab('leads')">
+                <i class="fas fa-users"></i> Заявки
+            </div>
+            <div class="tab" onclick="switchTab('chat')">
+                <i class="fas fa-comments"></i> Чат с клиентами
+            </div>
+            <div class="tab" onclick="switchTab('messages')">
+                <i class="fas fa-paper-plane"></i> Рассылки
+            </div>
+            <div class="tab" onclick="switchTab('analytics')">
+                <i class="fas fa-chart-bar"></i> Аналитика
+            </div>
+            <div class="tab" onclick="switchTab('settings')">
+                <i class="fas fa-cog"></i> Настройки
+            </div>
+        </div>
+        
+        <div class="content">
+            <!-- УПРАВЛЕНИЕ БОТОМ -->
+            <div id="bot-tab" class="tab-content active">
+                <div class="telegram-panel">
+                    <h2><i class="fas fa-robot"></i> Управление Telegram ботом</h2>
+                    <p>Создание, настройка и управление ботом прямо с сайта</p>
+                    
+                    <div class="bot-status">
+                        <div class="status-indicator" id="botStatus"></div>
+                        <div>
+                            <strong id="botStatusText">Бот отключен</strong><br>
+                            <small id="botInfo">Токен не настроен</small>
+                        </div>
+                        <div style="margin-left: auto;">
+                            <button class="btn btn-success btn-small" onclick="startBot()" id="startBotBtn">
+                                <i class="fas fa-play"></i> Запустить
+                            </button>
+                            <button class="btn btn-danger btn-small" onclick="stopBot()" id="stopBotBtn" style="display: none;">
+                                <i class="fas fa-stop"></i> Остановить
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="config-grid">
+                    <div class="bot-config">
+                        <h3><i class="fas fa-key"></i> Настройки бота</h3>
+                        <div class="form-group">
+                            <label>Токен бота:</label>
+                            <div style="display: flex; gap: 10px;">
+                                <input type="password" id="botToken" placeholder="1234567890:ABC..." style="flex: 1;">
+                                <button class="btn btn-small" onclick="toggleTokenVisibility()">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <small style="color: #666;">Получите у @BotFather</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Имя бота:</label>
+                            <input type="text" id="botName" placeholder="MyCRM_Bot">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Приветственное сообщение:</label>
+                            <textarea id="welcomeMessage" rows="3" placeholder="Привет! Я бот компании..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Команды бота:</label>
+                            <div style="display: flex; gap: 5px; margin-bottom: 5px;">
+                                <input type="text" id="commandName" placeholder="команда" style="flex: 1;">
+                                <input type="text" id="commandDesc" placeholder="описание" style="flex: 2;">
+                                <button class="btn btn-small" onclick="addBotCommand()">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                            <div id="botCommandsList" style="margin-top: 10px;">
+                                <!-- Список команд -->
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-telegram" onclick="saveBotConfig()" style="width: 100%;">
+                            <i class="fas fa-save"></i> Сохранить настройки
+                        </button>
+                    </div>
+                    
+                    <div class="bot-config">
+                        <h3><i class="fas fa-terminal"></i> Создание бота</h3>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <p style="color: #666; margin-bottom: 15px;">Создайте нового бота через @BotFather:</p>
+                            <ol style="margin-left: 20px; margin-bottom: 15px;">
+                                <li>Найдите @BotFather в Telegram</li>
+                                <li>Отправьте команду <code>/newbot</code></li>
+                                <li>Придумайте имя бота</li>
+                                <li>Придумайте username (должен заканчиваться на bot)</li>
+                                <li>Скопируйте полученный токен</li>
+                            </ol>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Или создайте бота автоматически:</label>
+                            <button class="btn" onclick="createBotAutomatically()" style="width: 100%;">
+                                <i class="fas fa-magic"></i> Создать бота автоматически
+                            </button>
+                            <small style="color: #666;">Потребуется авторизация в Telegram</small>
+                        </div>
+                        
+                        <div id="botCreationResult" style="display: none; margin-top: 15px; padding: 15px; background: #d1e7dd; border-radius: 8px; color: #0a3622;">
+                            <!-- Результат создания бота -->
+                        </div>
+                    </div>
+                    
+                    <div class="bot-config">
+                        <h3><i class="fas fa-cogs"></i> Функции бота</h3>
+                        
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="autoReply" checked>
+                                Автоответ на команду /start
+                            </label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="collectPhone" checked>
+                                Запрашивать телефон у клиентов
+                            </label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="notifyNewLeads" checked>
+                                Уведомлять о новых заявках
+                            </label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="saveChatHistory">
+                                Сохранять историю чатов
+                            </label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Кнопки меню:</label>
+                            <textarea id="menuButtons" rows="4" placeholder="Записаться на курс\nУзнать цены\nСвязаться с менеджером"></textarea>
+                            <small style="color: #666;">Каждая кнопка с новой строки</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="table-container" style="margin-top: 30px;">
+                    <h3 style="padding: 15px 15px 0;">Статистика бота</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Показатель</th>
+                                <th>Значение</th>
+                                <th>Изменение</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody id="botStatsTable">
+                            <!-- Статистика бота -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- ЗАЯВКИ -->
+            <div id="leads-tab" class="tab-content">
+                <div class="telegram-panel">
+                    <h2><i class="fas fa-users"></i> Управление заявками</h2>
+                    <p>Все заявки из Telegram бота и других источников</p>
+                </div>
+                
+                <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+                    <button class="btn" onclick="importLeadsFromBot()">
+                        <i class="fas fa-sync-alt"></i> Загрузить из бота
+                    </button>
+                    <button class="btn btn-success" onclick="exportLeadsToCSV()">
+                        <i class="fas fa-file-export"></i> Экспорт в CSV
+                    </button>
+                    <button class="btn btn-warning" onclick="sendBulkMessages()">
+                        <i class="fas fa-bullhorn"></i> Массовая рассылка
+                    </button>
+                </div>
+                
+                <div class="kanban-board">
+                    <!-- Канбан доска заявок -->
+                </div>
+                
+                <div class="table-container" style="margin-top: 30px;">
+                    <h3 style="padding: 15px 15px 0;">Все заявки</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Дата</th>
+                                <th>Клиент</th>
+                                <th>Telegram</th>
+                                <th>Телефон</th>
+                                <th>Статус</th>
+                                <th>Источник</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leadsTable">
+                            <!-- Таблица заявок -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- ЧАТ С КЛИЕНТАМИ -->
+            <div id="chat-tab" class="tab-content">
+                <div class="telegram-panel">
+                    <h2><i class="fas fa-comments"></i> Чат с клиентами</h2>
+                    <p>Общайтесь с клиентами напрямую через бота</p>
+                </div>
+                
+                <div class="chat-container">
+                    <div class="chat-sidebar">
+                        <h3 style="margin-bottom: 15px;">Клиенты онлайн</h3>
+                        <div id="onlineClients">
+                            <!-- Список клиентов -->
+                        </div>
+                    </div>
+                    
+                    <div class="chat-messages" id="chatMessages">
+                        <div style="text-align: center; color: #666; margin-top: 50px;">
+                            <i class="fas fa-comments fa-3x" style="margin-bottom: 20px;"></i><br>
+                            Выберите клиента для начала общения
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px; display: flex; gap: 10px;">
+                    <input type="text" id="chatInput" placeholder="Введите сообщение..." style="flex: 1;" disabled>
+                    <button class="btn btn-telegram" id="sendMessageBtn" disabled>
+                        <i class="fas fa-paper-plane"></i> Отправить
+                    </button>
+                </div>
+            </div>
+            
+            <!-- РАССЫЛКИ -->
+            <div id="messages-tab" class="tab-content">
+                <div class="telegram-panel">
+                    <h2><i class="fas fa-paper-plane"></i> Массовые рассылки</h2>
+                    <p>Отправляйте сообщения всем клиентам или выбранным группам</p>
+                </div>
+                
+                <div class="config-grid">
+                    <div class="bot-config">
+                        <h3><i class="fas fa-edit"></i> Создать рассылку</h3>
+                        
+                        <div class="form-group">
+                            <label>Получатели:</label>
+                            <select id="recipientsType">
+                                <option value="all">Все клиенты</option>
+                                <option value="new">Только новые</option>
+                                <option value="active">Активные клиенты</option>
+                                <option value="selected">Выбранные вручную</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Текст сообщения:</label>
+                            <textarea id="broadcastMessage" rows="6" placeholder="Введите текст рассылки..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Кнопки:</label>
+                            <div id="broadcastButtons">
+                                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                                    <input type="text" placeholder="Текст кнопки" style="flex: 1;">
+                                    <input type="text" placeholder="Ссылка" style="flex: 1;">
+                                    <button class="btn btn-small btn-danger" onclick="removeButton(this)">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <button class="btn btn-small" onclick="addBroadcastButton()" style="margin-top: 10px;">
+                                <i class="fas fa-plus"></i> Добавить кнопку
+                            </button>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Запланировать отправку:</label>
+                            <input type="datetime-local" id="scheduleTime">
+                        </div>
+                        
+                        <button class="btn btn-telegram" onclick="sendBroadcast()" style="width: 100%;">
+                            <i class="fas fa-paper-plane"></i> Отправить рассылку
+                        </button>
+                    </div>
+                    
+                    <div class="bot-config">
+                        <h3><i class="fas fa-history"></i> История рассылок</h3>
+                        <div id="broadcastHistory" style="max-height: 400px; overflow-y: auto;">
+                            <!-- История рассылок -->
+                        </div>
+                    </div>
+                    
+                    <div class="message-templates">
+                        <h3><i class="fas fa-sticky-note"></i> Шаблоны сообщений</h3>
+                        
+                        <div class="template-item" onclick="useTemplate('welcome')">
+                            <strong>Приветственное</strong><br>
+                            <small>Добро пожаловать! Чем могу помочь?</small>
+                        </div>
+                        
+                        <div class="template-item" onclick="useTemplate('promotion')">
+                            <strong>Акция</strong><br>
+                            <small>Специальное предложение для вас!</small>
+                        </div>
+                        
+                        <div class="template-item" onclick="useTemplate('reminder')">
+                            <strong>Напоминание</strong><br>
+                            <small>Напоминаем о вашей записи...</small>
+                        </div>
+                        
+                        <button class="btn btn-small" onclick="addNewTemplate()" style="width: 100%; margin-top: 10px;">
+                            <i class="fas fa-plus"></i> Новый шаблон
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- АНАЛИТИКА -->
+            <div id="analytics-tab" class="tab-content">
+                <div class="telegram-panel">
+                    <h2><i class="fas fa-chart-bar"></i> Аналитика бота</h2>
+                    <p>Статистика и эффективность работы Telegram бота</p>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px;">
+                    <div style="background: white; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
+                        <div style="font-size: 32px; font-weight: bold; color: #0088cc;" id="totalUsers">0</div>
+                        <div style="color: #666;">Всего пользователей</div>
+                    </div>
+                    
+                    <div style="background: white; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
+                        <div style="font-size: 32px; font-weight: bold; color: #28a745;" id="activeToday">0</div>
+                        <div style="color: #666;">Активных сегодня</div>
+                    </div>
+                    
+                    <div style="background: white; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
+                        <div style="font-size: 32px; font-weight: bold; color: #ffc107;" id="messagesSent">0</div>
+                        <div style="color: #666;">Сообщений отправлено</div>
+                    </div>
+                    
+                    <div style="background: white; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
+                        <div style="font-size: 32px; font-weight: bold; color: #dc3545;" id="conversionRate">0%</div>
+                        <div style="color: #666;">Конверсия в заявки</div>
+                    </div>
+                </div>
+                
+                <div style="background: white; padding: 20px; border-radius: 10px; margin-top: 20px;">
+                    <h3 style="margin-bottom: 20px;">График активности</h3>
+                    <div style="height: 300px; display: flex; align-items: flex-end; gap: 10px;">
+                        <!-- Простой график активности -->
+                        <div style="flex: 1; background: #e9ecef; border-radius: 5px; position: relative;">
+                            <div style="background: #0088cc; border-radius: 5px 5px 0 0; position: absolute; bottom: 0; width: 100%;" id="day1"></div>
+                            <div style="position: absolute; bottom: -25px; width: 100%; text-align: center; font-size: 12px;">Пн</div>
+                        </div>
+                        <div style="flex: 1; background: #e9ecef; border-radius: 5px; position: relative;">
+                            <div style="background: #0088cc; border-radius: 5px 5px 0 0; position: absolute; bottom: 0; width: 100%;" id="day2"></div>
+                            <div style="position: absolute; bottom: -25px; width: 100%; text-align: center; font-size: 12px;">Вт</div>
+                        </div>
+                        <div style="flex: 1; background: #e9ecef; border-radius: 5px; position: relative;">
+                            <div style="background: #0088cc; border-radius: 5px 5px 0 0; position: absolute; bottom: 0; width: 100%;" id="day3"></div>
+                            <div style="position: absolute; bottom: -25px; width: 100%; text-align: center; font-size: 12px;">Ср</div>
+                        </div>
+                        <div style="flex: 1; background: #e9ecef; border-radius: 5px; position: relative;">
+                            <div style="background: #0088cc; border-radius: 5px 5px 0 0; position: absolute; bottom: 0; width: 100%;" id="day4"></div>
+                            <div style="position: absolute; bottom: -25px; width: 100%; text-align: center; font-size: 12px;">Чт</div>
+                        </div>
+                        <div style="flex: 1; background: #e9ecef; border-radius: 5px; position: relative;">
+                            <div style="background: #0088cc; border-radius: 5px 5px 0 0; position: absolute; bottom: 0; width: 100%;" id="day5"></div>
+                            <div style="position: absolute; bottom: -25px; width: 100%; text-align: center; font-size: 12px;">Пт</div>
+                        </div>
+                        <div style="flex: 1; background: #e9ecef; border-radius: 5px; position: relative;">
+                            <div style="background: #0088cc; border-radius: 5px 5px 0 0; position: absolute; bottom: 0; width: 100%;" id="day6"></div>
+                            <div style="position: absolute; bottom: -25px; width: 100%; text-align: center; font-size: 12px;">Сб</div>
+                        </div>
+                        <div style="flex: 1; background: #e9ecef; border-radius: 5px; position: relative;">
+                            <div style="background: #0088cc; border-radius: 5px 5px 0 0; position: absolute; bottom: 0; width: 100%;" id="day7"></div>
+                            <div style="position: absolute; bottom: -25px; width: 100%; text-align: center; font-size: 12px;">Вс</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- НАСТРОЙКИ -->
+            <div id="settings-tab" class="tab-content">
+                <div class="telegram-panel">
+                    <h2><i class="fas fa-cog"></i> Настройки системы</h2>
+                    <p>Расширенные настройки и управление данными</p>
+                </div>
+                
+                <div class="config-grid">
+                    <div class="bot-config">
+                        <h3><i class="fas fa-bell"></i> Уведомления</h3>
+                        
+                        <div class="form-group">
+                            <label>Уведомлять о новых заявках:</label>
+                            <select id="notificationType">
+                                <option value="telegram">В Telegram</option>
+                                <option value="email">По email</option>
+                                <option value="both">Оба способа</option>
+                                <option value="none">Не уведомлять</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Email для уведомлений:</label>
+                            <input type="email" id="notificationEmail" placeholder="email@example.com">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Звуковые уведомления:</label>
+                            <select id="soundNotifications">
+                                <option value="enabled">Включены</option>
+                                <option value="disabled">Выключены</option>
+                            </select>
+                        </div>
+                        
+                        <button class="btn" onclick="saveNotificationSettings()">
+                            <i class="fas fa-save"></i> Сохранить
+                        </button>
+                    </div>
+                    
+                    <div class="bot-config">
+                        <h3><i class="fas fa-database"></i> Управление данными</h3>
+                        
+                        <button class="btn" onclick="backupData()" style="width: 100%; margin-bottom: 10px;">
+                            <i class="fas fa-download"></i> Создать резервную копию
+                        </button>
+                        
+                        <button class="btn btn-warning" onclick="restoreData()" style="width: 100%; margin-bottom: 10px;">
+                            <i class="fas fa-upload"></i> Восстановить из копии
+                        </button>
+                        
+                        <button class="btn btn-danger" onclick="clearAllData()" style="width: 100%;">
+                            <i class="fas fa-trash"></i> Очистить все данные
+                        </button>
+                        
+                        <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 10px;">
+                            <strong>Информация о данных:</strong><br>
+                            <small>Заявок: <span id="dataLeadsCount">0</span></small><br>
+                            <small>Клиентов: <span id="dataClientsCount">0</span></small><br>
+                            <small>Сообщений: <span id="dataMessagesCount">0</span></small>
+                        </div>
+                    </div>
+                    
+                    <div class="bot-config">
+                        <h3><i class="fas fa-shield-alt"></i> Безопасность</h3>
+                        
+                        <div class="form-group">
+                            <label>Пароль администратора:</label>
+                            <input type="password" id="adminPassword" placeholder="Новый пароль">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Подтвердите пароль:</label>
+                            <input type="password" id="adminPasswordConfirm" placeholder="Повторите пароль">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Автоматический выход:</label>
+                            <select id="autoLogout">
+                                <option value="0">Не выходить</option>
+                                <option value="15">Через 15 минут</option>
+                                <option value="30">Через 30 минут</option>
+                                <option value="60">Через 1 час</option>
+                            </select>
+                        </div>
+                        
+                        <button class="btn" onclick="changePassword()">
+                            <i class="fas fa-key"></i> Сменить пароль
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- МОДАЛЬНОЕ ОКНО ОТПРАВКИ СООБЩЕНИЯ -->
+    <div id="messageModal" class="modal">
+        <div class="modal-content">
+            <h3 style="margin-bottom: 20px;">Отправить сообщение клиенту</h3>
+            <div class="form-group">
+                <label>Клиент:</label>
+                <input type="text" id="modalClientName" readonly>
+            </div>
+            
+            <div class="form-group">
+                <label>Сообщение:</label>
+                <textarea id="modalMessage" rows="4" placeholder="Введите сообщение..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>Прикрепить файл/фото:</label>
+                <input type="file" id="modalAttachment">
+            </div>
+            
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button type="button" class="btn btn-success" onclick="sendDirectMessage()">
+                    <i class="fas fa-paper-plane"></i> Отправить
+                </button>
+                <button type="button" class="btn btn-danger" onclick="closeMessageModal()">
+                    <i class="fas fa-times"></i> Отмена
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- МОДАЛЬНОЕ ОКНО СОЗДАНИЯ ШАБЛОНА -->
+    <div id="templateModal" class="modal">
+        <div class="modal-content">
+            <h3 style="margin-bottom: 20px;">Создать шаблон сообщения</h3>
+            
+            <div class="form-group">
+                <label>Название шаблона:</label>
+                <input type="text" id="templateName" placeholder="Приветственное сообщение">
+            </div>
+            
+            <div class="form-group">
+                <label>Текст шаблона:</label>
+                <textarea id="templateText" rows="6" placeholder="Введите текст шаблона..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>Переменные:</label>
+                <div style="display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px;">
+                    <button class="btn btn-small" onclick="insertVariable('{name}')">Имя</button>
+                    <button class="btn btn-small" onclick="insertVariable('{phone}')">Телефон</button>
+                    <button class="btn btn-small" onclick="insertVariable('{date}')">Дата</button>
+                    <button class="btn btn-small" onclick="insertVariable('{company}')">Компания</button>
+                </div>
+            </div>
+            
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button type="button" class="btn btn-success" onclick="saveTemplate()">
+                    <i class="fas fa-save"></i> Сохранить
+                </button>
+                <button type="button" class="btn btn-danger" onclick="closeTemplateModal()">
+                    <i class="fas fa-times"></i> Отмена
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ==========
+        let bot = null;
+        let botToken = '';
+        let botStatus = 'stopped';
+        let allLeads = [];
+        let allClients = [];
+        let allMessages = [];
+        let currentChatClient = null;
+        let botCommands = [];
+        let messageTemplates = [];
+        let broadcastHistory = [];
+        
+        // ========== ИНИЦИАЛИЗАЦИЯ ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAllData();
+            updateBotStatusDisplay();
+            updateAnalytics();
+            renderLeadsTable();
+            renderBotStats();
+            
+            // Автосохранение каждые 2 минуты
+            setInterval(saveAllData, 120000);
+            
+            // Обновление статуса бота
+            setInterval(checkBotStatus, 10000);
+            
+            // Загрузка шаблонов по умолчанию
+            loadDefaultTemplates();
+        });
+        
+        // ========== УПРАВЛЕНИЕ БОТОМ ==========
+        async function startBot() {
+            const token = document.getElementById('botToken').value.trim();
+            
+            if (!token) {
+                showNotification('Введите токен бота', 'error');
+                return;
+            }
+            
+            showNotification('Запуск бота...', 'info');
+            
+            try {
+                // Имитация запуска бота
+                botToken = token;
+                botStatus = 'running';
+                
+                // Сохраняем настройки
+                saveBotConfig();
+                
+                // Обновляем интерфейс
+                updateBotStatusDisplay();
+                
+                // Показываем успешное сообщение
+                showNotification('✅ Бот успешно запущен', 'success');
+                
+                // Начинаем получать обновления
+                startPollingUpdates();
+                
+                // Обновляем статистику
+                updateBotStats();
+                
+            } catch (error) {
+                console.error('Ошибка запуска бота:', error);
+                botStatus = 'error';
+                updateBotStatusDisplay();
+                showNotification('❌ Ошибка запуска бота: ' + error.message, 'error');
+            }
+        }
+        
+        function stopBot() {
+            if (confirm('Остановить бота?')) {
+                botStatus = 'stopped';
+                updateBotStatusDisplay();
+                showNotification('Бот остановлен', 'info');
+            }
+        }
+        
+        function updateBotStatusDisplay() {
+            const statusIndicator = document.getElementById('botStatus');
+            const statusText = document.getElementById('botStatusText');
+            const statusInfo = document.getElementById('botInfo');
+            const startBtn = document.getElementById('startBotBtn');
+            const stopBtn = document.getElementById('stopBotBtn');
+            
+            statusIndicator.className = 'status-indicator';
+            
+            switch(botStatus) {
+                case 'running':
+                    statusIndicator.classList.add('active');
+                    statusText.textContent = 'Бот работает';
+                    statusInfo.textContent = 'Получаем обновления...';
+                    startBtn.style.display = 'none';
+                    stopBtn.style.display = 'block';
+                    break;
+                    
+                case 'stopped':
+                    statusText.textContent = 'Бот остановлен';
+                    statusInfo.textContent = 'Запустите бота для начала работы';
+                    startBtn.style.display = 'block';
+                    stopBtn.style.display = 'none';
+                    break;
+                    
+                case 'error':
+                    statusIndicator.style.background = '#dc3545';
+                    statusText.textContent = 'Ошибка бота';
+                    statusInfo.textContent = 'Проверьте настройки';
+                    startBtn.style.display = 'block';
+                    stopBtn.style.display = 'none';
+                    break;
+            }
+        }
+        
+        function startPollingUpdates() {
+            if (botStatus !== 'running') return;
+            
+            // Имитация получения обновлений от Telegram
+            setInterval(async () => {
+                try {
+                    // Получаем новые сообщения
+                    const newMessages = await simulateGetUpdates();
+                    
+                    // Обрабатываем каждое сообщение
+                    newMessages.forEach(message => {
+                        processIncomingMessage(message);
+                    });
+                    
+                } catch (error) {
+                    console.error('Ошибка получения обновлений:', error);
+                }
+            }, 3000); // Проверка каждые 3 секунды
+        }
+        
+        async function simulateGetUpdates() {
+            // Имитация получения сообщений от Telegram API
+            const shouldHaveNewMessage = Math.random() > 0.8; // 20% шанс
+            
+            if (!shouldHaveNewMessage) return [];
+            
+            // Создаем тестовые сообщения
+            const messages = [
+                {
+                    id: Date.now(),
+                    from: {
+                        id: Math.floor(Math.random() * 1000000),
+                        first_name: ['Александр', 'Мария', 'Дмитрий', 'Екатерина'][Math.floor(Math.random() * 4)],
+                        username: 'user' + Math.floor(Math.random() * 100)
+                    },
+                    text: ['Привет!', 'Есть вопросы', 'Хочу записаться', 'Сколько стоит?'][Math.floor(Math.random() * 4)],
+                    chat: { id: Math.floor(Math.random() * 1000000) },
+                    date: Math.floor(Date.now() / 1000)
+                }
+            ];
+            
+            return messages;
+        }
+        
+        function processIncomingMessage(message) {
+            // Сохраняем сообщение
+            const chatId = message.chat.id;
+            const clientId = message.from.id;
+            
+            // Находим или создаем клиента
+            let client = allClients.find(c => c.id === clientId);
+            if (!client) {
+                client = {
+                    id: clientId,
+                    name: message.from.first_name,
+                    username: message.from.username,
+                    phone: '',
+                    status: 'new',
+                    lastActive: new Date().toISOString(),
+                    createdAt: new Date().toISOString()
+                };
+                allClients.push(client);
+            }
+            
+            // Сохраняем сообщение
+            const newMessage = {
+                id: message.id,
+                clientId: clientId,
+                text: message.text,
+                direction: 'incoming',
+                timestamp: new Date().toISOString(),
+                read: false
+            };
+            
+            allMessages.push(newMessage);
+            
+            // Обновляем интерфейс
+            if (currentChatClient && currentChatClient.id === clientId) {
+                renderChatMessages();
+            }
+            
+            // Показываем уведомление
+            showNotification(`Новое сообщение от ${client.name}`, 'info');
+            playNotificationSound();
+            
+            // Автоответ если настроен
+            if (document.getElementById('autoReply').checked) {
+                setTimeout(() => {
+                    sendAutoReply(clientId, message.text);
+                }, 1000);
+            }
+            
+            // Сохраняем данные
+            saveAllData();
+            updateAnalytics();
+        }
+        
+        function sendAutoReply(clientId, originalText) {
+            const replies = {
+                'привет': 'Здравствуйте! Чем могу помочь?',
+                'здравствуйте': 'Добрый день! Как вас зовут?',
+                'сколько стоит': 'Стоимость зависит от курса. Можете уточнить, что вас интересует?',
+                'записаться': 'Отлично! Для записи оставьте, пожалуйста, ваш номер телефона.'
+            };
+            
+            const text = originalText.toLowerCase();
+            let reply = 'Спасибо за ваше сообщение! Чем могу помочь?';
+            
+            for (const [key, value] of Object.entries(replies)) {
+                if (text.includes(key)) {
+                    reply = value;
+                    break;
+                }
+            }
+            
+            sendMessageToClient(clientId, reply);
+        }
+        
+        async function sendMessageToClient(clientId, text) {
+            if (botStatus !== 'running') {
+                showNotification('Бот не запущен', 'error');
+                return;
+            }
+            
+            showNotification('Отправка сообщения...', 'info');
+            
+            try {
+                // Имитация отправки через Telegram API
+                const messageId = Date.now();
+                
+                // Сохраняем сообщение
+                const message = {
+                    id: messageId,
+                    clientId: clientId,
+                    text: text,
+                    direction: 'outgoing',
+                    timestamp: new Date().toISOString(),
+                    status: 'sent'
+                };
+                
+                allMessages.push(message);
+                
+                // Обновляем интерфейс чата
+                if (currentChatClient && currentChatClient.id === clientId) {
+                    renderChatMessages();
+                }
+                
+                // Показываем успешное сообщение
+                showNotification('✅ Сообщение отправлено', 'success');
+                
+                // Сохраняем данные
+                saveAllData();
+                updateBotStats();
+                
+            } catch (error) {
+                console.error('Ошибка отправки:', error);
+                showNotification('❌ Ошибка отправки сообщения', 'error');
+            }
+        }
+        
+        // ========== НАСТРОЙКИ БОТА ==========
+        function saveBotConfig() {
+            const config = {
+                token: document.getElementById('botToken').value,
+                name: document.getElementById('botName').value,
+                welcomeMessage: document.getElementById('welcomeMessage').value,
+                commands: botCommands,
+                autoReply: document.getElementById('autoReply').checked,
+                collectPhone: document.getElementById('collectPhone').checked,
+                notifyNewLeads: document.getElementById('notifyNewLeads').checked,
+                saveChatHistory: document.getElementById('saveChatHistory').checked,
+                menuButtons: document.getElementById('menuButtons').value.split('\n').filter(b => b.trim()),
+                status: botStatus
+            };
+            
+            localStorage.setItem('telegram_bot_config', JSON.stringify(config));
+            
+            showNotification('Настройки бота сохранены', 'success');
+        }
+        
+        function loadBotConfig() {
+            const saved = localStorage.getItem('telegram_bot_config');
+            if (saved) {
+                const config = JSON.parse(saved);
+                
+                document.getElementById('botToken').value = config.token || '';
+                document.getElementById('botName').value = config.name || '';
+                document.getElementById('welcomeMessage').value = config.welcomeMessage || '';
+                document.getElementById('autoReply').checked = config.autoReply !== false;
+                document.getElementById('collectPhone').checked = config.collectPhone !== false;
+                document.getElementById('notifyNewLeads').checked = config.notifyNewLeads !== false;
+                document.getElementById('saveChatHistory').checked = config.saveChatHistory || false;
+                document.getElementById('menuButtons').value = (config.menuButtons || []).join('\n');
+                
+                botCommands = config.commands || [];
+                botStatus = config.status || 'stopped';
+                
+                renderBotCommands();
+            }
+        }
+        
+        function addBotCommand() {
+            const name = document.getElementById('commandName').value.trim();
+            const desc = document.getElementById('commandDesc').value.trim();
+            
+            if (!name || !desc) {
+                showNotification('Заполните оба поля', 'error');
+                return;
+            }
+            
+            botCommands.push({
+                command: name.startsWith('/') ? name : '/' + name,
+                description: desc
+            });
+            
+            renderBotCommands();
+            
+            document.getElementById('commandName').value = '';
+            document.getElementById('commandDesc').value = '';
+            
+            showNotification('Команда добавлена', 'success');
+        }
+        
+        function renderBotCommands() {
+            const container = document.getElementById('botCommandsList');
+            
+            if (botCommands.length === 0) {
+                container.innerHTML = '<small style="color: #666;">Нет команд</small>';
+                return;
+            }
+            
+            container.innerHTML = botCommands.map((cmd, index) => `
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px; border-bottom: 1px solid #eee;">
+                    <div>
+                        <strong>${cmd.command}</strong><br>
+                        <small>${cmd.description}</small>
+                    </div>
+                    <button class="btn btn-small btn-danger" onclick="removeBotCommand(${index})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+        
+        function removeBotCommand(index) {
+            if (confirm('Удалить эту команду?')) {
+                botCommands.splice(index, 1);
+                renderBotCommands();
+                showNotification('Команда удалена', 'success');
+            }
+        }
+        
+        function createBotAutomatically() {
+            showNotification('Эта функция требует авторизации в Telegram', 'info');
+            
+            // В реальном приложении здесь будет OAuth авторизация
+            // и вызов Telegram API для создания бота
+            
+            // Имитация создания бота
+            setTimeout(() => {
+                const mockToken = '1234567890:AA' + Math.random().toString(36).substr(2, 33);
+                
+                document.getElementById('botToken').value = mockToken;
+                document.getElementById('botName').value = 'MyCRM_Bot_' + Math.floor(Math.random() * 1000);
+                
+                const resultDiv = document.getElementById('botCreationResult');
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = `
+                    <strong>✅ Бот успешно создан!</strong><br>
+                    <small>Токен: ${mockToken.substring(0, 20)}...</small><br>
+                    <small>Username: @${document.getElementById('botName').value.toLowerCase()}_bot</small>
+                `;
+                
+                showNotification('Бот успешно создан!', 'success');
+            }, 2000);
+        }
+        
+        function toggleTokenVisibility() {
+            const input = document.getElementById('botToken');
+            input.type = input.type === 'password' ? 'text' : 'password';
+        }
+        
+        // ========== УПРАВЛЕНИЕ ЗАЯВКАМИ ==========
+        function importLeadsFromBot() {
+            showNotification('Импорт заявок из бота...', 'info');
+            
+            // Имитация импорта заявок
+            setTimeout(() => {
+                const mockLeads = generateMockLeads(5);
+                
+                mockLeads.forEach(lead => {
+                    // Проверяем, нет ли уже такой заявки
+                    const existing = allLeads.find(l => l.phone === lead.phone);
+                    
+                    if (!existing) {
+                        allLeads.push(lead);
+                    }
+                });
+                
+                renderLeadsTable();
+                saveAllData();
+                
+                showNotification(`Импортировано ${mockLeads.length} новых заявок`, 'success');
+                
+            }, 1500);
+        }
+        
+        function generateMockLeads(count) {
+            const names = ['Александр Иванов', 'Мария Петрова', 'Дмитрий Сидоров', 'Екатерина Волкова'];
+            const phones = ['+7 (999) 123-45-67', '+7 (888) 234-56-78', '+7 (777) 345-67-89'];
+            const sources = ['telegram', 'website', 'phone'];
+            const statuses = ['new', 'inprogress', 'done'];
+            
+            const leads = [];
+            
+            for (let i = 0; i < count; i++) {
+                leads.push({
+                    id: 'lead_' + Date.now() + '_' + i,
+                    name: names[i % names.length],
+                    phone: phones[i % phones.length],
+                    telegram: '@user' + i,
+                    source: sources[i % sources.length],
+                    status: statuses[i % statuses.length],
+                    comment: 'Тестовая заявка ' + (i + 1),
+                    date: new Date().toLocaleString('ru-RU'),
+                    createdAt: new Date().toISOString()
+                });
+            }
+            
+            return leads;
+        }
+        
+        function renderLeadsTable() {
+            const tbody = document.getElementById('leadsTable');
+            
+            if (allLeads.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 40px; color: #666;">
+                            Нет заявок
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tbody.innerHTML = allLeads.map(lead => `
+                <tr>
+                    <td>${lead.date.split(' ')[0]}</td>
+                    <td>${lead.name}</td>
+                    <td>${lead.telegram || '-'}</td>
+                    <td>${lead.phone}</td>
+                    <td>
+                        <select onchange="updateLeadStatus('${lead.id}', this.value)" style="padding: 4px 8px; border-radius: 4px; border: 1px solid #ddd; font-size: 12px;">
+                            <option value="new" ${lead.status === 'new' ? 'selected' : ''}>Новый</option>
+                            <option value="inprogress" ${lead.status === 'inprogress' ? 'selected' : ''}>В работе</option>
+                            <option value="done" ${lead.status === 'done' ? 'selected' : ''}>Завершен</option>
+                        </select>
+                    </td>
+                    <td>${lead.source === 'telegram' ? '<i class="fab fa-telegram"></i> Telegram' : '<i class="fas fa-globe"></i> Сайт'}</td>
+                    <td>
+                        <button class="btn btn-small" onclick="openMessageModal('${lead.id}')">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                        <button class="btn btn-small btn-danger" onclick="deleteLead('${lead.id}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        function updateLeadStatus(leadId, newStatus) {
+            const lead = allLeads.find(l => l.id === leadId);
+            if (lead) {
+                lead.status = newStatus;
+                saveAllData();
+                showNotification('Статус обновлен', 'success');
+            }
+        }
+        
+        function deleteLead(leadId) {
+            if (confirm('Удалить эту заявку?')) {
+                allLeads = allLeads.filter(l => l.id !== leadId);
+                renderLeadsTable();
+                saveAllData();
+                showNotification('Заявка удалена', 'success');
+            }
+        }
+        
+        function exportLeadsToCSV() {
+            if (allLeads.length === 0) {
+                showNotification('Нет данных для экспорта', 'error');
+                return;
+            }
+            
+            const headers = ['Дата', 'Имя', 'Телефон', 'Telegram', 'Статус', 'Источник', 'Комментарий'];
+            let csv = headers.join(',') + '\n';
+            
+            allLeads.forEach(lead => {
+                const row = [
+                    lead.date,
+                    `"${lead.name}"`,
+                    lead.phone,
+                    lead.telegram || '',
+                    lead.status,
+                    lead.source,
+                    `"${lead.comment || ''}"`
+                ];
+                csv += row.join(',') + '\n';
+            });
+            
+            const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `leads_export_${new Date().toISOString().slice(0, 10)}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+            showNotification('Данные экспортированы в CSV', 'success');
+        }
+        
+        // ========== ЧАТ С КЛИЕНТАМИ ==========
+        function renderOnlineClients() {
+            const container = document.getElementById('onlineClients');
+            
+            if (allClients.length === 0) {
+                container.innerHTML = '<p style="color: #666; text-align: center;">Нет клиентов</p>';
+                return;
+            }
+            
+            // Показываем последних 10 активных клиентов
+            const recentClients = [...allClients]
+                .sort((a, b) => new Date(b.lastActive) - new Date(a.lastActive))
+                .slice(0, 10);
+            
+            container.innerHTML = recentClients.map(client => `
+                <div class="template-item" onclick="openChatWithClient('${client.id}')" style="cursor: pointer;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <strong>${client.name}</strong>
+                        <small style="color: #28a745;">●</small>
+                    </div>
+                    <small style="color: #666;">@${client.username || 'без username'}</small>
+                </div>
+            `).join('');
+        }
+        
+        function openChatWithClient(clientId) {
+            currentChatClient = allClients.find(c => c.id === clientId);
+            
+            if (!currentChatClient) return;
+            
+            // Активируем поле ввода
+            document.getElementById('chatInput').disabled = false;
+            document.getElementById('sendMessageBtn').disabled = false;
+            
+            // Рендерим сообщения
+            renderChatMessages();
+            
+            // Устанавливаем обработчик отправки
+            document.getElementById('sendMessageBtn').onclick = sendChatMessage;
+            document.getElementById('chatInput').onkeypress = function(e) {
+                if (e.key === 'Enter') sendChatMessage();
+            };
+        }
+        
+        function renderChatMessages() {
+            const container = document.getElementById('chatMessages');
+            
+            if (!currentChatClient) {
+                container.innerHTML = `
+                    <div style="text-align: center; color: #666; margin-top: 50px;">
+                        <i class="fas fa-comments fa-3x" style="margin-bottom: 20px;"></i><br>
+                        Выберите клиента для начала общения
+                    </div>
+                `;
+                return;
+            }
+            
+            // Получаем сообщения этого клиента
+            const clientMessages = allMessages
+                .filter(m => m.clientId === currentChatClient.id)
+                .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+            
+            if (clientMessages.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; color: #666; margin-top: 50px;">
+                        <i class="fas fa-comment fa-3x" style="margin-bottom: 20px;"></i><br>
+                        Начните диалог с ${currentChatClient.name}
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = clientMessages.map(msg => `
+                <div class="message ${msg.direction === 'incoming' ? 'message-incoming' : 'message-outgoing'}">
+                    <div style="font-size: 12px; opacity: 0.7; margin-bottom: 5px;">
+                        ${new Date(msg.timestamp).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}
+                    </div>
+                    ${msg.text}
+                </div>
+            `).join('');
+            
+            // Прокручиваем вниз
+            container.scrollTop = container.scrollHeight;
+        }
+        
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            
+            if (!text) return;
+            
+            if (!currentChatClient) {
+                showNotification('Выберите клиента', 'error');
+                return;
+            }
+            
+            // Отправляем сообщение
+            sendMessageToClient(currentChatClient.id, text);
+            
+            // Очищаем поле ввода
+            input.value = '';
+            
+            // Рендерим сообщения
+            renderChatMessages();
+        }
+        
+        // ========== РАССЫЛКИ ==========
+        function addBroadcastButton() {
+            const container = document.getElementById('broadcastButtons');
+            
+            const buttonHtml = `
+                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                    <input type="text" placeholder="Текст кнопки" style="flex: 1;">
+                    <input type="text" placeholder="Ссылка" style="flex: 1;">
+                    <button class="btn btn-small btn-danger" onclick="removeButton(this)">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+            
+            container.insertAdjacentHTML('beforeend', buttonHtml);
+        }
+        
+        function removeButton(button) {
+            button.parentElement.remove();
+        }
+        
+        function sendBroadcast() {
+            const message = document.getElementById('broadcastMessage').value.trim();
+            const recipientsType = document.getElementById('recipientsType').value;
+            
+            if (!message) {
+                showNotification('Введите текст сообщения', 'error');
+                return;
+            }
+            
+            // Определяем получателей
+            let recipients = [];
+            
+            switch(recipientsType) {
+                case 'all':
+                    recipients = allClients;
+                    break;
+                case 'new':
+                    recipients = allClients.filter(c => c.status === 'new');
+                    break;
+                case 'active':
+                    const weekAgo = new Date();
+                    weekAgo.setDate(weekAgo.getDate() - 7);
+                    recipients = allClients.filter(c => new Date(c.lastActive) > weekAgo);
+                    break;
+                case 'selected':
+                    showNotification('Выберите клиентов вручную', 'info');
+                    return;
+            }
+            
+            if (recipients.length === 0) {
+                showNotification('Нет получателей', 'error');
+                return;
+            }
+            
+            showNotification(`Отправка рассылки ${recipients.length} клиентам...`, 'info');
+            
+            // Имитация отправки рассылки
+            setTimeout(() => {
+                // Сохраняем в историю
+                const broadcast = {
+                    id: Date.now(),
+                    message: message,
+                    recipientsCount: recipients.length,
+                    sentAt: new Date().toISOString(),
+                    status: 'sent'
+                };
+                
+                broadcastHistory.unshift(broadcast);
+                renderBroadcastHistory();
+                
+                // Очищаем форму
+                document.getElementById('broadcastMessage').value = '';
+                
+                showNotification(`✅ Рассылка отправлена ${recipients.length} клиентам`, 'success');
+                
+            }, 2000);
+        }
+        
+        function renderBroadcastHistory() {
+            const container = document.getElementById('broadcastHistory');
+            
+            if (broadcastHistory.length === 0) {
+                container.innerHTML = '<p style="color: #666; text-align: center;">Нет рассылок</p>';
+                return;
+            }
+            
+            container.innerHTML = broadcastHistory.slice(0, 10).map(broadcast => `
+                <div style="padding: 12px; border-bottom: 1px solid #eee; font-size: 13px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <strong>${new Date(broadcast.sentAt).toLocaleString('ru-RU', { hour: '2-digit', minute: '2-digit' })}</strong>
+                        <span style="color: #666;">${broadcast.recipientsCount} чел.</span>
+                    </div>
+                    <div style="color: #666;">${broadcast.message.substring(0, 50)}${broadcast.message.length > 50 ? '...' : ''}</div>
+                </div>
+            `).join('');
+        }
+        
+        function useTemplate(type) {
+            const templates = {
+                welcome: 'Добро пожаловать! Чем могу помочь?',
+                promotion: 'Специальное предложение только для вас!',
+                reminder: 'Напоминаем о вашей записи завтра в 14:00.'
+            };
+            
+            document.getElementById('broadcastMessage').value = templates[type] || '';
+        }
+        
+        function addNewTemplate() {
+            document.getElementById('templateModal').style.display = 'flex';
+        }
+        
+        function closeTemplateModal() {
+            document.getElementById('templateModal').style.display = 'none';
+        }
+        
+        function insertVariable(variable) {
+            const textarea = document.getElementById('templateText');
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const text = textarea.value;
+            
+            textarea.value = text.substring(0, start) + variable + text.substring(end);
+            textarea.focus();
+            textarea.selectionStart = textarea.selectionEnd = start + variable.length;
+        }
+        
+        function saveTemplate() {
+            const name = document.getElementById('templateName').value.trim();
+            const text = document.getElementById('templateText').value.trim();
+            
+            if (!name || !text) {
+                showNotification('Заполните все поля', 'error');
+                return;
+            }
+            
+            messageTemplates.push({ name, text });
+            saveAllData();
+            
+            closeTemplateModal();
+            showNotification('Шаблон сохранен', 'success');
+        }
+        
+        function loadDefaultTemplates() {
+            if (messageTemplates.length === 0) {
+                messageTemplates = [
+                    { name: 'Приветственное', text: 'Добро пожаловать! Чем могу помочь?' },
+                    { name: 'Акция', text: 'Специальное предложение для вас!' },
+                    { name: 'Напоминание', text: 'Напоминаем о вашей записи...' }
+                ];
+            }
+        }
+        
+        // ========== АНАЛИТИКА ==========
+        function updateAnalytics() {
+            document.getElementById('totalUsers').textContent = allClients.length;
+            
+            const today = new Date().toDateString();
+            const activeToday = allClients.filter(c => {
+                const clientDate = new Date(c.lastActive).toDateString();
+                return clientDate === today;
+            }).length;
+            
+            document.getElementById('activeToday').textContent = activeToday;
+            document.getElementById('messagesSent').textContent = allMessages.filter(m => m.direction === 'outgoing').length;
+            
+            // Простая конверсия
+            const conversion = allLeads.length > 0 ? Math.round((allLeads.filter(l => l.status === 'done').length / allLeads.length) * 100) : 0;
+            document.getElementById('conversionRate').textContent = conversion + '%';
+            
+            // Обновляем график активности
+            updateActivityChart();
+        }
+        
+        function updateActivityChart() {
+            // Простой график активности по дням
+            const days = ['day1', 'day2', 'day3', 'day4', 'day5', 'day6', 'day7'];
+            
+            days.forEach((dayId, index) => {
+                const day = new Date();
+                day.setDate(day.getDate() - (6 - index));
+                const dayStr = day.toDateString();
+                
+                // Считаем активность за день
+                const activity = allMessages.filter(m => {
+                    const msgDate = new Date(m.timestamp).toDateString();
+                    return msgDate === dayStr;
+                }).length;
+                
+                // Максимальная высота - 100%
+                const maxHeight = 100;
+                const height = Math.min(activity * 10, maxHeight); // Увеличиваем для наглядности
+                
+                document.getElementById(dayId).style.height = height + 'px';
+            });
+        }
+        
+        function updateBotStats() {
+            const tbody = document.getElementById('botStatsTable');
+            
+            const stats = [
+                { label: 'Пользователей бота', value: allClients.length, change: '+5%' },
+                { label: 'Сообщений отправлено', value: allMessages.filter(m => m.direction === 'outgoing').length, change: '+12%' },
+                { label: 'Заявок получено', value: allLeads.length, change: '+8%' },
+                { label: 'Средний ответ', value: '2.5 мин', change: '-0.5 мин' }
+            ];
+            
+            tbody.innerHTML = stats.map(stat => `
+                <tr>
+                    <td>${stat.label}</td>
+                    <td><strong>${stat.value}</strong></td>
+                    <td><span style="color: ${stat.change.startsWith('+') ? '#28a745' : '#dc3545'}">${stat.change}</span></td>
+                    <td>
+                        <button class="btn btn-small" onclick="viewStatDetails('${stat.label}')">
+                            <i class="fas fa-chart-bar"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        // ========== НАСТРОЙКИ ==========
+        function saveNotificationSettings() {
+            const settings = {
+                type: document.getElementById('notificationType').value,
+                email: document.getElementById('notificationEmail').value,
+                sound: document.getElementById('soundNotifications').value
+            };
+            
+            localStorage.setItem('notification_settings', JSON.stringify(settings));
+            showNotification('Настройки уведомлений сохранены', 'success');
+        }
+        
+        function backupData() {
+            const backup = {
+                version: '1.0',
+                date: new Date().toISOString(),
+                leads: allLeads,
+                clients: allClients,
+                messages: allMessages,
+                templates: messageTemplates,
+                broadcasts: broadcastHistory
+            };
+            
+            const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `telegram_bot_backup_${new Date().toISOString().slice(0, 10)}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+            showNotification('Резервная копия создана', 'success');
+        }
+        
+        function restoreData() {
+            showNotification('Для восстановления импортируйте файл резервной копии', 'info');
+        }
+        
+        function clearAllData() {
+            if (confirm('ВНИМАНИЕ! Это удалит ВСЕ данные. Продолжить?')) {
+                allLeads = [];
+                allClients = [];
+                allMessages = [];
+                messageTemplates = [];
+                broadcastHistory = [];
+                
+                localStorage.clear();
+                
+                updateAnalytics();
+                renderLeadsTable();
+                renderOnlineClients();
+                renderBroadcastHistory();
+                
+                showNotification('Все данные очищены', 'success');
+            }
+        }
+        
+        function changePassword() {
+            const pass1 = document.getElementById('adminPassword').value;
+            const pass2 = document.getElementById('adminPasswordConfirm').value;
+            
+            if (pass1 !== pass2) {
+                showNotification('Пароли не совпадают', 'error');
+                return;
+            }
+            
+            if (pass1.length < 6) {
+                showNotification('Пароль должен быть не менее 6 символов', 'error');
+                return;
+            }
+            
+            // В реальном приложении здесь будет хеширование пароля
+            localStorage.setItem('admin_password', btoa(pass1));
+            
+            document.getElementById('adminPassword').value = '';
+            document.getElementById('adminPasswordConfirm').value = '';
+            
+            showNotification('Пароль изменен', 'success');
+        }
+        
+        // ========== МОДАЛЬНЫЕ ОКНА ==========
+        function openMessageModal(leadId) {
+            const lead = allLeads.find(l => l.id === leadId);
+            if (!lead) return;
+            
+            document.getElementById('modalClientName').value = lead.name + ' (' + lead.phone + ')';
+            document.getElementById('modalMessage').value = '';
+            document.getElementById('messageModal').style.display = 'flex';
+            
+            // Сохраняем ID лида для отправки
+            window.currentModalLeadId = leadId;
+        }
+        
+        function closeMessageModal() {
+            document.getElementById('messageModal').style.display = 'none';
+            window.currentModalLeadId = null;
+        }
+        
+        function sendDirectMessage() {
+            const message = document.getElementById('modalMessage').value.trim();
+            
+            if (!message) {
+                showNotification('Введите сообщение', 'error');
+                return;
+            }
+            
+            const lead = allLeads.find(l => l.id === window.currentModalLeadId);
+            if (!lead) return;
+            
+            // Находим клиента по телефону или создаем нового
+            let client = allClients.find(c => c.phone === lead.phone);
+            
+            if (!client && lead.telegram) {
+                // Пытаемся найти по Telegram
+                client = allClients.find(c => c.username === lead.telegram.replace('@', ''));
+            }
+            
+            if (!client) {
+                showNotification('Клиент не найден в базе бота', 'error');
+                return;
+            }
+            
+            sendMessageToClient(client.id, message);
+            closeMessageModal();
+        }
+        
+        // ========== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ==========
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            const tabMap = {
+                'bot': { tab: 0, content: 'bot-tab' },
+                'leads': { tab: 1, content: 'leads-tab' },
+                'chat': { tab: 2, content: 'chat-tab' },
+                'messages': { tab: 3, content: 'messages-tab' },
+                'analytics': { tab: 4, content: 'analytics-tab' },
+                'settings': { tab: 5, content: 'settings-tab' }
+            };
+            
+            const tabInfo = tabMap[tabName];
+            if (tabInfo) {
+                document.querySelectorAll('.tab')[tabInfo.tab].classList.add('active');
+                document.getElementById(tabInfo.content).classList.add('active');
+                
+                if (tabName === 'leads') {
+                    renderLeadsTable();
+                } else if (tabName === 'chat') {
+                    renderOnlineClients();
+                } else if (tabName === 'messages') {
+                    renderBroadcastHistory();
+                } else if (tabName === 'analytics') {
+                    updateAnalytics();
+                } else if (tabName === 'settings') {
+                    updateDataStats();
+                }
+            }
+        }
+        
+        function updateDataStats() {
+            document.getElementById('dataLeadsCount').textContent = allLeads.length;
+            document.getElementById('dataClientsCount').textContent = allClients.length;
+            document.getElementById('dataMessagesCount').textContent = allMessages.length;
+        }
+        
+        function loadAllData() {
+            try {
+                // Загружаем конфигурацию бота
+                loadBotConfig();
+                
+                // Загружаем заявки
+                const savedLeads = localStorage.getItem('telegram_bot_leads');
+                allLeads = savedLeads ? JSON.parse(savedLeads) : [];
+                
+                // Загружаем клиентов
+                const savedClients = localStorage.getItem('telegram_bot_clients');
+                allClients = savedClients ? JSON.parse(savedClients) : [];
+                
+                // Загружаем сообщения
+                const savedMessages = localStorage.getItem('telegram_bot_messages');
+                allMessages = savedMessages ? JSON.parse(savedMessages) : [];
+                
+                // Загружаем шаблоны
+                const savedTemplates = localStorage.getItem('telegram_bot_templates');
+                messageTemplates = savedTemplates ? JSON.parse(savedTemplates) : [];
+                
+                // Загружаем историю рассылок
+                const savedBroadcasts = localStorage.getItem('telegram_bot_broadcasts');
+                broadcastHistory = savedBroadcasts ? JSON.parse(savedBroadcasts) : [];
+                
+            } catch (error) {
+                console.error('Ошибка загрузки данных:', error);
+            }
+        }
+        
+        function saveAllData() {
+            try {
+                localStorage.setItem('telegram_bot_leads', JSON.stringify(allLeads));
+                localStorage.setItem('telegram_bot_clients', JSON.stringify(allClients));
+                localStorage.setItem('telegram_bot_messages', JSON.stringify(allMessages));
+                localStorage.setItem('telegram_bot_templates', JSON.stringify(messageTemplates));
+                localStorage.setItem('telegram_bot_broadcasts', JSON.stringify(broadcastHistory));
+            } catch (error) {
+                console.error('Ошибка сохранения данных:', error);
+            }
+        }
+        
+        function showNotification(message, type = 'info') {
+            // Удаляем старые уведомления
+            document.querySelectorAll('.notification').forEach(n => n.remove());
+            
+            const colors = {
+                success: '#28a745',
+                error: '#dc3545',
+                info: '#17a2b8'
+            };
+            
+            const icons = {
+                success: 'fas fa-check-circle',
+                error: 'fas fa-exclamation-circle',
+                info: 'fas fa-info-circle'
+            };
+            
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.style.background = colors[type] || colors.info;
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="${icons[type]}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Автоматическое скрытие
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.style.opacity = '0';
+                    notification.style.transform = 'translateX(100%)';
+                    setTimeout(() => {
+                        if (notification.parentNode) {
+                            notification.parentNode.removeChild(notification);
+                        }
+                    }, 300);
+                }
+            }, 5000);
+        }
+        
+        function playNotificationSound() {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = 800;
+                oscillator.type = 'sine';
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.5);
+            } catch (e) {
+                console.log('Аудио контекст не поддерживается');
+            }
+        }
+        
+        function checkBotStatus() {
+            if (botStatus === 'running') {
+                // Имитация проверки статуса бота
+                const isOnline = Math.random() > 0.1; // 90% шанс что бот онлайн
+                
+                if (!isOnline) {
+                    botStatus = 'error';
+                    updateBotStatusDisplay();
+                    showNotification('Бот отключился', 'error');
+                }
+            }
+        }
+        
+        function viewStatDetails(statName) {
+            alert('Детальная статистика по: ' + statName);
+        }
+        
+        function sendBulkMessages() {
+            showNotification('Для массовой рассылки перейдите во вкладку "Рассылки"', 'info');
+            switchTab('messages');
+        }
+        
+        // Горячие клавиши
+        document.addEventListener('keydown', function(e) {
+            // Ctrl+Enter - отправить сообщение в чате
+            if (e.ctrlKey && e.key === 'Enter') {
+                const activeTab = document.querySelector('.tab-content.active').id;
+                if (activeTab === 'chat-tab') {
+                    sendChatMessage();
+                }
+            }
+            
+            // Esc - закрыть модальные окна
+            if (e.key === 'Escape') {
+                closeMessageModal();
+                closeTemplateModal();
+            }
+        });
+    </script>
+</body>
+</html>
