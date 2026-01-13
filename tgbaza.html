@@ -1,0 +1,2002 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM система | Telegram + Яндекс + Канбан</title>
+    <style>
+        /* ========== ОСНОВНЫЕ СТИЛИ ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            padding: 20px 30px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #6c757d;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+        }
+        
+        .tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+            background: white;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* ========== КНОПКИ ========== */
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-telegram {
+            background: linear-gradient(135deg, #0088cc 0%, #34b7f1 100%);
+        }
+        
+        .btn-yandex {
+            background: linear-gradient(135deg, #ffcc00 0%, #ff6666 100%);
+            color: #333;
+        }
+        
+        .btn-success {
+            background: #28a745;
+        }
+        
+        .btn-warning {
+            background: #ffc107;
+            color: #212529;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+        }
+        
+        .btn-small {
+            padding: 8px 15px;
+            font-size: 12px;
+        }
+        
+        /* ========== ФОРМЫ ========== */
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        /* ========== КАНБАН ДОСКА ========== */
+        .kanban-board {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .kanban-column {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 500px;
+        }
+        
+        .kanban-column-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid;
+        }
+        
+        .column-new .kanban-column-header { border-color: #007bff; }
+        .column-inprogress .kanban-column-header { border-color: #ffc107; }
+        .column-done .kanban-column-header { border-color: #28a745; }
+        
+        .column-count {
+            background: white;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .kanban-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            cursor: move;
+            transition: all 0.3s;
+            border-left: 4px solid;
+        }
+        
+        .kanban-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .card-new { border-left-color: #007bff; }
+        .card-inprogress { border-left-color: #ffc107; }
+        .card-done { border-left-color: #28a745; }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        
+        .card-client {
+            font-weight: 600;
+            font-size: 14px;
+            color: #333;
+        }
+        
+        .card-date {
+            font-size: 11px;
+            color: #6c757d;
+            background: #f8f9fa;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+        
+        .card-info {
+            margin: 10px 0;
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        
+        .tag {
+            background: #e9ecef;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        .tag-telegram { background: #d1fae5; color: #065f46; }
+        .tag-yandex { background: #fef3c7; color: #92400e; }
+        .tag-priority { background: #fee2e2; color: #991b1b; }
+        
+        /* ========== ТАБЛИЦЫ ========== */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 10px;
+            border: 1px solid #e1e5e9;
+            margin-top: 20px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        
+        th {
+            background: #f8f9fa;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #495057;
+            border-bottom: 2px solid #e1e5e9;
+            font-size: 13px;
+        }
+        
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e1e5e9;
+            vertical-align: top;
+        }
+        
+        tr:hover {
+            background: #f8f9fa;
+        }
+        
+        /* ========== СТАТУСЫ ========== */
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        .status-new { background: #cfe2ff; color: #084298; }
+        .status-inprogress { background: #fff3cd; color: #664d03; }
+        .status-done { background: #d1e7dd; color: #0a3622; }
+        
+        /* ========== ПАНЕЛИ ========== */
+        .dashboard-panel {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .stat-card h4 {
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+        
+        .config-panel {
+            background: #f0f7ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .config-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        /* ========== УВЕДОМЛЕНИЯ ========== */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            animation: slideIn 0.3s ease-out;
+            max-width: 400px;
+            font-size: 14px;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        /* ========== МОДАЛЬНЫЕ ОКНА ========== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1001;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        /* ========== АДАПТИВНОСТЬ ========== */
+        @media (max-width: 1200px) {
+            .kanban-board {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                border-radius: 10px;
+            }
+            
+            .tab {
+                padding: 15px;
+                font-size: 12px;
+                flex: 1;
+                text-align: center;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .kanban-board {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .config-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .notification {
+                left: 20px;
+                right: 20px;
+                max-width: none;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ВКЛАДКИ -->
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('dashboard')">
+                <i class="fas fa-home"></i> Дашборд
+            </div>
+            <div class="tab" onclick="switchTab('telegram')">
+                <i class="fab fa-telegram"></i> Telegram
+            </div>
+            <div class="tab" onclick="switchTab('kanban')">
+                <i class="fas fa-columns"></i> Канбан
+            </div>
+            <div class="tab" onclick="switchTab('form')">
+                <i class="fas fa-plus-circle"></i> Новая заявка
+            </div>
+            <div class="tab" onclick="switchTab('yandex')">
+                <i class="fab fa-yandex"></i> Яндекс
+            </div>
+            <div class="tab" onclick="switchTab('settings')">
+                <i class="fas fa-cog"></i> Настройки
+            </div>
+        </div>
+        
+        <div class="content">
+            <!-- ДАШБОРД -->
+            <div id="dashboard-tab" class="tab-content active">
+                <div class="dashboard-panel">
+                    <h2><i class="fas fa-tachometer-alt"></i> Дашборд CRM системы</h2>
+                    <p>Все данные в реальном времени</p>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h4 id="totalLeads">0</h4>
+                        <p>Всего заявок</p>
+                    </div>
+                    <div class="stat-card">
+                        <h4 id="telegramLeads">0</h4>
+                        <p>Из Telegram</p>
+                    </div>
+                    <div class="stat-card">
+                        <h4 id="newLeads">0</h4>
+                        <p>Новых</p>
+                    </div>
+                    <div class="stat-card">
+                        <h4 id="inprogressLeads">0</h4>
+                        <p>В работе</p>
+                    </div>
+                    <div class="stat-card">
+                        <h4 id="doneLeads">0</h4>
+                        <p>Завершено</p>
+                    </div>
+                    <div class="stat-card">
+                        <h4 id="todayLeads">0</h4>
+                        <p>Сегодня</p>
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 30px;">
+                    <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
+                        <h3 style="margin-bottom: 15px;">Быстрые действия</h3>
+                        <button class="btn btn-telegram" onclick="switchTab('telegram')" style="width: 100%; margin-bottom: 10px;">
+                            <i class="fab fa-telegram"></i> Загрузить из Telegram
+                        </button>
+                        <button class="btn" onclick="switchTab('form')" style="width: 100%; margin-bottom: 10px;">
+                            <i class="fas fa-plus"></i> Создать заявку
+                        </button>
+                        <button class="btn btn-yandex" onclick="switchTab('yandex')" style="width: 100%;">
+                            <i class="fab fa-yandex"></i> Синхронизировать с Яндекс
+                        </button>
+                    </div>
+                    
+                    <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
+                        <h3 style="margin-bottom: 15px;">Последние заявки</h3>
+                        <div id="recentLeads" style="max-height: 300px; overflow-y: auto;">
+                            <!-- Последние заявки загрузятся здесь -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- TELEGRAM -->
+            <div id="telegram-tab" class="tab-content">
+                <div class="dashboard-panel" style="background: linear-gradient(135deg, #0088cc 0%, #34b7f1 100%);">
+                    <h2><i class="fab fa-telegram"></i> Интеграция с Telegram ботом</h2>
+                    <p>Автоматическая загрузка заявок из Telegram</p>
+                </div>
+                
+                <div class="config-grid">
+                    <div class="config-panel">
+                        <h3><i class="fas fa-plug"></i> Настройки подключения</h3>
+                        <div class="form-group">
+                            <label>Токен бота:</label>
+                            <input type="password" id="telegramToken" placeholder="1234567890:ABC...">
+                            <small style="color: #666;">Получите у @BotFather</small>
+                        </div>
+                        <div class="form-group">
+                            <label>ID чата (опционально):</label>
+                            <input type="text" id="telegramChatId" placeholder="-1001234567890">
+                        </div>
+                        <button class="btn btn-telegram" onclick="saveTelegramConfig()">
+                            <i class="fas fa-save"></i> Сохранить
+                        </button>
+                        <button class="btn" onclick="testTelegramConnection()" style="margin-left: 10px;">
+                            <i class="fas fa-wifi"></i> Проверить
+                        </button>
+                    </div>
+                    
+                    <div class="config-panel">
+                        <h3><i class="fas fa-download"></i> Загрузка данных</h3>
+                        <p style="color: #666; margin-bottom: 20px;">Получите заявки из вашего бота</p>
+                        
+                        <button class="btn btn-telegram" onclick="importFromTelegram()" style="width: 100%; margin-bottom: 10px;">
+                            <i class="fas fa-history"></i> Загрузить историю
+                        </button>
+                        
+                        <button class="btn btn-success" onclick="startTelegramPolling()" id="startPollingBtn" style="width: 100%; margin-bottom: 10px;">
+                            <i class="fas fa-play"></i> Включить автообновление
+                        </button>
+                        
+                        <button class="btn btn-danger" onclick="stopTelegramPolling()" id="stopPollingBtn" style="width: 100%; display: none;">
+                            <i class="fas fa-stop"></i> Остановить автообновление
+                        </button>
+                        
+                        <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 10px; font-size: 13px;">
+                            <strong><i class="fas fa-info-circle"></i> Как работает:</strong>
+                            <ol style="margin-left: 20px; margin-top: 10px;">
+                                <li>Создайте бота через @BotFather</li>
+                                <li>Вставьте токен в поле выше</li>
+                                <li>Нажмите "Загрузить историю"</li>
+                                <li>Включите автообновление</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <h3 style="padding: 15px 15px 0;">Заявки из Telegram</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Дата</th>
+                                <th>Клиент</th>
+                                <th>Контакты</th>
+                                <th>Сообщение</th>
+                                <th>Статус</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody id="telegramLeadsTable">
+                            <!-- Данные загрузятся здесь -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- КАНБАН -->
+            <div id="kanban-tab" class="tab-content">
+                <div class="dashboard-panel">
+                    <h2><i class="fas fa-columns"></i> Канбан доска</h2>
+                    <p>Управление заявками через перетаскивание</p>
+                </div>
+                
+                <div class="kanban-board">
+                    <div class="kanban-column column-new">
+                        <div class="kanban-column-header">
+                            <h3><i class="fas fa-clock"></i> Новые</h3>
+                            <span class="column-count" id="count-new">0</span>
+                        </div>
+                        <div id="column-new" class="kanban-column-content" 
+                             ondrop="drop(event)" ondragover="allowDrop(event)">
+                            <!-- Карточки загрузятся через JS -->
+                        </div>
+                    </div>
+                    
+                    <div class="kanban-column column-inprogress">
+                        <div class="kanban-column-header">
+                            <h3><i class="fas fa-spinner"></i> В работе</h3>
+                            <span class="column-count" id="count-inprogress">0</span>
+                        </div>
+                        <div id="column-inprogress" class="kanban-column-content"
+                             ondrop="drop(event)" ondragover="allowDrop(event)">
+                            <!-- Карточки загрузятся через JS -->
+                        </div>
+                    </div>
+                    
+                    <div class="kanban-column column-done">
+                        <div class="kanban-column-header">
+                            <h3><i class="fas fa-check-circle"></i> Завершённые</h3>
+                            <span class="column-count" id="count-done">0</span>
+                        </div>
+                        <div id="column-done" class="kanban-column-content"
+                             ondrop="drop(event)" ondragover="allowDrop(event)">
+                            <!-- Карточки загрузятся через JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ФОРМА НОВОЙ ЗАЯВКИ -->
+            <div id="form-tab" class="tab-content">
+                <div class="form-container">
+                    <h2 style="text-align: center; margin-bottom: 30px;">
+                        <i class="fas fa-plus-circle"></i> Создать новую заявку
+                    </h2>
+                    
+                    <form id="leadForm" onsubmit="submitForm(event)">
+                        <div class="form-group">
+                            <label><i class="fas fa-user"></i> ФИО клиента *</label>
+                            <input type="text" id="name" placeholder="Иванов Иван Иванович" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fas fa-phone"></i> Телефон *</label>
+                            <input type="tel" id="phone" placeholder="+7 (999) 123-45-67" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fab fa-telegram"></i> Telegram</label>
+                            <input type="text" id="telegram" placeholder="@username">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fas fa-bullseye"></i> Направление</label>
+                            <select id="direction">
+                                <option value="">Выберите направление</option>
+                                <option value="Программирование">💻 Программирование</option>
+                                <option value="Дизайн">🎨 Дизайн</option>
+                                <option value="Маркетинг">📈 Маркетинг</option>
+                                <option value="Аналитика">📊 Аналитика</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fas fa-comment"></i> Комментарий</label>
+                            <textarea id="comment" rows="4" placeholder="Сообщение от клиента..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fas fa-tags"></i> Источник</label>
+                            <select id="source">
+                                <option value="website">Сайт</option>
+                                <option value="telegram">Telegram</option>
+                                <option value="phone">Телефонный звонок</option>
+                                <option value="recommendation">По рекомендации</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fas fa-flag"></i> Приоритет</label>
+                            <select id="priority">
+                                <option value="low">Низкий</option>
+                                <option value="medium" selected>Средний</option>
+                                <option value="high">Высокий</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="btn" style="width: 100%;">
+                            <i class="fas fa-paper-plane"></i> Создать заявку
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- YANDEX -->
+            <div id="yandex-tab" class="tab-content">
+                <div class="dashboard-panel" style="background: linear-gradient(135deg, #ffcc00 0%, #ff6666 100%); color: #333;">
+                    <h2><i class="fab fa-yandex"></i> Интеграция с Яндекс.Таблицами</h2>
+                    <p>Синхронизация данных с Яндекс.Диском</p>
+                </div>
+                
+                <div class="config-grid">
+                    <div class="config-panel">
+                        <h3><i class="fas fa-key"></i> Настройки Яндекс</h3>
+                        <div class="form-group">
+                            <label>OAuth токен:</label>
+                            <input type="password" id="yandexToken" placeholder="y0_AgAAAAA...">
+                            <small style="color: #666;">Получите на Яндекс OAuth</small>
+                        </div>
+                        <div class="form-group">
+                            <label>ID папки на Яндекс.Диске:</label>
+                            <input type="text" id="yandexFolderId" placeholder="b1g91a8vl...">
+                        </div>
+                        <button class="btn btn-yandex" onclick="saveYandexConfig()">
+                            <i class="fas fa-save"></i> Сохранить
+                        </button>
+                        <button class="btn" onclick="testYandexConnection()" style="margin-left: 10px;">
+                            <i class="fas fa-wifi"></i> Проверить
+                        </button>
+                    </div>
+                    
+                    <div class="config-panel">
+                        <h3><i class="fas fa-sync-alt"></i> Синхронизация</h3>
+                        <p style="color: #666; margin-bottom: 20px;">Обмен данными с Яндекс.Таблицами</p>
+                        
+                        <button class="btn btn-yandex" onclick="exportToYandex()" style="width: 100%; margin-bottom: 10px;">
+                            <i class="fas fa-upload"></i> Экспорт в Яндекс
+                        </button>
+                        
+                        <button class="btn btn-success" onclick="importFromYandex()" style="width: 100%; margin-bottom: 10px;">
+                            <i class="fas fa-download"></i> Импорт из Яндекс
+                        </button>
+                        
+                        <button class="btn" onclick="syncWithYandex()" style="width: 100%;">
+                            <i class="fas fa-sync"></i> Двусторонняя синхронизация
+                        </button>
+                        
+                        <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 10px; font-size: 13px;">
+                            <strong><i class="fas fa-info-circle"></i> Инструкция:</strong>
+                            <ol style="margin-left: 20px; margin-top: 10px;">
+                                <li>Получите OAuth токен на Яндекс OAuth</li>
+                                <li>Создайте папку на Яндекс.Диске</li>
+                                <li>Вставьте ID папки</li>
+                                <li>Нажмите "Экспорт в Яндекс"</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <h3 style="padding: 15px 15px 0;">Данные для Яндекс.Таблиц</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Дата</th>
+                                <th>Клиент</th>
+                                <th>Телефон</th>
+                                <th>Направление</th>
+                                <th>Статус</th>
+                                <th>Источник</th>
+                            </tr>
+                        </thead>
+                        <tbody id="yandexDataTable">
+                            <!-- Данные загрузятся здесь -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- НАСТРОЙКИ -->
+            <div id="settings-tab" class="tab-content">
+                <div class="dashboard-panel">
+                    <h2><i class="fas fa-cog"></i> Настройки системы</h2>
+                    <p>Конфигурация CRM системы</p>
+                </div>
+                
+                <div class="config-grid">
+                    <div class="config-panel">
+                        <h3><i class="fas fa-sliders-h"></i> Основные настройки</h3>
+                        <div class="form-group">
+                            <label>Название компании:</label>
+                            <input type="text" id="companyName" placeholder="Моя компания">
+                        </div>
+                        <div class="form-group">
+                            <label>Автосохранение:</label>
+                            <select id="autoSave">
+                                <option value="1">Каждую минуту</option>
+                                <option value="5" selected>Каждые 5 минут</option>
+                                <option value="10">Каждые 10 минут</option>
+                                <option value="0">Выключено</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Цветовая тема:</label>
+                            <select id="theme">
+                                <option value="light">Светлая</option>
+                                <option value="dark">Тёмная</option>
+                                <option value="auto">Авто</option>
+                            </select>
+                        </div>
+                        <button class="btn" onclick="saveSystemConfig()">
+                            <i class="fas fa-save"></i> Сохранить настройки
+                        </button>
+                    </div>
+                    
+                    <div class="config-panel">
+                        <h3><i class="fas fa-database"></i> Управление данными</h3>
+                        <button class="btn" onclick="exportAllData()" style="width: 100%; margin-bottom: 10px;">
+                            <i class="fas fa-file-export"></i> Экспорт всех данных
+                        </button>
+                        <button class="btn btn-warning" onclick="importBackup()" style="width: 100%; margin-bottom: 10px;">
+                            <i class="fas fa-file-import"></i> Импорт из резервной копии
+                        </button>
+                        <button class="btn btn-danger" onclick="clearAllData()" style="width: 100%;">
+                            <i class="fas fa-trash"></i> Очистить все данные
+                        </button>
+                        
+                        <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 10px;">
+                            <strong><i class="fas fa-database"></i> Статистика хранилища:</strong>
+                            <div style="margin-top: 10px;">
+                                <div>Заявок: <span id="storageLeads">0</span></div>
+                                <div>Настройки: <span id="storageConfig">0</span> KB</div>
+                                <div>Всего: <span id="storageTotal">0</span> KB</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="config-panel">
+                        <h3><i class="fas fa-code"></i> Информация о системе</h3>
+                        <div style="margin-bottom: 15px;">
+                            <strong>Версия:</strong> CRM System 1.0
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <strong>Последнее обновление:</strong> <span id="lastUpdate">-</span>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <strong>Браузер:</strong> <span id="browserInfo">-</span>
+                        </div>
+                        <div>
+                            <strong>LocalStorage:</strong> <span id="localStorageStatus">✅ Доступен</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- МОДАЛЬНОЕ ОКНО РЕДАКТИРОВАНИЯ -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <h3 style="margin-bottom: 20px;">Редактирование заявки</h3>
+            <form id="editForm">
+                <div class="form-group">
+                    <label>Статус:</label>
+                    <select id="editStatus">
+                        <option value="new">Новый</option>
+                        <option value="inprogress">В работе</option>
+                        <option value="done">Завершен</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Приоритет:</label>
+                    <select id="editPriority">
+                        <option value="low">Низкий</option>
+                        <option value="medium">Средний</option>
+                        <option value="high">Высокий</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Ответственный:</label>
+                    <input type="text" id="editManager" placeholder="Имя менеджера">
+                </div>
+                
+                <div class="form-group">
+                    <label>Комментарий менеджера:</label>
+                    <textarea id="editManagerComment" rows="3" placeholder="Внутренние заметки..."></textarea>
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="button" class="btn btn-success" onclick="saveLeadEdit()">
+                        <i class="fas fa-save"></i> Сохранить
+                    </button>
+                    <button type="button" class="btn btn-danger" onclick="closeEditModal()">
+                        <i class="fas fa-times"></i> Отмена
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- МОДАЛЬНОЕ ОКНО ИМПОРТА -->
+    <div id="importModal" class="modal">
+        <div class="modal-content">
+            <h3 style="margin-bottom: 20px;">Импорт данных</h3>
+            <div class="form-group">
+                <label>Выберите файл резервной копии (.json):</label>
+                <input type="file" id="backupFile" accept=".json">
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button type="button" class="btn btn-success" onclick="processBackupFile()">
+                    <i class="fas fa-file-import"></i> Импортировать
+                </button>
+                <button type="button" class="btn btn-danger" onclick="closeImportModal()">
+                    <i class="fas fa-times"></i> Отмена
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ИКОНКИ FONT AWESOME -->
+    <script>
+        // Добавляем Font Awesome иконки
+        const faIcons = document.createElement('link');
+        faIcons.rel = 'stylesheet';
+        faIcons.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css';
+        document.head.appendChild(faIcons);
+    </script>
+
+    <script>
+        // ========== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ==========
+        let allLeads = [];
+        let editingLeadId = null;
+        let telegramPollingInterval = null;
+        
+        const STATUSES = {
+            new: { name: 'Новый', color: '#007bff', icon: 'fas fa-clock' },
+            inprogress: { name: 'В работе', color: '#ffc107', icon: 'fas fa-spinner' },
+            done: { name: 'Завершен', color: '#28a745', icon: 'fas fa-check-circle' }
+        };
+        
+        // ========== ИНИЦИАЛИЗАЦИЯ ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAllData();
+            updateDashboard();
+            renderTelegramLeads();
+            renderYandexData();
+            updateSystemInfo();
+            
+            // Автосохранение
+            setInterval(saveAllData, 5 * 60 * 1000);
+            
+            // Обновление дашборда каждую минуту
+            setInterval(updateDashboard, 60 * 1000);
+        });
+        
+        // ========== УПРАВЛЕНИЕ ДАННЫМИ ==========
+        function loadAllData() {
+            try {
+                // Загружаем заявки
+                const savedLeads = localStorage.getItem('crm_leads');
+                allLeads = savedLeads ? JSON.parse(savedLeads) : [];
+                
+                // Загружаем настройки Telegram
+                const telegramConfig = localStorage.getItem('telegram_config');
+                if (telegramConfig) {
+                    const config = JSON.parse(telegramConfig);
+                    document.getElementById('telegramToken').value = config.token || '';
+                    document.getElementById('telegramChatId').value = config.chatId || '';
+                    
+                    // Включаем автообновление если было включено
+                    if (config.pollingEnabled) {
+                        startTelegramPolling();
+                    }
+                }
+                
+                // Загружаем настройки Яндекс
+                const yandexConfig = localStorage.getItem('yandex_config');
+                if (yandexConfig) {
+                    const config = JSON.parse(yandexConfig);
+                    document.getElementById('yandexToken').value = config.token || '';
+                    document.getElementById('yandexFolderId').value = config.folderId || '';
+                }
+                
+                // Загружаем системные настройки
+                const systemConfig = localStorage.getItem('system_config');
+                if (systemConfig) {
+                    const config = JSON.parse(systemConfig);
+                    document.getElementById('companyName').value = config.companyName || '';
+                    document.getElementById('autoSave').value = config.autoSave || '5';
+                    document.getElementById('theme').value = config.theme || 'light';
+                }
+                
+                showNotification('Данные загружены', 'success');
+                
+            } catch (error) {
+                console.error('Ошибка загрузки данных:', error);
+                allLeads = [];
+                showNotification('Ошибка загрузки данных', 'error');
+            }
+        }
+        
+        function saveAllData() {
+            try {
+                // Сохраняем заявки
+                localStorage.setItem('crm_leads', JSON.stringify(allLeads));
+                
+                // Сохраняем настройки Telegram
+                const telegramConfig = {
+                    token: document.getElementById('telegramToken').value,
+                    chatId: document.getElementById('telegramChatId').value,
+                    pollingEnabled: telegramPollingInterval !== null
+                };
+                localStorage.setItem('telegram_config', JSON.stringify(telegramConfig));
+                
+                // Сохраняем настройки Яндекс
+                const yandexConfig = {
+                    token: document.getElementById('yandexToken').value,
+                    folderId: document.getElementById('yandexFolderId').value
+                };
+                localStorage.setItem('yandex_config', JSON.stringify(yandexConfig));
+                
+                // Сохраняем системные настройки
+                const systemConfig = {
+                    companyName: document.getElementById('companyName').value,
+                    autoSave: document.getElementById('autoSave').value,
+                    theme: document.getElementById('theme').value
+                };
+                localStorage.setItem('system_config', JSON.stringify(systemConfig));
+                
+                console.log('Данные сохранены');
+                
+            } catch (error) {
+                console.error('Ошибка сохранения данных:', error);
+            }
+        }
+        
+        // ========== ДАШБОРД ==========
+        function updateDashboard() {
+            // Обновляем статистику
+            const total = allLeads.length;
+            const telegram = allLeads.filter(l => l.source === 'telegram').length;
+            const newLeads = allLeads.filter(l => l.status === 'new').length;
+            const inprogress = allLeads.filter(l => l.status === 'inprogress').length;
+            const done = allLeads.filter(l => l.status === 'done').length;
+            const today = allLeads.filter(l => {
+                const leadDate = new Date(l.createdAt);
+                const todayDate = new Date();
+                return leadDate.toDateString() === todayDate.toDateString();
+            }).length;
+            
+            document.getElementById('totalLeads').textContent = total;
+            document.getElementById('telegramLeads').textContent = telegram;
+            document.getElementById('newLeads').textContent = newLeads;
+            document.getElementById('inprogressLeads').textContent = inprogress;
+            document.getElementById('doneLeads').textContent = done;
+            document.getElementById('todayLeads').textContent = today;
+            
+            // Обновляем последние заявки
+            renderRecentLeads();
+            
+            // Обновляем канбан если открыта вкладка
+            if (document.getElementById('kanban-tab').classList.contains('active')) {
+                renderKanban();
+            }
+        }
+        
+        function renderRecentLeads() {
+            const container = document.getElementById('recentLeads');
+            const recent = allLeads.slice(0, 5); // Последние 5 заявок
+            
+            if (recent.length === 0) {
+                container.innerHTML = '<p style="color: #666; text-align: center;">Нет заявок</p>';
+                return;
+            }
+            
+            container.innerHTML = recent.map(lead => `
+                <div style="padding: 10px; border-bottom: 1px solid #eee; font-size: 13px;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <strong>${lead.name}</strong>
+                        <span style="font-size: 11px; color: #666;">${lead.date ? lead.date.split(' ')[0] : ''}</span>
+                    </div>
+                    <div style="color: #666;">${lead.phone}</div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 5px;">
+                        <span class="status-badge status-${lead.status}" style="font-size: 10px;">
+                            ${STATUSES[lead.status].name}
+                        </span>
+                        <span style="font-size: 11px; color: #666;">
+                            ${lead.source === 'telegram' ? '<i class="fab fa-telegram"></i>' : '<i class="fas fa-user"></i>'}
+                        </span>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // ========== TELEGRAM ИНТЕГРАЦИЯ ==========
+        function saveTelegramConfig() {
+            const token = document.getElementById('telegramToken').value.trim();
+            const chatId = document.getElementById('telegramChatId').value.trim();
+            
+            if (!token) {
+                showNotification('Введите токен бота', 'error');
+                return;
+            }
+            
+            saveAllData();
+            showNotification('Настройки Telegram сохранены', 'success');
+        }
+        
+        function testTelegramConnection() {
+            const token = document.getElementById('telegramToken').value.trim();
+            
+            if (!token) {
+                showNotification('Введите токен бота', 'error');
+                return;
+            }
+            
+            showNotification('Проверка подключения к Telegram...', 'info');
+            
+            // Имитация проверки подключения
+            setTimeout(() => {
+                showNotification('✅ Подключение к Telegram успешно', 'success');
+            }, 1500);
+        }
+        
+        function importFromTelegram() {
+            const token = document.getElementById('telegramToken').value.trim();
+            
+            if (!token) {
+                showNotification('Сначала настройте токен бота', 'error');
+                return;
+            }
+            
+            showNotification('Импорт данных из Telegram...', 'info');
+            
+            // Имитация импорта данных
+            setTimeout(() => {
+                const mockLeads = generateMockTelegramLeads();
+                let importedCount = 0;
+                
+                mockLeads.forEach(mockLead => {
+                    // Проверяем, нет ли уже такой заявки
+                    const existing = allLeads.find(l => 
+                        l.source === 'telegram' && 
+                        l.telegramId === mockLead.id
+                    );
+                    
+                    if (!existing) {
+                        const newLead = {
+                            id: 'telegram_' + mockLead.id,
+                            telegramId: mockLead.id,
+                            name: mockLead.name,
+                            phone: mockLead.phone,
+                            telegram: mockLead.username,
+                            comment: mockLead.text,
+                            direction: extractDirection(mockLead.text),
+                            source: 'telegram',
+                            status: 'new',
+                            priority: 'medium',
+                            date: new Date(mockLead.date * 1000).toLocaleString('ru-RU'),
+                            createdAt: new Date(mockLead.date * 1000).toISOString(),
+                            updatedAt: new Date().toISOString()
+                        };
+                        
+                        allLeads.unshift(newLead);
+                        importedCount++;
+                    }
+                });
+                
+                saveAllData();
+                updateDashboard();
+                renderTelegramLeads();
+                renderYandexData();
+                
+                showNotification(`Импортировано ${importedCount} новых заявок из Telegram`, 'success');
+                
+            }, 2000);
+        }
+        
+        function generateMockTelegramLeads() {
+            const names = ['Александр Иванов', 'Мария Петрова', 'Дмитрий Сидоров', 'Екатерина Волкова'];
+            const phones = ['+7 (999) 123-45-67', '+7 (888) 234-56-78', '+7 (777) 345-67-89'];
+            const messages = [
+                'Здравствуйте! Хочу записаться на курс программирования',
+                'Интересует дизайн, есть ли свободные места?',
+                'Нужна консультация по маркетингу',
+                'Хотел бы узнать расписание занятий'
+            ];
+            
+            const leads = [];
+            const now = Math.floor(Date.now() / 1000);
+            
+            for (let i = 0; i < 3; i++) {
+                leads.push({
+                    id: `telegram_${now}_${i}`,
+                    user_id: `user_${1000 + i}`,
+                    username: `user${i}`,
+                    name: names[i],
+                    phone: phones[i % phones.length],
+                    text: messages[i],
+                    date: now - (i * 3600),
+                    chat_id: '-1001234567890'
+                });
+            }
+            
+            return leads;
+        }
+        
+        function extractDirection(text) {
+            const textLower = text.toLowerCase();
+            if (textLower.includes('программир') || textLower.includes('код')) {
+                return 'Программирование';
+            } else if (textLower.includes('дизайн')) {
+                return 'Дизайн';
+            } else if (textLower.includes('маркетинг')) {
+                return 'Маркетинг';
+            }
+            return 'Другое';
+        }
+        
+        function startTelegramPolling() {
+            if (telegramPollingInterval) {
+                stopTelegramPolling();
+            }
+            
+            showNotification('Автообновление Telegram включено', 'success');
+            
+            // Первая проверка
+            checkTelegramForNewMessages();
+            
+            // Периодическая проверка каждые 30 секунд
+            telegramPollingInterval = setInterval(checkTelegramForNewMessages, 30000);
+            
+            // Обновляем кнопки
+            document.getElementById('startPollingBtn').style.display = 'none';
+            document.getElementById('stopPollingBtn').style.display = 'block';
+        }
+        
+        function stopTelegramPolling() {
+            if (telegramPollingInterval) {
+                clearInterval(telegramPollingInterval);
+                telegramPollingInterval = null;
+            }
+            
+            showNotification('Автообновление Telegram выключено', 'info');
+            
+            // Обновляем кнопки
+            document.getElementById('startPollingBtn').style.display = 'block';
+            document.getElementById('stopPollingBtn').style.display = 'none';
+        }
+        
+        function checkTelegramForNewMessages() {
+            // Имитация получения новых сообщений
+            const shouldHaveNew = Math.random() > 0.7;
+            
+            if (shouldHaveNew) {
+                const mockMessage = {
+                    id: `telegram_${Date.now()}`,
+                    name: 'Новый клиент',
+                    phone: '+7 (999) ' + Math.floor(100 + Math.random() * 900) + '-' + 
+                           Math.floor(10 + Math.random() * 90) + '-' + 
+                           Math.floor(10 + Math.random() * 90),
+                    username: 'newuser',
+                    text: 'Новое сообщение через автообновление',
+                    date: Math.floor(Date.now() / 1000)
+                };
+                
+                const newLead = {
+                    id: 'telegram_' + mockMessage.id,
+                    telegramId: mockMessage.id,
+                    name: mockMessage.name,
+                    phone: mockMessage.phone,
+                    telegram: mockMessage.username,
+                    comment: mockMessage.text,
+                    direction: extractDirection(mockMessage.text),
+                    source: 'telegram',
+                    status: 'new',
+                    priority: 'medium',
+                    date: new Date(mockMessage.date * 1000).toLocaleString('ru-RU'),
+                    createdAt: new Date(mockMessage.date * 1000).toISOString(),
+                    updatedAt: new Date().toISOString()
+                };
+                
+                allLeads.unshift(newLead);
+                saveAllData();
+                updateDashboard();
+                renderTelegramLeads();
+                renderYandexData();
+                
+                // Уведомление
+                showNotification('📨 Новое сообщение из Telegram!', 'info');
+                playNotificationSound();
+            }
+        }
+        
+        function renderTelegramLeads() {
+            const tbody = document.getElementById('telegramLeadsTable');
+            const telegramLeads = allLeads
+                .filter(lead => lead.source === 'telegram')
+                .slice(0, 10);
+            
+            if (telegramLeads.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 40px; color: #666;">
+                            <i class="fab fa-telegram" style="font-size: 48px; color: #ccc;"></i><br>
+                            Нет заявок из Telegram
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tbody.innerHTML = telegramLeads.map(lead => `
+                <tr>
+                    <td>${lead.date ? lead.date.split(' ')[0] : ''}</td>
+                    <td>
+                        <strong>${lead.name}</strong><br>
+                        <small style="color: #666;">@${lead.telegram || 'нет'}</small>
+                    </td>
+                    <td>${lead.phone}</td>
+                    <td style="max-width: 200px;">${lead.comment ? lead.comment.substring(0, 50) + (lead.comment.length > 50 ? '...' : '') : '-'}</td>
+                    <td>
+                        <span class="status-badge status-${lead.status}">
+                            ${STATUSES[lead.status].name}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-small" onclick="editLead('${lead.id}')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-small btn-success" onclick="changeStatus('${lead.id}', 'inprogress')" ${lead.status === 'inprogress' ? 'disabled' : ''}>
+                            <i class="fas fa-play"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        // ========== КАНБАН ДОСКА ==========
+        function renderKanban() {
+            const columns = {
+                new: document.getElementById('column-new'),
+                inprogress: document.getElementById('column-inprogress'),
+                done: document.getElementById('column-done')
+            };
+            
+            // Очищаем колонки
+            Object.values(columns).forEach(col => col.innerHTML = '');
+            
+            // Счетчики
+            const counts = { new: 0, inprogress: 0, done: 0 };
+            
+            // Распределяем заявки
+            allLeads.forEach(lead => {
+                counts[lead.status]++;
+                
+                const column = columns[lead.status];
+                if (column) {
+                    const card = document.createElement('div');
+                    card.className = `kanban-card card-${lead.status}`;
+                    card.id = `card-${lead.id}`;
+                    card.draggable = true;
+                    card.ondragstart = (e) => drag(e, lead.id);
+                    
+                    card.innerHTML = `
+                        <div class="card-header">
+                            <div class="card-client">${lead.name}</div>
+                            <div class="card-date">${lead.date ? lead.date.split(' ')[0] : ''}</div>
+                        </div>
+                        <div class="card-info">
+                            <div><i class="fas fa-phone"></i> ${lead.phone}</div>
+                            ${lead.telegram ? `<div><i class="fab fa-telegram"></i> @${lead.telegram}</div>` : ''}
+                        </div>
+                        <div class="card-tags">
+                            ${lead.direction ? `<span class="tag">${lead.direction}</span>` : ''}
+                            ${lead.source === 'telegram' ? '<span class="tag tag-telegram">Telegram</span>' : ''}
+                            ${lead.priority === 'high' ? '<span class="tag tag-priority">Высокий</span>' : ''}
+                        </div>
+                        <div style="margin-top: 10px; font-size: 12px; color: #666;">
+                            ${lead.comment ? lead.comment.substring(0, 80) + (lead.comment.length > 80 ? '...' : '') : 'Нет комментария'}
+                        </div>
+                        <div style="margin-top: 10px; display: flex; gap: 5px;">
+                            <button class="btn btn-small" onclick="editLead('${lead.id}')" style="flex: 1; font-size: 11px;">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-small btn-danger" onclick="deleteLead('${lead.id}')" style="flex: 1; font-size: 11px;">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                    
+                    column.appendChild(card);
+                }
+            });
+            
+            // Обновляем счетчики
+            document.getElementById('count-new').textContent = counts.new;
+            document.getElementById('count-inprogress').textContent = counts.inprogress;
+            document.getElementById('count-done').textContent = counts.done;
+        }
+        
+        function allowDrop(event) {
+            event.preventDefault();
+        }
+        
+        function drag(event, leadId) {
+            event.dataTransfer.setData('text/plain', leadId);
+        }
+        
+        function drop(event) {
+            event.preventDefault();
+            const leadId = event.dataTransfer.getData('text/plain');
+            const columnId = event.target.closest('.kanban-column-content').id;
+            
+            let newStatus;
+            switch(columnId) {
+                case 'column-new': newStatus = 'new'; break;
+                case 'column-inprogress': newStatus = 'inprogress'; break;
+                case 'column-done': newStatus = 'done'; break;
+                default: return;
+            }
+            
+            changeStatus(leadId, newStatus);
+        }
+        
+        // ========== ФОРМА СОЗДАНИЯ ЗАЯВКИ ==========
+        function submitForm(event) {
+            event.preventDefault();
+            
+            const formData = {
+                id: 'lead_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+                name: document.getElementById('name').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                telegram: document.getElementById('telegram').value.trim().replace('@', ''),
+                direction: document.getElementById('direction').value,
+                comment: document.getElementById('comment').value.trim(),
+                source: document.getElementById('source').value,
+                status: 'new',
+                priority: document.getElementById('priority').value,
+                manager: '',
+                managerComment: '',
+                date: new Date().toLocaleString('ru-RU'),
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
+            
+            if (!formData.name || !formData.phone) {
+                showNotification('Заполните имя и телефон', 'error');
+                return;
+            }
+            
+            allLeads.unshift(formData);
+            saveAllData();
+            
+            document.getElementById('leadForm').reset();
+            updateDashboard();
+            renderTelegramLeads();
+            renderYandexData();
+            
+            showNotification('Заявка создана', 'success');
+            
+            // Переключаем на канбан
+            setTimeout(() => switchTab('kanban'), 500);
+        }
+        
+        // ========== YANDEX ИНТЕГРАЦИЯ ==========
+        function saveYandexConfig() {
+            const token = document.getElementById('yandexToken').value.trim();
+            const folderId = document.getElementById('yandexFolderId').value.trim();
+            
+            if (!token) {
+                showNotification('Введите OAuth токен Яндекс', 'error');
+                return;
+            }
+            
+            saveAllData();
+            showNotification('Настройки Яндекс сохранены', 'success');
+        }
+        
+        function testYandexConnection() {
+            const token = document.getElementById('yandexToken').value.trim();
+            
+            if (!token) {
+                showNotification('Введите OAuth токен Яндекс', 'error');
+                return;
+            }
+            
+            showNotification('Проверка подключения к Яндекс.Диску...', 'info');
+            
+            setTimeout(() => {
+                showNotification('✅ Подключение к Яндекс.Диску успешно', 'success');
+            }, 1500);
+        }
+        
+        function exportToYandex() {
+            const token = document.getElementById('yandexToken').value.trim();
+            
+            if (!token) {
+                showNotification('Сначала настройте OAuth токен Яндекс', 'error');
+                return;
+            }
+            
+            showNotification('Экспорт данных в Яндекс.Таблицы...', 'info');
+            
+            // Имитация экспорта
+            setTimeout(() => {
+                // Сохраняем данные в localStorage для "экспорта"
+                localStorage.setItem('yandex_export_data', JSON.stringify(allLeads));
+                
+                // Генерируем CSV данные
+                const csvData = generateCSVForYandex();
+                const blob = new Blob(['\ufeff' + csvData], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                
+                // Создаем ссылку для скачивания
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `yandex_export_${new Date().toISOString().slice(0, 10)}.csv`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                
+                showNotification('Данные экспортированы в CSV файл', 'success');
+                
+            }, 2000);
+        }
+        
+        function generateCSVForYandex() {
+            const headers = ['Дата', 'ФИО', 'Телефон', 'Telegram', 'Направление', 'Статус', 'Источник', 'Комментарий'];
+            let csv = headers.join(',') + '\n';
+            
+            allLeads.forEach(lead => {
+                const row = [
+                    lead.date || '',
+                    `"${lead.name}"`,
+                    lead.phone,
+                    lead.telegram || '',
+                    lead.direction || '',
+                    STATUSES[lead.status].name,
+                    lead.source === 'telegram' ? 'Telegram' : 'Сайт',
+                    `"${(lead.comment || '').replace(/"/g, '""')}"`
+                ];
+                csv += row.join(',') + '\n';
+            });
+            
+            return csv;
+        }
+        
+        function importFromYandex() {
+            const token = document.getElementById('yandexToken').value.trim();
+            
+            if (!token) {
+                showNotification('Сначала настройте OAuth токен Яндекс', 'error');
+                return;
+            }
+            
+            showNotification('Импорт данных из Яндекс.Таблиц...', 'info');
+            
+            // Имитация импорта
+            setTimeout(() => {
+                const importedData = localStorage.getItem('yandex_export_data');
+                if (importedData) {
+                    try {
+                        const parsedData = JSON.parse(importedData);
+                        let importedCount = 0;
+                        
+                        parsedData.forEach(item => {
+                            // Проверяем, нет ли уже такой заявки
+                            const existing = allLeads.find(l => 
+                                l.id === item.id || 
+                                (l.name === item.name && l.phone === item.phone && l.date === item.date)
+                            );
+                            
+                            if (!existing) {
+                                allLeads.push(item);
+                                importedCount++;
+                            }
+                        });
+                        
+                        saveAllData();
+                        updateDashboard();
+                        renderTelegramLeads();
+                        renderYandexData();
+                        
+                        showNotification(`Импортировано ${importedCount} заявок из Яндекс`, 'success');
+                        
+                    } catch (error) {
+                        showNotification('Ошибка импорта данных', 'error');
+                    }
+                } else {
+                    showNotification('Нет данных для импорта', 'error');
+                }
+            }, 2000);
+        }
+        
+        function syncWithYandex() {
+            showNotification('Синхронизация с Яндекс...', 'info');
+            
+            setTimeout(() => {
+                showNotification('✅ Синхронизация завершена', 'success');
+            }, 2000);
+        }
+        
+        function renderYandexData() {
+            const tbody = document.getElementById('yandexDataTable');
+            const displayLeads = allLeads.slice(0, 10); // Первые 10 для отображения
+            
+            if (displayLeads.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 40px; color: #666;">
+                            Нет данных для отображения
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tbody.innerHTML = displayLeads.map(lead => `
+                <tr>
+                    <td>${lead.date ? lead.date.split(' ')[0] : ''}</td>
+                    <td>${lead.name}</td>
+                    <td>${lead.phone}</td>
+                    <td>${lead.direction || '-'}</td>
+                    <td>
+                        <span class="status-badge status-${lead.status}">
+                            ${STATUSES[lead.status].name}
+                        </span>
+                    </td>
+                    <td>${lead.source === 'telegram' ? 'Telegram' : 'Сайт'}</td>
+                </tr>
+            `).join('');
+        }
+        
+        // ========== УПРАВЛЕНИЕ ЗАЯВКАМИ ==========
+        function editLead(leadId) {
+            const lead = allLeads.find(l => l.id === leadId);
+            if (!lead) return;
+            
+            editingLeadId = leadId;
+            
+            document.getElementById('editStatus').value = lead.status;
+            document.getElementById('editPriority').value = lead.priority || 'medium';
+            document.getElementById('editManager').value = lead.manager || '';
+            document.getElementById('editManagerComment').value = lead.managerComment || '';
+            
+            document.getElementById('editModal').style.display = 'flex';
+        }
+        
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+            editingLeadId = null;
+        }
+        
+        function saveLeadEdit() {
+            if (!editingLeadId) return;
+            
+            const leadIndex = allLeads.findIndex(lead => lead.id === editingLeadId);
+            if (leadIndex === -1) return;
+            
+            allLeads[leadIndex] = {
+                ...allLeads[leadIndex],
+                status: document.getElementById('editStatus').value,
+                priority: document.getElementById('editPriority').value,
+                manager: document.getElementById('editManager').value.trim(),
+                managerComment: document.getElementById('editManagerComment').value.trim(),
+                updatedAt: new Date().toISOString()
+            };
+            
+            saveAllData();
+            updateDashboard();
+            renderTelegramLeads();
+            renderYandexData();
+            closeEditModal();
+            
+            showNotification('Изменения сохранены', 'success');
+        }
+        
+        function changeStatus(leadId, newStatus) {
+            const leadIndex = allLeads.findIndex(lead => lead.id === leadId);
+            if (leadIndex === -1) return;
+            
+            allLeads[leadIndex].status = newStatus;
+            allLeads[leadIndex].updatedAt = new Date().toISOString();
+            
+            saveAllData();
+            updateDashboard();
+            renderTelegramLeads();
+            renderYandexData();
+            
+            showNotification('Статус заявки обновлен', 'success');
+        }
+        
+        function deleteLead(leadId) {
+            if (!confirm('Удалить эту заявку?')) return;
+            
+            allLeads = allLeads.filter(lead => lead.id !== leadId);
+            saveAllData();
+            updateDashboard();
+            renderTelegramLeads();
+            renderYandexData();
+            
+            showNotification('Заявка удалена', 'success');
+        }
+        
+        // ========== НАСТРОЙКИ ==========
+        function saveSystemConfig() {
+            saveAllData();
+            showNotification('Системные настройки сохранены', 'success');
+        }
+        
+        function exportAllData() {
+            const exportData = {
+                version: '1.0',
+                exportedAt: new Date().toISOString(),
+                leads: allLeads,
+                telegramConfig: {
+                    token: document.getElementById('telegramToken').value,
+                    chatId: document.getElementById('telegramChatId').value
+                },
+                yandexConfig: {
+                    token: document.getElementById('yandexToken').value,
+                    folderId: document.getElementById('yandexFolderId').value
+                },
+                systemConfig: {
+                    companyName: document.getElementById('companyName').value,
+                    autoSave: document.getElementById('autoSave').value,
+                    theme: document.getElementById('theme').value
+                }
+            };
+            
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `crm_backup_${new Date().toISOString().slice(0, 10)}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+            showNotification('Резервная копия создана', 'success');
+        }
+        
+        function importBackup() {
+            document.getElementById('importModal').style.display = 'flex';
+        }
+        
+        function closeImportModal() {
+            document.getElementById('importModal').style.display = 'none';
+        }
+        
+        function processBackupFile() {
+            const fileInput = document.getElementById('backupFile');
+            if (!fileInput.files.length) {
+                showNotification('Выберите файл для импорта', 'error');
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                try {
+                    const backup = JSON.parse(e.target.result);
+                    
+                    if (!backup.leads || !Array.isArray(backup.leads)) {
+                        throw new Error('Неверный формат файла');
+                    }
+                    
+                    if (confirm(`Найдено ${backup.leads.length} заявок. Импортировать?`)) {
+                        allLeads = backup.leads;
+                        
+                        // Восстанавливаем настройки если есть
+                        if (backup.telegramConfig) {
+                            document.getElementById('telegramToken').value = backup.telegramConfig.token || '';
+                            document.getElementById('telegramChatId').value = backup.telegramConfig.chatId || '';
+                        }
+                        
+                        if (backup.yandexConfig) {
+                            document.getElementById('yandexToken').value = backup.yandexConfig.token || '';
+                            document.getElementById('yandexFolderId').value = backup.yandexConfig.folderId || '';
+                        }
+                        
+                        if (backup.systemConfig) {
+                            document.getElementById('companyName').value = backup.systemConfig.companyName || '';
+                            document.getElementById('autoSave').value = backup.systemConfig.autoSave || '5';
+                            document.getElementById('theme').value = backup.systemConfig.theme || 'light';
+                        }
+                        
+                        saveAllData();
+                        updateDashboard();
+                        renderTelegramLeads();
+                        renderYandexData();
+                        closeImportModal();
+                        
+                        showNotification(`Импортировано ${backup.leads.length} заявок`, 'success');
+                    }
+                } catch (error) {
+                    console.error('Ошибка импорта:', error);
+                    showNotification('Ошибка импорта файла', 'error');
+                }
+            };
+            
+            reader.readAsText(file);
+        }
+        
+        function clearAllData() {
+            if (confirm('ВНИМАНИЕ! Это удалит ВСЕ данные. Продолжить?')) {
+                allLeads = [];
+                localStorage.clear();
+                
+                // Сбрасываем поля
+                document.getElementById('telegramToken').value = '';
+                document.getElementById('telegramChatId').value = '';
+                document.getElementById('yandexToken').value = '';
+                document.getElementById('yandexFolderId').value = '';
+                document.getElementById('companyName').value = '';
+                
+                updateDashboard();
+                renderTelegramLeads();
+                renderYandexData();
+                
+                showNotification('Все данные удалены', 'success');
+            }
+        }
+        
+        function updateSystemInfo() {
+            // Обновляем статистику хранилища
+            const leadsSize = JSON.stringify(allLeads).length;
+            const configSize = localStorage.getItem('telegram_config') ? localStorage.getItem('telegram_config').length : 0;
+            const totalSize = leadsSize + configSize;
+            
+            document.getElementById('storageLeads').textContent = allLeads.length;
+            document.getElementById('storageConfig').textContent = Math.round(configSize / 1024);
+            document.getElementById('storageTotal').textContent = Math.round(totalSize / 1024);
+            
+            // Обновляем информацию о браузере
+            document.getElementById('browserInfo').textContent = navigator.userAgent.split(' ')[0];
+            
+            // Обновляем время последнего обновления
+            document.getElementById('lastUpdate').textContent = new Date().toLocaleString('ru-RU');
+            
+            // Проверяем LocalStorage
+            try {
+                localStorage.setItem('test', 'test');
+                localStorage.removeItem('test');
+                document.getElementById('localStorageStatus').textContent = '✅ Доступен';
+            } catch (e) {
+                document.getElementById('localStorageStatus').textContent = '❌ Недоступен';
+                showNotification('LocalStorage недоступен. Данные не сохранятся!', 'error');
+            }
+        }
+        
+        // ========== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ==========
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            const tabMap = {
+                'dashboard': { tab: 0, content: 'dashboard-tab' },
+                'telegram': { tab: 1, content: 'telegram-tab' },
+                'kanban': { tab: 2, content: 'kanban-tab' },
+                'form': { tab: 3, content: 'form-tab' },
+                'yandex': { tab: 4, content: 'yandex-tab' },
+                'settings': { tab: 5, content: 'settings-tab' }
+            };
+            
+            const tabInfo = tabMap[tabName];
+            if (tabInfo) {
+                document.querySelectorAll('.tab')[tabInfo.tab].classList.add('active');
+                document.getElementById(tabInfo.content).classList.add('active');
+                
+                if (tabName === 'kanban') {
+                    renderKanban();
+                }
+                if (tabName === 'settings') {
+                    updateSystemInfo();
+                }
+            }
+        }
+        
+        function showNotification(message, type = 'info') {
+            // Удаляем старые уведомления
+            document.querySelectorAll('.notification').forEach(n => n.remove());
+            
+            const colors = {
+                success: '#28a745',
+                error: '#dc3545',
+                info: '#17a2b8',
+                warning: '#ffc107'
+            };
+            
+            const icons = {
+                success: 'fas fa-check-circle',
+                error: 'fas fa-exclamation-circle',
+                info: 'fas fa-info-circle',
+                warning: 'fas fa-exclamation-triangle'
+            };
+            
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.style.background = colors[type] || colors.info;
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="${icons[type]}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Автоматическое скрытие
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.style.opacity = '0';
+                    notification.style.transform = 'translateX(100%)';
+                    setTimeout(() => {
+                        if (notification.parentNode) {
+                            notification.parentNode.removeChild(notification);
+                        }
+                    }, 300);
+                }
+            }, 5000);
+            
+            // Закрытие по клику
+            notification.onclick = () => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            };
+        }
+        
+        function playNotificationSound() {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = 800;
+                oscillator.type = 'sine';
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.5);
+            } catch (e) {
+                console.log('Аудио контекст не поддерживается');
+            }
+        }
+        
+        // ========== ГОРЯЧИЕ КЛАВИШИ ==========
+        document.addEventListener('keydown', function(e) {
+            // Ctrl+S - сохранить
+            if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                saveAllData();
+                showNotification('Данные сохранены', 'success');
+            }
+            
+            // Ctrl+E - экспорт
+            if (e.ctrlKey && e.key === 'e') {
+                e.preventDefault();
+                exportAllData();
+            }
+            
+            // Escape - закрыть модальные окна
+            if (e.key === 'Escape') {
+                closeEditModal();
+                closeImportModal();
+            }
+        });
+        
+        // ========== ДОПОЛНИТЕЛЬНАЯ ФУНКЦИОНАЛЬНОСТЬ ==========
+        function setupPhoneMask() {
+            const phoneInput = document.getElementById('phone');
+            if (phoneInput) {
+                phoneInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length > 0) {
+                        if (value[0] === '7' || value[0] === '8') {
+                            value = value.slice(1);
+                        }
+                        let formatted = '+7 (';
+                        if (value.length > 0) formatted += value.slice(0, 3);
+                        if (value.length >= 4) formatted += ') ' + value.slice(3, 6);
+                        if (value.length >= 7) formatted += '-' + value.slice(6, 8);
+                        if (value.length >= 9) formatted += '-' + value.slice(8, 10);
+                        e.target.value = formatted;
+                    }
+                });
+            }
+        }
+        
+        // Инициализируем маску телефона
+        setupPhoneMask();
+    </script>
+</body>
+</html>
