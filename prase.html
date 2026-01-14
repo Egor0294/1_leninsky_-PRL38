@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Прайс-лист танцевальной студии</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Подключаем библиотеку для генерации QR-кодов -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #FFF9F0;
+            color: #5C4B37;
+            line-height: 1.6;
+            background-image: linear-gradient(to bottom, #FFF9F0, #FFEDD8);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #FF8A00 0%, #FF6B35 100%);
+            color: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(255, 107, 53, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: cover;
+        }
+        
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.95;
+            position: relative;
+        }
+        
+        .filters {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+        
+        .filter-btn {
+            padding: 12px 24px;
+            background-color: #FFF9F0;
+            border: 2px solid #FF8A00;
+            border-radius: 50px;
+            color: #FF8A00;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(255, 138, 0, 0.1);
+        }
+        
+        .filter-btn:hover {
+            background-color: #FF8A00;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(255, 138, 0, 0.2);
+        }
+        
+        .filter-btn.active {
+            background-color: #FF8A00;
+            color: white;
+            box-shadow: 0 4px 8px rgba(255, 138, 0, 0.3);
+        }
+        
+        .price-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .price-card {
+            background-color: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(255, 140, 0, 0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #FFEDD8;
+        }
+        
+        .price-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(255, 140, 0, 0.15);
+            border-color: #FF8A00;
+        }
+        
+        .card-header {
+            padding: 30px 30px 20px;
+            background: linear-gradient(to bottom, #FFF5E6, #FFEDD8);
+            border-bottom: 1px solid #FFE4C4;
+        }
+        
+        .card-category {
+            display: inline-block;
+            padding: 6px 18px;
+            background: linear-gradient(to right, #FFB347, #FF8A00);
+            color: white;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 6px rgba(255, 140, 0, 0.2);
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #8B4513;
+            margin-bottom: 10px;
+        }
+        
+        .card-description {
+            color: #7C6A52;
+            margin-top: 15px;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+        
+        .card-description ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .card-description li {
+            padding: 8px 0;
+            position: relative;
+            padding-left: 30px;
+            border-bottom: 1px dashed #FFE4C4;
+        }
+        
+        .card-description li:last-child {
+            border-bottom: none;
+        }
+        
+        .card-description li:before {
+            content: "✦";
+            position: absolute;
+            left: 0;
+            color: #FF8A00;
+            font-weight: bold;
+        }
+        
+        .card-price {
+            padding: 25px 30px;
+            background-color: #FFF9F0;
+            text-align: center;
+            margin-top: auto;
+            border-top: 1px solid #FFE4C4;
+        }
+        
+        .price-amount {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #E67E22;
+            margin-bottom: 5px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        .price-period {
+            color: #A67C52;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+        
+        .card-actions {
+            padding: 25px 30px;
+            text-align: center;
+            background-color: #FFF9F0;
+            border-top: 1px solid #FFE4C4;
+        }
+        
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        /* Стили для кнопок с ссылками */
+        .link-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 16px 20px;
+            background: linear-gradient(to right, #FF8A00, #FF6B35);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.2);
+        }
+        
+        .link-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 107, 53, 0.3);
+            background: linear-gradient(to right, #FF9500, #FF7B47);
+        }
+        
+        .link-btn.disabled {
+            background: linear-gradient(to right, #CCCCCC, #AAAAAA);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .link-btn.disabled:hover {
+            box-shadow: none;
+            transform: none;
+        }
+        
+        /* Стили для кнопок с QR-кодами */
+        .qr-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 16px 20px;
+            background: linear-gradient(to right, #FFA726, #FF9800);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            box-shadow: 0 5px 15px rgba(255, 152, 0, 0.2);
+        }
+        
+        .qr-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 152, 0, 0.3);
+            background: linear-gradient(to right, #FFB74D, #FFA726);
+        }
+        
+        .qr-btn:disabled {
+            background: linear-gradient(to right, #CCCCCC, #AAAAAA);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .qr-btn:disabled:hover {
+            box-shadow: none;
+            transform: none;
+        }
+        
+        .free-price {
+            color: #27ae60;
+        }
+        
+        .empty-price {
+            color: #e74c3c;
+        }
+        
+        /* Стили для модального окна с QR-кодом */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(92, 75, 55, 0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background: linear-gradient(to bottom, #FFF9F0, #FFEDD8);
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            border: 2px solid #FFB347;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 1.8rem;
+            color: #FF8A00;
+            cursor: pointer;
+            transition: color 0.3s;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .close-modal:hover {
+            color: #FF6B35;
+            background-color: white;
+        }
+        
+        .qr-container {
+            margin: 25px 0;
+            padding: 20px;
+            background-color: white;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            border: 1px solid #FFE4C4;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .qr-info {
+            margin-top: 25px;
+            font-size: 0.9rem;
+            color: #7C6A52;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px dashed #FFB347;
+        }
+        
+        .instructions {
+            background: linear-gradient(to bottom, #FFF9F0, #FFEDD8);
+            border-radius: 20px;
+            padding: 35px;
+            margin-top: 50px;
+            box-shadow: 0 10px 25px rgba(255, 140, 0, 0.1);
+            border: 1px solid #FFE4C4;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .instructions::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, #FF8A00, #FF6B35);
+        }
+        
+        .instructions h2 {
+            color: #8B4513;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .instructions p {
+            margin-bottom: 15px;
+            color: #5C4B37;
+            padding-left: 10px;
+            border-left: 3px solid #FFB347;
+            padding-top: 2px;
+            padding-bottom: 2px;
+        }
+        
+        .payment-methods {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            padding: 20px;
+            background-color: white;
+            border-radius: 15px;
+            border: 1px solid #FFE4C4;
+        }
+        
+        .payment-icon {
+            font-size: 2.5rem;
+            color: #FF8A00;
+            transition: all 0.3s ease;
+        }
+        
+        .payment-icon:hover {
+            color: #FF6B35;
+            transform: scale(1.1);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px;
+            color: #A67C52;
+            font-size: 0.9rem;
+            border-top: 1px solid #FFE4C4;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .price-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .instructions {
+                padding: 25px;
+            }
+        }
+        
+        /* Стили для кнопки "Показать все" */
+        .show-all-btn {
+            display: block;
+            margin: 30px auto 50px;
+            padding: 15px 35px;
+            background: linear-gradient(to right, #FF8A00, #FF6B35);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.2);
+            font-size: 1.1rem;
+        }
+        
+        .show-all-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 107, 53, 0.3);
+            background: linear-gradient(to right, #FF9500, #FF7B47);
+        }
+        
+        /* Декоративные элементы */
+        .decoration {
+            position: fixed;
+            z-index: -1;
+            opacity: 0.1;
+        }
+        
+        .dec-1 {
+            top: 10%;
+            left: 5%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, #FF8A00 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        
+        .dec-2 {
+            bottom: 10%;
+            right: 5%;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, #FF6B35 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        
+        /* Стили для подсветки при наведении */
+        .highlight {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .highlight::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .highlight:hover::after {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Декоративные элементы -->
+    <div class="decoration dec-1"></div>
+    <div class="decoration dec-2"></div>
+    
+    <div class="container">
+        <header class="highlight">
+            <h1><i class="fas fa-gem"></i> Прайс-лист танцевальной студии</h1>
+            <p>Выберите подходящий для вас абонемент или разовое посещение. Оплатите онлайн или с помощью QR-кода.</p>
+        </header>
+        
+        <div class="filters">
+            <button class="filter-btn active" data-category="all">Все предложения</button>
+            <button class="filter-btn" data-category="Пробное занятие">Пробные занятия</button>
+            <button class="filter-btn" data-category="БАЗОВЫЕ">Базовые абонементы</button>
+            <button class="filter-btn" data-category="СПЕЦИАЛЬНЫЕ ПРОГРАММЫ">Специальные программы</button>
+            <button class="filter-btn" data-category="РАЗОВЫЕ ПОСЕЩЕНИЯ">Разовые посещения</button>
+        </div>
+        
+        <div class="price-grid" id="priceContainer">
+            <!-- Карточки товаров будут сгенерированы с помощью JavaScript -->
+        </div>
+        
+        <button class="show-all-btn highlight" id="showAllBtn">
+            <i class="fas fa-eye"></i> Показать все товары
+        </button>
+        
+        <!-- Модальное окно для QR-кода -->
+        <div class="modal" id="qrModal">
+            <div class="modal-content">
+                <span class="close-modal" id="closeModal">&times;</span>
+                <h2 id="modalTitle">QR-код для оплаты</h2>
+                <div class="qr-container">
+                    <div id="qrcode"></div>
+                </div>
+                <p id="modalDescription">Отсканируйте QR-код для оплаты с телефона</p>
+                <div class="qr-info">
+                    <p><i class="fas fa-mobile-alt"></i> Наведите камеру телефона на QR-код</p>
+                    <p><i class="fas fa-link"></i> Или используйте прямую ссылку выше</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h2><i class="fas fa-info-circle"></i> Как оплатить</h2>
+            <p>1. Выберите подходящее для вас предложение из списка выше.</p>
+            <p>2. Для быстрой оплаты используйте кнопку "Оплатить по ссылке".</p>
+            <p>3. Для оплаты с телефона используйте кнопку "Показать QR-код" и отсканируйте его камерой.</p>
+            <p>4. После успешной оплаты вам на email придет подтверждение и инструкции.</p>
+            <p>5. Если у вас возникли вопросы, свяжитесь с нами по телефону: <strong>+7 (XXX) XXX-XX-XX</strong></p>
+            
+            <div class="payment-methods">
+                <i class="fab fa-cc-visa payment-icon"></i>
+                <i class="fab fa-cc-mastercard payment-icon"></i>
+                <i class="fab fa-cc-mir payment-icon"></i>
+                <i class="fas fa-mobile-alt payment-icon"></i>
+                <i class="fas fa-qrcode payment-icon"></i>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2023 Танцевальная студия. Все права защищены.</p>
+            <p>Сайт предназначен для демонстрации прайс-листа и оплаты услуг.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Данные товаров из таблицы
+        const products = [
+            {
+                name: "ПРОБНОЕ ЗАНЯТИЕ ДЕТСКОЕ",
+                description: "Знакомство со студией, Консультация педагога, Определение уровня, Подбор направления",
+                category: "Пробное занятие",
+                price: 350,
+                priceNote: "Одно занятие",
+                paymentLink: "https://payment.example.com/pay/1",
+                comment: "Детское пробное занятие, рекомендуется для новых клиентов до 16 лет"
+            },
+            {
+                name: "ПРОБНОЕ ЗАНЯТИЕ ВЗРОСЛОЕ",
+                description: "Знакомство со студией, Консультация педагога, Определение уровня, Подбор направления",
+                category: "Пробное занятие",
+                price: 400,
+                priceNote: "Одно занятие",
+                paymentLink: "https://payment.example.com/pay/2",
+                comment: "Взрослое пробное занятие, для новых клиентов от 16 лет"
+            },
+            {
+                name: "АБОНИМЕНТ ДЕТСКИЙ",
+                description: "Абонемент на 30 дней, Современные направления, Подготовка к выступлениям, Участие в конкурсах",
+                category: "БАЗОВЫЕ",
+                price: 3000,
+                priceNote: "На 30 дней",
+                paymentLink: "https://payment.example.com/pay/3",
+                comment: "Базовый детский абонемент, включает групповые занятия"
+            },
+            {
+                name: "АБОНИМЕНТ ВЗРОСЛЫЙ",
+                description: "Абонемент на 30 дней, Все взрослые направления, Индивидуальный подход, Гибкое расписание",
+                category: "БАЗОВЫЕ",
+                price: 4000,
+                priceNote: "На 30 дней",
+                paymentLink: "https://payment.example.com/pay/4",
+                comment: "Базовый взрослый абонемент, доступ ко всем групповым занятиям"
+            },
+            {
+                name: "АБОНИМЕНТ ВОСКРЕСНОЙ РАСТЯЖКИ ДЕТСКИЙ",
+                description: "Занятия по растяжке, Индивидуальный подход.",
+                category: "БАЗОВЫЕ",
+                price: 2000,
+                priceNote: "На 30 дней",
+                paymentLink: "https://payment.example.com/pay/5",
+                comment: "Специализированный абонемент на воскресные занятия растяжкой для детей"
+            },
+            {
+                name: "АБОНИМЕНТ ВОСКРЕСНОЙ РАСТЯЖКИ ВЗРОСЛЫЙ",
+                description: "Занятия по растяжке, Индивидуальный подход.",
+                category: "БАЗОВЫЕ",
+                price: 3000,
+                priceNote: "На 30 дней",
+                paymentLink: "https://payment.example.com/pay/6",
+                comment: "Специализированный абонемент на воскресные занятия растяжкой для взрослых"
+            },
+            {
+                name: "ИНДИВИДУАЛЬНО",
+                description: "Персональный подход, Гибкий график, Индивидуальная программа, Быстрый прогресс",
+                category: "СПЕЦИАЛЬНЫЕ ПРОГРАММЫ",
+                price: 1500,
+                priceNote: "Одно занятие",
+                paymentLink: "https://payment.example.com/pay/7",
+                comment: "Разовое индивидуальное занятие с тренером"
+            },
+            {
+                name: "ИНДИВИДУАЛЬНО ПО ЗАПРОСУ",
+                description: "Персональный подход, Гибкий график, Индивидуальная программа",
+                category: "СПЕЦИАЛЬНЫЕ ПРОГРАММЫ",
+                price: 0,
+                priceNote: "Цена по запросу",
+                paymentLink: null,
+                comment: "Индивидуальные занятия по специальной программе, цена обсуждается отдельно"
+            },
+            {
+                name: "ИНДИВИДУАЛЬНОЕ ЛФК",
+                description: "Абонемент на 30 дней, Адаптированные нагрузки, Щадящие тренировки, Оздоровительный эффект",
+                category: "СПЕЦИАЛЬНЫЕ ПРОГРАММЫ",
+                price: 3500,
+                priceNote: "На 30 дней",
+                paymentLink: "https://payment.example.com/pay/9",
+                comment: "Лечебная физкультура, абонемент на месяц"
+            },
+            {
+                name: "АБОНИМЕНТ ВЗРОСЛЫЙ НА РАСТЯДКУ И ФИТНЕС",
+                description: "Абонемент на 30 дней, Индивидуальный подход.",
+                category: "СПЕЦИАЛЬНЫЕ ПРОГРАММЫ",
+                price: 6000,
+                priceNote: "На 30 дней",
+                paymentLink: "https://payment.example.com/pay/10",
+                comment: "Комбинированный абонемент: растяжка + фитнес для взрослых"
+            },
+            {
+                name: "АБОНЕМЕНТ ДЕТСКИЙ +",
+                description: "Абонемент на 30 дней, 8 ЗАНЯТИЙ ТАНЦАМИ И 4 ЗАНЯТИЯ ВОСКРЕСНОЙ РАСТЯЖКИ",
+                category: "СПЕЦИАЛЬНЫЕ ПРОГРАММЫ",
+                price: 4500,
+                priceNote: "На 30 дней",
+                paymentLink: "https://payment.example.com/pay/11",
+                comment: "Расширенный детский абонемент с включенными занятиями растяжкой"
+            },
+            {
+                name: "АБОНЕМЕНТ ВЗРОСЛЫЙ +",
+                description: "Абонемент на 30 дней, 8 ЗАНЯТИЙ ТАНЦАМИ И 4 ЗАНЯТИЯ ВОСКРЕСНОЙ РАСТЯЖКИ",
+                category: "СПЕЦИАЛЬНЫЕ ПРОГРАММЫ",
+                price: 5000,
+                priceNote: "На 30 дней",
+                paymentLink: "https://payment.example.com/pay/12",
+                comment: "Расширенный взрослый абонемент с включенными занятиями растяжкой"
+            },
+            {
+                name: "РАЗОВОЕ ДЕТСКОЕ ПОСЕЩЕНИЕ",
+                description: "Разовое посещение занятий",
+                category: "РАЗОВЫЕ ПОСЕЩЕНИЯ",
+                price: 400,
+                priceNote: "Одно занятие",
+                paymentLink: "https://payment.example.com/pay/13",
+                comment: "Разовое посещение группового занятия для детей"
+            },
+            {
+                name: "РАЗОВОЕ ВЗРОСЛОЕ ПОСЕЩЕНИЕ",
+                description: "Разовое посещение занятий",
+                category: "РАЗОВЫЕ ПОСЕЩЕНИЯ",
+                price: 450,
+                priceNote: "Одно занятие",
+                paymentLink: "https://payment.example.com/pay/14",
+                comment: "Разовое посещение группового занятия для взрослых"
+            }
+        ];
+
+        // Функция для форматирования описания (преобразует текст с разделителями в список)
+        function formatDescription(desc) {
+            // Если описание содержит запятые, разбиваем на элементы списка
+            if (desc.includes(',')) {
+                const items = desc.split(',').map(item => item.trim());
+                return `<ul>${items.map(item => `<li>${item}</li>`).join('')}</ul>`;
+            }
+            // Иначе просто возвращаем текст
+            return `<p>${desc}</p>`;
+        }
+
+        // Функция для отображения карточек товаров
+        function renderProducts(category = 'all') {
+            const container = document.getElementById('priceContainer');
+            container.innerHTML = '';
+            
+            const filteredProducts = category === 'all' 
+                ? products 
+                : products.filter(product => product.category === category);
+            
+            filteredProducts.forEach(product => {
+                const priceClass = product.price === 0 ? 'free-price' : '';
+                const priceDisplay = product.price === 0 
+                    ? 'По запросу' 
+                    : `${product.price.toLocaleString('ru-RU')} ₽`;
+                
+                const isDisabled = product.price === 0 || !product.paymentLink;
+                
+                const card = document.createElement('div');
+                card.className = 'price-card highlight';
+                card.innerHTML = `
+                    <div class="card-header">
+                        <span class="card-category">${product.category}</span>
+                        <h3 class="card-title">${product.name}</h3>
+                        <div class="card-description">${formatDescription(product.description)}</div>
+                    </div>
+                    <div class="card-price">
+                        <div class="price-amount ${priceClass}">${priceDisplay}</div>
+                        <div class="price-period">${product.priceNote}</div>
+                    </div>
+                    <div class="card-actions">
+                        <div class="action-buttons">
+                            <!-- Кнопка для оплаты по ссылке -->
+                            <a href="${isDisabled ? '#' : product.paymentLink}" 
+                               target="_blank"
+                               class="link-btn ${isDisabled ? 'disabled' : ''}"
+                               ${isDisabled ? 'onclick="return false;"' : ''}>
+                                <i class="fas fa-external-link-alt"></i>
+                                ${isDisabled ? 'Узнать цену' : 'Оплатить по ссылке'}
+                            </a>
+                            
+                            <!-- Кнопка для показа QR-кода -->
+                            <button class="qr-btn" 
+                                    ${isDisabled ? 'disabled' : ''}
+                                    onclick="${isDisabled ? 'showContactInfo()' : `showQRCode('${product.name}', '${product.paymentLink}', ${product.price})`}">
+                                <i class="fas fa-qrcode"></i>
+                                ${isDisabled ? 'Узнать цену' : 'Показать QR-код'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+            
+            // Если нет товаров в выбранной категории
+            if (filteredProducts.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #A67C52;">
+                        <i class="fas fa-box-open" style="font-size: 3rem; margin-bottom: 20px; color: #FF8A00;"></i>
+                        <h3>В этой категории пока нет предложений</h3>
+                        <p>Выберите другую категорию или свяжитесь с нами для уточнения информации</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Функция для показа QR-кода
+        function showQRCode(productName, paymentLink, price) {
+            const modal = document.getElementById('qrModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalDescription = document.getElementById('modalDescription');
+            const qrContainer = document.getElementById('qrcode');
+            
+            // Очищаем предыдущий QR-код
+            qrContainer.innerHTML = '';
+            
+            // Устанавливаем заголовок и описание
+            modalTitle.textContent = `Оплата: ${productName}`;
+            modalDescription.textContent = `Сумма: ${price.toLocaleString('ru-RU')} ₽. Отсканируйте QR-код для оплаты.`;
+            
+            // Генерируем QR-код с ссылкой на оплату
+            try {
+                QRCode.toCanvas(qrContainer, paymentLink, {
+                    width: 200,
+                    height: 200,
+                    margin: 1,
+                    color: {
+                        dark: '#8B4513',
+                        light: '#FFFFFF'
+                    }
+                }, function(error) {
+                    if (error) {
+                        console.error('Ошибка генерации QR-кода:', error);
+                        qrContainer.innerHTML = '<p style="color: #8B4513;">Не удалось сгенерировать QR-код. Используйте прямую ссылку.</p>';
+                    }
+                });
+            } catch (error) {
+                console.error('Ошибка генерации QR-кода:', error);
+                qrContainer.innerHTML = '<p style="color: #8B4513;">Ошибка генерации QR-кода. Используйте прямую ссылку.</p>';
+            }
+            
+            // Показываем модальное окно
+            modal.style.display = 'flex';
+        }
+
+        // Функция для показа контактной информации (для товаров без цены)
+        function showContactInfo() {
+            alert('Для товаров с ценой "По запросу" свяжитесь с нами по телефону: +7 (XXX) XXX-XX-XX или напишите на email: info@dance-studio.ru');
+        }
+
+        // Инициализация фильтров
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            
+            // Добавляем обработчики событий для кнопок фильтрации
+            document.querySelectorAll('.filter-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    // Удаляем активный класс со всех кнопок
+                    document.querySelectorAll('.filter-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    
+                    // Добавляем активный класс на нажатую кнопку
+                    button.classList.add('active');
+                    
+                    // Фильтруем товары по категории
+                    const category = button.getAttribute('data-category');
+                    renderProducts(category);
+                    
+                    // Плавная прокрутка к товарам
+                    document.getElementById('priceContainer').scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+            
+            // Обработчик для кнопки "Показать все товары"
+            document.getElementById('showAllBtn').addEventListener('click', () => {
+                // Удаляем активный класс со всех кнопок фильтра
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Активируем кнопку "Все предложения"
+                document.querySelector('[data-category="all"]').classList.add('active');
+                
+                // Показываем все товары
+                renderProducts('all');
+                
+                // Прокручиваем к началу списка товаров
+                document.getElementById('priceContainer').scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Закрытие модального окна
+            document.getElementById('closeModal').addEventListener('click', () => {
+                document.getElementById('qrModal').style.display = 'none';
+            });
+            
+            // Закрытие модального окна при клике вне его
+            window.addEventListener('click', (event) => {
+                const modal = document.getElementById('qrModal');
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+            
+            // Выводим комментарии в консоль (для администратора)
+            console.log('%c=== КОММЕНТАРИИ К ТОВАРАМ ===', 'color: #FF8A00; font-size: 16px; font-weight: bold;');
+            products.forEach(product => {
+                console.log(`%cТовар: ${product.name}`, 'color: #8B4513; font-weight: bold;');
+                console.log(`Комментарий: ${product.comment}`);
+                console.log(`Ссылка для оплаты: ${product.paymentLink || 'Нет ссылки'}`);
+                console.log('---');
+            });
+            console.log('%c=== КОНЕЦ КОММЕНТАРИЕВ ===', 'color: #FF8A00; font-size: 16px; font-weight: bold;');
+        });
+    </script>
+</body>
+</html>
