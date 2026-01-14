@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -648,10 +647,10 @@
 
         // ===== ГЕНЕРАЦИЯ КОНТЕНТА =====
         async function generateContent() {
-            const direction = document.getElementById('direction').value;
-            const tone = document.getElementById('tone').value;
-            const audience = document.getElementById('audience').value;
-            const prompt = document.getElementById('prompt').value;
+            const direction = document.getElementById('direction').value || '';
+            const tone = document.getElementById('tone').value || 'friendly';
+            const audience = document.getElementById('audience').value || 'all';
+            const prompt = document.getElementById('prompt').value || '';
             const apiKey = document.getElementById('apiKey').value.trim();
 
             // Проверка API ключа
@@ -676,6 +675,8 @@
                 // Создаем промпт для ИИ
                 const aiPrompt = createAIPrompt(direction, tone, audience, prompt);
                 
+                console.log('Отправка запроса к DeepSeek API...');
+                
                 // Отправляем запрос к DeepSeek API
                 const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
                     method: 'POST',
@@ -691,7 +692,8 @@
                                 content: `Ты профессиональный копирайтер для танцевальной студии "${CONFIG.studio.name}". 
                                 Пиши engaging посты для Telegram на русском языке. 
                                 Используй эмодзи для выразительности, но не переусердствуй.
-                                Пиши в дружеском тоне, но профессионально.`
+                                Пиши в дружеском тоне, но профессионально.
+                                Всегда добавляй призыв к действию в конце поста.`
                             },
                             {
                                 role: 'user',
@@ -705,7 +707,9 @@
                 });
 
                 if (!response.ok) {
-                    throw new Error(`Ошибка API: ${response.status} ${response.statusText}`);
+                    const errorText = await response.text();
+                    console.error('Ошибка API:', errorText);
+                    throw new Error(`Ошибка API: ${response.status}`);
                 }
 
                 const data = await response.json();
@@ -729,10 +733,10 @@
                 
             } catch (error) {
                 console.error('Ошибка генерации:', error);
-                showNotification(`Ошибка: ${error.message}`, 'error');
+                showNotification(`Ошибка: ${error.message}. Используем примерный текст.`, 'warning');
                 
                 // Показываем пример контента при ошибке
-                state.generatedContent = createFallbackContent(direction, tone, audience);
+                state.generatedContent = createFallbackContent(direction, tone, audience, prompt);
                 document.getElementById('generatedContent').textContent = state.generatedContent;
                 document.getElementById('telegramContent').textContent = state.generatedContent;
                 updateCharCount();
@@ -809,10 +813,10 @@ ${customPrompt ? `Дополнительные пожелания: ${customPromp
                 ballet: 'балет/классика',
                 lady: 'lady dance/high heels'
             };
-            return directions[direction] || direction;
+            return directions[direction] || 'все направления';
         }
 
-        function createFallbackContent(direction, tone, audience) {
+        function createFallbackContent(direction, tone, audience, customPrompt) {
             const now = new Date();
             const dateStr = now.toLocaleDateString('ru-RU', { 
                 weekday: 'long', 
@@ -820,9 +824,19 @@ ${customPrompt ? `Дополнительные пожелания: ${customPromp
                 month: 'long' 
             });
             
-            return `🌟 ДОБРО ПОЖАЛОВАТЬ В ТАНЦЕВАЛЬНУЮ СТУДИЮ "ПЕРВЫЙ РИТМ"! 🌟
+            let directionText = '';
+            if (direction) {
+                directionText = `🎯 **${getDirectionName(direction).toUpperCase()}**\n\n`;
+            }
+            
+            let customText = '';
+            if (customPrompt) {
+                customText = `📝 ${customPrompt}\n\n`;
+            }
+            
+            return `${directionText}🌟 ДОБРО ПОЖАЛОВАТЬ В ТАНЦЕВАЛЬНУЮ СТУДИЮ "ПЕРВЫЙ РИТМ"! 🌟
 
-🎉 У нас отличные новости! ${getDirectionName(direction) ? `Открыт набор в группу "${getDirectionName(direction)}"!` : 'Идет набор во все группы!'}
+${customText}🎉 У нас отличные новости! ${direction ? `Открыт набор в группу "${getDirectionName(direction)}"!` : 'Идет набор во все группы!'}
 
 ✨ Что вас ждет:
 • Профессиональные педагоги с большим опытом
@@ -894,6 +908,12 @@ ${CONFIG.studio.phone}
                 return;
             }
             
+            const testBtn = document.getElementById('testApiBtn');
+            if (testBtn) {
+                testBtn.disabled = true;
+                testBtn.innerHTML = '<div class="loader"></div> Проверка...';
+            }
+            
             try {
                 const response = await fetch('https://api.deepseek.com/v1/models', {
                     headers: {
@@ -902,12 +922,17 @@ ${CONFIG.studio.phone}
                 });
                 
                 if (response.ok) {
-                    showNotification('Подключение к DeepSeek API успешно!', 'success');
+                    showNotification('✅ Подключение к DeepSeek API успешно!', 'success');
                 } else {
-                    throw new Error('Неверный API ключ');
+                    throw new Error(`Ошибка ${response.status}`);
                 }
             } catch (error) {
-                showNotification(`Ошибка подключения: ${error.message}`, 'error');
+                showNotification(`❌ Ошибка подключения: ${error.message}`, 'error');
+            } finally {
+                if (testBtn) {
+                    testBtn.disabled = false;
+                    testBtn.innerHTML = 'Проверить подключение';
+                }
             }
         }
 
