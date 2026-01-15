@@ -764,6 +764,7 @@
                 
                 const card = document.createElement('div');
                 card.className = 'price-card highlight';
+                card.dataset.productName = product.name;
                 
                 let actionButtons = '';
                 
@@ -778,9 +779,7 @@
                         </a>
                         
                         <button class="qr-btn" 
-                                data-name="${product.name}"
-                                data-link="${product.paymentLink}"
-                                data-price="${product.price}">
+                                data-product='${JSON.stringify(product).replace(/'/g, "&apos;")}'>
                             <i class="fas fa-qrcode"></i>
                             Показать QR-код
                         </button>
@@ -789,7 +788,7 @@
                     // Для товаров без оплаты показываем кнопку связи
                     actionButtons = `
                         <button class="contact-btn" 
-                                data-name="${product.name}">
+                                data-product='${JSON.stringify(product).replace(/'/g, "&apos;")}'>
                             <i class="fas fa-phone-alt"></i>
                             Узнать цену и записаться
                         </button>
@@ -816,23 +815,8 @@
                 container.appendChild(card);
             });
             
-            // Добавляем обработчики событий для кнопок QR-кода
-            document.querySelectorAll('.qr-btn').forEach(button => {
-                button.addEventListener('click', function() {
-                    const productName = this.getAttribute('data-name');
-                    const paymentLink = this.getAttribute('data-link');
-                    const price = this.getAttribute('data-price');
-                    showQRCode(productName, paymentLink, price);
-                });
-            });
-            
-            // Добавляем обработчики событий для кнопок связи
-            document.querySelectorAll('.contact-btn').forEach(button => {
-                button.addEventListener('click', function() {
-                    const productName = this.getAttribute('data-name');
-                    showContactInfo(productName);
-                });
-            });
+            // Добавляем обработчики событий для ВСЕХ кнопок на странице
+            setupEventListeners();
             
             // Если нет товаров в выбранной категории
             if (filteredProducts.length === 0) {
@@ -844,6 +828,37 @@
                     </div>
                 `;
             }
+        }
+
+        // Функция для настройки всех обработчиков событий
+        function setupEventListeners() {
+            // Обработчики для кнопок QR-кода
+            document.querySelectorAll('.qr-btn').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    try {
+                        const productData = JSON.parse(this.getAttribute('data-product').replace(/&apos;/g, "'"));
+                        showQRCode(productData.name, productData.paymentLink, productData.price);
+                    } catch (error) {
+                        console.error('Ошибка парсинга данных товара:', error);
+                        alert('Ошибка при обработке данных товара');
+                    }
+                });
+            });
+            
+            // Обработчики для контактных кнопок
+            document.querySelectorAll('.contact-btn').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    try {
+                        const productData = JSON.parse(this.getAttribute('data-product').replace(/&apos;/g, "'"));
+                        showContactInfo(productData.name);
+                    } catch (error) {
+                        console.error('Ошибка парсинга данных товара:', error);
+                        alert('Ошибка при обработке данных товара');
+                    }
+                });
+            });
         }
 
         // Функция для показа QR-кода
@@ -892,7 +907,7 @@
             alert(`Для товара "${productName}" свяжитесь с нами:\n\n📞 Телефон: ${phone}\n✉️ Email: ${email}\n\nМы обсудим индивидуальные условия и цену!`);
         }
 
-        // Инициализация фильтров
+        // Инициализация при загрузке страницы
         document.addEventListener('DOMContentLoaded', () => {
             renderProducts();
             
