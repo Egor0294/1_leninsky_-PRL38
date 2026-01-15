@@ -241,18 +241,6 @@
             background: linear-gradient(to right, #FF9500, #FF7B47);
         }
         
-        .link-btn.disabled {
-            background: linear-gradient(to right, #CCCCCC, #AAAAAA);
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-        
-        .link-btn.disabled:hover {
-            box-shadow: none;
-            transform: none;
-        }
-        
         /* Стили для кнопок с QR-кодами */
         .qr-btn {
             display: flex;
@@ -277,18 +265,6 @@
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(255, 152, 0, 0.3);
             background: linear-gradient(to right, #FFB74D, #FFA726);
-        }
-        
-        .qr-btn:disabled {
-            background: linear-gradient(to right, #CCCCCC, #AAAAAA);
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-        
-        .qr-btn:disabled:hover {
-            box-shadow: none;
-            transform: none;
         }
         
         .free-price {
@@ -531,6 +507,32 @@
         .highlight:hover::after {
             opacity: 1;
         }
+        
+        /* Новый стиль для кнопок товаров с ценой "по запросу" */
+        .contact-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 16px 20px;
+            background: linear-gradient(to right, #4CAF50, #2E7D32);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            box-shadow: 0 5px 15px rgba(46, 125, 50, 0.2);
+        }
+        
+        .contact-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(46, 125, 50, 0.3);
+            background: linear-gradient(to right, #66BB6A, #43A047);
+        }
     </style>
 </head>
 <body>
@@ -609,7 +611,8 @@
                 price: 350,
                 priceNote: "Одно занятие",
                 paymentLink: "https://qr.nspk.ru/AS10000JSFH64OT38AVOQ9DAHF7JBCVI?type=01&bank=100000000284&sum=35000&cur=RUB&crc=16EF",
-                comment: "Детское пробное занятие, рекомендуется для новых клиентов до 16 лет"
+                comment: "Детское пробное занятие, рекомендуется для новых клиентов до 16 лет",
+                hasPayment: true
             },
             {
                 name: "ПРОБНОЕ ЗАНЯТИЕ ВЗРОСЛОЕ",
@@ -618,7 +621,8 @@
                 price: 400,
                 priceNote: "Одно занятие",
                 paymentLink: "https://qr.nspk.ru/AS10007FIRID1QJB8RLP11FLGCFACLJG?type=01&bank=100000000284&sum=40000&cur=RUB&crc=69CC",
-                comment: "Взрослое пробное занятие, для новых клиентов от 16 лет"
+                comment: "Взрослое пробное занятие, для новых клиентов от 16 лет",
+                hasPayment: true
             },
             {
                 name: "АБОНЕМЕНТ ДЕТСКИЙ",
@@ -627,7 +631,8 @@
                 price: 3000,
                 priceNote: "На 30 дней",
                 paymentLink: "https://qr.nspk.ru/BS10003FHT72FQKT8T2OJSDB8OMQQN09?type=01&bank=100000000284&sum=300000&cur=RUB&crc=517E",
-                comment: "Базовый детский абонемент, включает групповые занятия"
+                comment: "Базовый детский абонемент, включает групповые занятия",
+                hasPayment: true
             },
             {
                 name: "АБОНЕМЕНТ ВЗРОСЛЫЙ",
@@ -636,7 +641,8 @@
                 price: 4000,
                 priceNote: "На 30 дней",
                 paymentLink: "https://qr.nspk.ru/AS10005640VB06GD9AOB82P1JP81PLQ4?type=01&bank=100000000284&sum=400000&cur=RUB&crc=57B1",
-                comment: "Базовый взрослый абонемент, доступ ко всем групповым занятиям"
+                comment: "Базовый взрослый абонемент, доступ ко всем групповым занятиям",
+                hasPayment: true
             },
             {
                 name: "АБОНЕМЕНТ ВОСКРЕСНОЙ РАСТЯЖКИ ДЕТСКИЙ",
@@ -645,7 +651,8 @@
                 price: 2000,
                 priceNote: "На 30 дней",
                 paymentLink: "https://qr.nspk.ru/AS100025NJDP3JJ49VCQNUP8SH1J4V7A?type=01&bank=100000000284&sum=200000&cur=RUB&crc=9F44",
-                comment: "Специализированный абонемент на воскресные занятия растяжкой для детей"
+                comment: "Специализированный абонемент на воскресные занятия растяжкой для детей",
+                hasPayment: true
             },
             {
                 name: "АБОНЕМЕНТ ВОСКРЕСНОЙ РАСТЯЖКИ ВЗРОСЛЫЙ",
@@ -654,7 +661,8 @@
                 price: 3000,
                 priceNote: "На 30 дней",
                 paymentLink: "https://qr.nspk.ru/AS100024ONEI5ERE8HPBHOTNUDEOJE9S?type=01&bank=100000000284&sum=300000&cur=RUB&crc=AA8B",
-                comment: "Специализированный абонемент на воскресные занятия растяжкой для взрослых"
+                comment: "Специализированный абонемент на воскресные занятия растяжкой для взрослых",
+                hasPayment: true
             },
             {
                 name: "ИНДИВИДУАЛЬНО",
@@ -663,7 +671,8 @@
                 price: 1500,
                 priceNote: "Одно занятие",
                 paymentLink: "https://qr.nspk.ru/AS1000544TC3A7I48EARB3IRSMONUBHO?type=01&bank=100000000284&sum=150000&cur=RUB&crc=F498",
-                comment: "Разовое индивидуальное занятие с тренером"
+                comment: "Разовое индивидуальное занятие с тренером",
+                hasPayment: true
             },
             {
                 name: "ИНДИВИДУАЛЬНО ПО ЗАПРОСУ",
@@ -671,18 +680,19 @@
                 category: "СПЕЦИАЛЬНЫЕ ПРОГРАММЫ",
                 price: 0,
                 priceNote: "Цена по запросу",
-                paymentLink: null,
-                comment: "Индивидуальные занятия по специальной программе, цена обсуждается отдельно"
+                paymentLink: "#contact",
+                comment: "Индивидуальные занятия по специальной программе, цена обсуждается отдельно",
+                hasPayment: false
             },
             {
-                    
                 name: "АБОНЕМЕНТ ВЗРОСЛЫЙ НА РАСТЯЖКУ И ФИТНЕС",
                 description: "Абонемент на 30 дней, Индивидуальный подход.",
                 category: "СПЕЦИАЛЬНЫЕ ПРОГРАММЫ",
                 price: 6000,
                 priceNote: "На 30 дней",
                 paymentLink: "https://qr.nspk.ru/AS10006ID8KQ183Q9I0PD7BKLIEAUTLQ?type=01&bank=100000000284&sum=600000&cur=RUB&crc=7EDC",
-                comment: "Комбинированный абонемент: растяжка + фитнес для взрослых"
+                comment: "Комбинированный абонемент: растяжка + фитнес для взрослых",
+                hasPayment: true
             },
             {
                 name: "АБОНЕМЕНТ ДЕТСКИЙ +",
@@ -691,7 +701,8 @@
                 price: 4500,
                 priceNote: "На 30 дней",
                 paymentLink: "https://qr.nspk.ru/AS10007JHKFQ3VVE8UB9L7JI5HANFHHO?type=01&bank=100000000284&sum=450000&cur=RUB&crc=77DB",
-                comment: "Расширенный детский абонемент с включенными занятиями растяжкой"
+                comment: "Расширенный детский абонемент с включенными занятиями растяжкой",
+                hasPayment: true
             },
             {
                 name: "АБОНЕМЕНТ ВЗРОСЛЫЙ +",
@@ -700,7 +711,8 @@
                 price: 5000,
                 priceNote: "На 30 дней",
                 paymentLink: "https://qr.nspk.ru/AS100034J367CM619G4A9L0V0CQED6NA?type=01&bank=100000000284&sum=500000&cur=RUB&crc=4B97",
-                comment: "Расширенный взрослый абонемент с включенными занятиями растяжкой"
+                comment: "Расширенный взрослый абонемент с включенными занятиями растяжкой",
+                hasPayment: true
             },
             {
                 name: "РАЗОВОЕ ДЕТСКОЕ ПОСЕЩЕНИЕ",
@@ -709,7 +721,8 @@
                 price: 400,
                 priceNote: "Одно занятие",
                 paymentLink: "https://qr.nspk.ru/AS10006USDIQPNBI8S98L0ERKN616KEQ?type=01&bank=100000000284&sum=40000&cur=RUB&crc=EEC4",
-                comment: "Разовое посещение группового занятия для детей"
+                comment: "Разовое посещение группового занятия для детей",
+                hasPayment: true
             },
             {
                 name: "РАЗОВОЕ ВЗРОСЛОЕ ПОСЕЩЕНИЕ",
@@ -718,7 +731,8 @@
                 price: 450,
                 priceNote: "Одно занятие",
                 paymentLink: "https://qr.nspk.ru/BS10005R0T2KIJRL97BO10O9HGEQP9FH?type=01&bank=100000000284&sum=45000&cur=RUB&crc=9B80",
-                comment: "Разовое посещение группового занятия для взрослых"
+                comment: "Разовое посещение группового занятия для взрослых",
+                hasPayment: true
             }
         ];
 
@@ -748,10 +762,38 @@
                     ? 'По запросу' 
                     : `${product.price.toLocaleString('ru-RU')} ₽`;
                 
-                const isDisabled = product.price === 0 || !product.paymentLink;
-                
                 const card = document.createElement('div');
                 card.className = 'price-card highlight';
+                
+                let actionButtons = '';
+                
+                if (product.hasPayment) {
+                    // Для товаров с оплатой показываем обе кнопки
+                    actionButtons = `
+                        <a href="${product.paymentLink}" 
+                           target="_blank"
+                           class="link-btn">
+                            <i class="fas fa-external-link-alt"></i>
+                            Оплатить по ссылке
+                        </a>
+                        
+                        <button class="qr-btn" 
+                                onclick="showQRCode('${product.name}', '${product.paymentLink}', ${product.price})">
+                            <i class="fas fa-qrcode"></i>
+                            Показать QR-код
+                        </button>
+                    `;
+                } else {
+                    // Для товаров без оплаты показываем кнопку связи
+                    actionButtons = `
+                        <button class="contact-btn" 
+                                onclick="showContactInfo('${product.name}')">
+                            <i class="fas fa-phone-alt"></i>
+                            Узнать цену и записаться
+                        </button>
+                    `;
+                }
+                
                 card.innerHTML = `
                     <div class="card-header">
                         <span class="card-category">${product.category}</span>
@@ -764,22 +806,7 @@
                     </div>
                     <div class="card-actions">
                         <div class="action-buttons">
-                            <!-- Кнопка для оплаты по ссылке -->
-                            <a href="${isDisabled ? '#' : product.paymentLink}" 
-                               target="_blank"
-                               class="link-btn ${isDisabled ? 'disabled' : ''}"
-                               ${isDisabled ? 'onclick="return false;"' : ''}>
-                                <i class="fas fa-external-link-alt"></i>
-                                ${isDisabled ? 'Узнать цену' : 'Оплатить по ссылке'}
-                            </a>
-                            
-                            <!-- Кнопка для показа QR-кода -->
-                            <button class="qr-btn" 
-                                    ${isDisabled ? 'disabled' : ''}
-                                    onclick="${isDisabled ? 'showContactInfo()' : `showQRCode('${product.name}', '${product.paymentLink}', ${product.price})`}">
-                                <i class="fas fa-qrcode"></i>
-                                ${isDisabled ? 'Узнать цену' : 'Показать QR-код'}
-                            </button>
+                            ${actionButtons}
                         </div>
                     </div>
                 `;
@@ -838,9 +865,11 @@
             modal.style.display = 'flex';
         }
 
-        // Функция для показа контактной информации (для товаров без цены)
-        function showContactInfo() {
-            alert('Для товаров с ценой "По запросу" свяжитесь с нами по телефону: +7 (XXX) XXX-XX-XX или напишите на email: info@dance-studio.ru');
+        // Функция для показа контактной информации
+        function showContactInfo(productName) {
+            const phone = "+7 (XXX) XXX-XX-XX";
+            const email = "info@dance-studio.ru";
+            alert(`Для товара "${productName}" свяжитесь с нами:\n\n📞 Телефон: ${phone}\n✉️ Email: ${email}\n\nМы обсудим индивидуальные условия и цену!`);
         }
 
         // Инициализация фильтров
