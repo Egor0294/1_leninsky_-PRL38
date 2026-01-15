@@ -778,7 +778,9 @@
                         </a>
                         
                         <button class="qr-btn" 
-                                onclick="showQRCode('${product.name}', '${product.paymentLink}', ${product.price})">
+                                data-name="${product.name}"
+                                data-link="${product.paymentLink}"
+                                data-price="${product.price}">
                             <i class="fas fa-qrcode"></i>
                             Показать QR-код
                         </button>
@@ -787,7 +789,7 @@
                     // Для товаров без оплаты показываем кнопку связи
                     actionButtons = `
                         <button class="contact-btn" 
-                                onclick="showContactInfo('${product.name}')">
+                                data-name="${product.name}">
                             <i class="fas fa-phone-alt"></i>
                             Узнать цену и записаться
                         </button>
@@ -814,6 +816,24 @@
                 container.appendChild(card);
             });
             
+            // Добавляем обработчики событий для кнопок QR-кода
+            document.querySelectorAll('.qr-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const productName = this.getAttribute('data-name');
+                    const paymentLink = this.getAttribute('data-link');
+                    const price = this.getAttribute('data-price');
+                    showQRCode(productName, paymentLink, price);
+                });
+            });
+            
+            // Добавляем обработчики событий для кнопок связи
+            document.querySelectorAll('.contact-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const productName = this.getAttribute('data-name');
+                    showContactInfo(productName);
+                });
+            });
+            
             // Если нет товаров в выбранной категории
             if (filteredProducts.length === 0) {
                 container.innerHTML = `
@@ -838,7 +858,7 @@
             
             // Устанавливаем заголовок и описание
             modalTitle.textContent = `Оплата: ${productName}`;
-            modalDescription.textContent = `Сумма: ${price.toLocaleString('ru-RU')} ₽. Отсканируйте QR-код для оплаты.`;
+            modalDescription.textContent = `Сумма: ${parseInt(price).toLocaleString('ru-RU')} ₽. Отсканируйте QR-код для оплаты.`;
             
             // Генерируем QR-код с ссылкой на оплату
             try {
@@ -867,8 +887,8 @@
 
         // Функция для показа контактной информации
         function showContactInfo(productName) {
-            const phone = "+7 (904) 123 31 75";
-            const email = "egor.demunn@yandex.ru";
+            const phone = "+7 (XXX) XXX-XX-XX";
+            const email = "info@dance-studio.ru";
             alert(`Для товара "${productName}" свяжитесь с нами:\n\n📞 Телефон: ${phone}\n✉️ Email: ${email}\n\nМы обсудим индивидуальные условия и цену!`);
         }
 
