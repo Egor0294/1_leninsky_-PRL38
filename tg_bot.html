@@ -1,0 +1,2707 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIT Management Pro - Панель управления фитнес-центром</title>
+    <style>
+        :root {
+            --primary: #0088cc;
+            --primary-dark: #006699;
+            --secondary: #2c3e50;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --info: #3498db;
+            --light: #ecf0f1;
+            --dark: #34495e;
+            --gray: #95a5a6;
+            --gray-light: #bdc3c7;
+            --border-radius: 12px;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--dark);
+            padding: 20px;
+        }
+        
+        body.dark-mode {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: var(--light);
+        }
+        
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            min-height: 95vh;
+        }
+        
+        .dark-mode .dashboard {
+            background: #2c3e50;
+            color: var(--light);
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(45deg, #4CAF50, #2196F3);
+            color: white;
+            padding: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .logo h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+        
+        .logo p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+        
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        /* Main Layout */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            min-height: calc(95vh - 130px);
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            background: var(--light);
+            padding: 20px;
+            border-right: 3px solid white;
+            overflow-y: auto;
+        }
+        
+        .dark-mode .sidebar {
+            background: #34495e;
+            border-right-color: #2c3e50;
+        }
+        
+        .sidebar-section {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .dark-mode .sidebar-section {
+            background: #2c3e50;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .dark-mode .section-title {
+            color: var(--light);
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .input-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gray);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+        
+        .dark-mode .input-group label {
+            color: var(--gray-light);
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--light);
+            border-radius: 8px;
+            font-size: 14px;
+            transition: var(--transition);
+            background: white;
+        }
+        
+        .dark-mode .input-field {
+            background: #3b4a5d;
+            border-color: #4a5d73;
+            color: var(--light);
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 136, 204, 0.1);
+        }
+        
+        .btn {
+            padding: 12px 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, #4CAF50, #2196F3);
+            color: white;
+        }
+        
+        .btn-success {
+            background: linear-gradient(45deg, var(--success), #2ecc71);
+            color: white;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(45deg, var(--danger), #e74c3c);
+            color: white;
+        }
+        
+        .btn-warning {
+            background: linear-gradient(45deg, var(--warning), #f1c40f);
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Quick Stats */
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            border: 2px solid var(--light);
+        }
+        
+        .dark-mode .stat-card {
+            background: #2c3e50;
+            border-color: #34495e;
+        }
+        
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .stat-label {
+            font-size: 11px;
+            color: var(--gray);
+            text-transform: uppercase;
+        }
+        
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            background: white;
+        }
+        
+        .dark-mode .main-content {
+            background: #2c3e50;
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            background: var(--light);
+            border-bottom: 3px solid white;
+            padding: 0 20px;
+            overflow-x: auto;
+        }
+        
+        .dark-mode .tabs {
+            background: #34495e;
+            border-bottom-color: #2c3e50;
+        }
+        
+        .tab {
+            padding: 18px 25px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--gray);
+            position: relative;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+        }
+        
+        .dark-mode .tab {
+            color: var(--gray-light);
+        }
+        
+        .tab:hover {
+            color: var(--dark);
+            background: rgba(255, 255, 255, 0.5);
+        }
+        
+        .dark-mode .tab:hover {
+            color: var(--light);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .tab.active {
+            color: var(--primary);
+            background: white;
+            border-bottom-color: var(--primary);
+        }
+        
+        .dark-mode .tab.active {
+            background: #2c3e50;
+            color: var(--primary);
+        }
+        
+        .tab-badge {
+            background: var(--danger);
+            color: white;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 10px;
+            min-width: 20px;
+            text-align: center;
+        }
+        
+        /* Tab Content */
+        .tab-content {
+            flex: 1;
+            overflow: hidden;
+            display: none;
+            padding: 25px;
+        }
+        
+        .tab-content.active {
+            display: block;
+            overflow-y: auto;
+        }
+        
+        /* Clients Tab */
+        .clients-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .client-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            border: 2px solid var(--light);
+            transition: var(--transition);
+        }
+        
+        .dark-mode .client-card {
+            background: #2c3e50;
+            border-color: #34495e;
+        }
+        
+        .client-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .client-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .client-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ff9966, #ff5e62);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        
+        .client-info {
+            flex: 1;
+        }
+        
+        .client-name {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        
+        .client-phone {
+            font-size: 14px;
+            color: var(--gray);
+        }
+        
+        .client-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 12px;
+            color: var(--gray);
+            margin-bottom: 15px;
+        }
+        
+        .client-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .client-stat {
+            text-align: center;
+            padding: 10px;
+            background: var(--light);
+            border-radius: 8px;
+        }
+        
+        .dark-mode .client-stat {
+            background: #34495e;
+        }
+        
+        .client-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: var(--light);
+            color: var(--dark);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+        
+        .dark-mode .icon-btn {
+            background: #34495e;
+            color: var(--light);
+        }
+        
+        .icon-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: rotate(15deg);
+        }
+        
+        /* Trainers Tab */
+        .trainers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        
+        .trainer-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            border: 2px solid var(--light);
+            transition: var(--transition);
+        }
+        
+        .dark-mode .trainer-card {
+            background: #2c3e50;
+            border-color: #34495e;
+        }
+        
+        .trainer-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .trainer-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .trainer-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #36D1DC, #5B86E5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 24px;
+        }
+        
+        .trainer-info {
+            flex: 1;
+        }
+        
+        .trainer-name {
+            font-weight: 600;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+        
+        .trainer-specialty {
+            color: var(--gray);
+            font-size: 14px;
+        }
+        
+        .trainer-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .trainer-stat {
+            text-align: center;
+            padding: 10px;
+        }
+        
+        .trainer-stat-number {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .trainer-stat-label {
+            font-size: 11px;
+            color: var(--gray);
+            text-transform: uppercase;
+        }
+        
+        .trainer-clients {
+            margin-top: 15px;
+        }
+        
+        .client-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            background: var(--light);
+            border-radius: 15px;
+            font-size: 12px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        
+        .dark-mode .client-badge {
+            background: #34495e;
+        }
+        
+        /* Auto Messages Tab */
+        .auto-messages-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .message-template-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            border: 2px solid var(--light);
+            margin-bottom: 20px;
+        }
+        
+        .dark-mode .message-template-card {
+            background: #2c3e50;
+            border-color: #34495e;
+        }
+        
+        .template-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .template-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+        
+        .dark-mode .template-title {
+            color: var(--light);
+        }
+        
+        .template-content {
+            margin-bottom: 20px;
+        }
+        
+        .template-variables {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .variable-tag {
+            display: inline-block;
+            padding: 5px 10px;
+            background: var(--light);
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        
+        .dark-mode .variable-tag {
+            background: #34495e;
+        }
+        
+        /* Schedule Tab */
+        .schedule-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 30px;
+        }
+        
+        .schedule-sidebar {
+            background: var(--light);
+            padding: 20px;
+            border-radius: var(--border-radius);
+        }
+        
+        .dark-mode .schedule-sidebar {
+            background: #34495e;
+        }
+        
+        .schedule-calendar {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            border: 2px solid var(--light);
+        }
+        
+        .dark-mode .schedule-calendar {
+            background: #2c3e50;
+            border-color: #34495e;
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .calendar-week {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .calendar-day {
+            text-align: center;
+            padding: 10px;
+            font-weight: 600;
+            color: var(--gray);
+        }
+        
+        .calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+        
+        .calendar-date {
+            height: 60px;
+            border: 2px solid var(--light);
+            border-radius: 8px;
+            padding: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .calendar-date:hover {
+            border-color: var(--primary);
+        }
+        
+        .calendar-date.has-sessions {
+            background: rgba(76, 175, 80, 0.1);
+        }
+        
+        .session-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        /* Toast */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 400px;
+        }
+        
+        .toast {
+            background: white;
+            border-radius: 8px;
+            padding: 15px 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            animation: slideInRight 0.3s ease;
+            border-left: 4px solid var(--info);
+        }
+        
+        .dark-mode .toast {
+            background: #2c3e50;
+            border-left-color: var(--info);
+        }
+        
+        .toast.success {
+            border-left-color: var(--success);
+        }
+        
+        .toast.error {
+            border-left-color: var(--danger);
+        }
+        
+        .toast.warning {
+            border-left-color: var(--warning);
+        }
+        
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal {
+            background: white;
+            border-radius: var(--border-radius);
+            max-width: 500px;
+            width: 100%;
+            box-shadow: var(--shadow);
+        }
+        
+        .dark-mode .modal {
+            background: #2c3e50;
+        }
+        
+        .modal-header {
+            padding: 20px;
+            border-bottom: 2px solid var(--light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .dark-mode .modal-header {
+            border-bottom-color: #34495e;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--gray);
+        }
+        
+        .dark-mode .modal-close {
+            color: var(--gray-light);
+        }
+        
+        /* Empty States */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--gray);
+        }
+        
+        .dark-mode .empty-state {
+            color: var(--gray-light);
+        }
+        
+        .empty-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+        
+        /* Switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--gray-light);
+            transition: var(--transition);
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: var(--transition);
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--success);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                max-height: 400px;
+                border-right: none;
+                border-bottom: 3px solid white;
+            }
+            
+            .schedule-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .tabs {
+                flex-wrap: wrap;
+            }
+            
+            .tab {
+                flex: 1;
+                min-width: 120px;
+                justify-content: center;
+                padding: 15px;
+            }
+            
+            .clients-grid,
+            .trainers-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <div class="logo-icon">💪</div>
+                <div>
+                    <h1>FIT Management Pro</h1>
+                    <p>Панель управления фитнес-центром</p>
+                </div>
+            </div>
+            <div class="status-indicator">
+                <div class="status-dot"></div>
+                <span id="connectionStatus">Система активна</span>
+            </div>
+        </div>
+        
+        <!-- Main Layout -->
+        <div class="main-layout">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar-section">
+                    <div class="section-title">📊 Быстрая статистика</div>
+                    
+                    <div class="quick-stats">
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalClients">0</div>
+                            <div class="stat-label">Клиентов</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalTrainers">0</div>
+                            <div class="stat-label">Тренеров</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="activeSessions">0</div>
+                            <div class="stat-label">Сегодня занятий</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="subscriptions">0</div>
+                            <div class="stat-label">Абонементов</div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="showAddClientModal()" style="width: 100%; margin-bottom: 10px;">
+                        👤 Добавить клиента
+                    </button>
+                    <button class="btn btn-success" onclick="showAddTrainerModal()" style="width: 100%;">
+                        🏋️ Добавить тренера
+                    </button>
+                </div>
+                
+                <div class="sidebar-section">
+                    <div class="section-title">🔔 Автоматические уведомления</div>
+                    
+                    <div class="input-group">
+                        <label>Запустить рассылку</label>
+                        <select class="input-field" id="autoMessageType">
+                            <option value="session_reminder">Напоминание о занятии</option>
+                            <option value="subscription_expiry">Окончание абонемента</option>
+                            <option value="new_client">Новому клиенту</option>
+                            <option value="birthday">С днем рождения</option>
+                            <option value="promotion">Акции и скидки</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Дата отправки</label>
+                        <input type="datetime-local" class="input-field" id="messageSchedule">
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="scheduleAutoMessage()" style="width: 100%; margin-bottom: 10px;">
+                        ⏰ Запланировать
+                    </button>
+                    <button class="btn btn-success" onclick="sendTestMessage()" style="width: 100%;">
+                        🧪 Тест отправки
+                    </button>
+                </div>
+                
+                <div class="sidebar-section">
+                    <div class="section-title">⚙️ Быстрые действия</div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+                        <button class="btn" onclick="sendSessionReminders()">🏋️ Напомнить о занятиях</button>
+                        <button class="btn" onclick="checkExpiringSubscriptions()">📅 Проверить абонементы</button>
+                        <button class="btn" onclick="generateReport()">📊 Отчет за месяц</button>
+                        <button class="btn" onclick="syncWithTelegram()">🤖 Синхронизация</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="main-content">
+                <!-- Tabs -->
+                <div class="tabs">
+                    <div class="tab active" onclick="switchTab('clients')">
+                        <span>👥</span> Клиенты
+                        <span class="tab-badge" id="clientsBadge">0</span>
+                    </div>
+                    <div class="tab" onclick="switchTab('trainers')">
+                        <span>🏋️</span> Тренеры
+                        <span class="tab-badge" id="trainersBadge">0</span>
+                    </div>
+                    <div class="tab" onclick="switchTab('automessages')">
+                        <span>🤖</span> Автосообщения
+                    </div>
+                    <div class="tab" onclick="switchTab('schedule')">
+                        <span>📅</span> Расписание
+                        <span class="tab-badge" id="scheduleBadge">0</span>
+                    </div>
+                    <div class="tab" onclick="switchTab('subscriptions')">
+                        <span>🎫</span> Абонементы
+                        <span class="tab-badge" id="subscriptionsBadge">0</span>
+                    </div>
+                </div>
+                
+                <!-- Clients Tab -->
+                <div id="clients-tab" class="tab-content active">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 15px;">
+                        <h2 style="color: var(--secondary);">👥 Управление клиентами</h2>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="text" class="input-field" id="clientSearch" placeholder="Поиск клиента..." style="width: 250px;">
+                            <button class="btn btn-primary" onclick="filterClients()">🔍 Поиск</button>
+                            <button class="btn" onclick="exportClients()">📤 Экспорт</button>
+                        </div>
+                    </div>
+                    
+                    <div id="clientsContainer" class="clients-grid">
+                        <!-- Динамически заполняется -->
+                    </div>
+                </div>
+                
+                <!-- Trainers Tab -->
+                <div id="trainers-tab" class="tab-content">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                        <h2 style="color: var(--secondary);">🏋️ Управление тренерами</h2>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="btn btn-primary" onclick="assignClientsToTrainer()">👥 Назначить клиентов</button>
+                            <button class="btn btn-success" onclick="showAddTrainerModal()">➕ Добавить тренера</button>
+                        </div>
+                    </div>
+                    
+                    <div id="trainersContainer" class="trainers-grid">
+                        <!-- Динамически заполняется -->
+                    </div>
+                </div>
+                
+                <!-- Auto Messages Tab -->
+                <div id="automessages-tab" class="tab-content">
+                    <div class="auto-messages-container">
+                        <h2 style="color: var(--secondary); margin-bottom: 25px;">🤖 Шаблоны автосообщений</h2>
+                        
+                        <div class="message-template-card">
+                            <div class="template-header">
+                                <div class="template-title">🏋️ Напоминание о занятии</div>
+                                <label class="switch">
+                                    <input type="checkbox" id="templateSession" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="template-content">
+                                <div class="template-variables">
+                                    <span class="variable-tag" onclick="insertVariable('{client_name}')">{client_name}</span>
+                                    <span class="variable-tag" onclick="insertVariable('{trainer_name}')">{trainer_name}</span>
+                                    <span class="variable-tag" onclick="insertVariable('{session_time}')">{session_time}</span>
+                                    <span class="variable-tag" onclick="insertVariable('{session_date}')">{session_date}</span>
+                                    <span class="variable-tag" onclick="insertVariable('{location}')">{location}</span>
+                                </div>
+                                <textarea class="input-field" id="sessionTemplate" rows="4" 
+                                          style="width: 100%; font-family: monospace;">Здравствуйте, {client_name}! Напоминаем о Вашем занятии с тренером {trainer_name} завтра в {session_time}. Место: {location}. Ждем Вас!</textarea>
+                                <div style="margin-top: 10px; font-size: 12px; color: var(--gray);">
+                                    <strong>Время отправки:</strong> за 24 часа до занятия
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="message-template-card">
+                            <div class="template-header">
+                                <div class="template-title">🎫 Окончание абонемента</div>
+                                <label class="switch">
+                                    <input type="checkbox" id="templateSubscription" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="template-content">
+                                <div class="template-variables">
+                                    <span class="variable-tag" onclick="insertVariable('{client_name}')">{client_name}</span>
+                                    <span class="variable-tag" onclick="insertVariable('{subscription_type}')">{subscription_type}</span>
+                                    <span class="variable-tag" onclick="insertVariable('{expiry_date}')">{expiry_date}</span>
+                                    <span class="variable-tag" onclick="insertVariable('{remaining_sessions}')">{remaining_sessions}</span>
+                                    <span class="variable-tag" onclick="insertVariable('{renew_link}')">{renew_link}</span>
+                                </div>
+                                <textarea class="input-field" id="subscriptionTemplate" rows="4" 
+                                          style="width: 100%; font-family: monospace;">Уважаемый(ая) {client_name}! Ваш абонемент "{subscription_type}" заканчивается {expiry_date}. Осталось занятий: {remaining_sessions}. Продлите абонемент со скидкой 10%!</textarea>
+                                <div style="margin-top: 10px; font-size: 12px; color: var(--gray);">
+                                    <strong>Время отправки:</strong> за 3 дня до окончания
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="message-template-card">
+                            <div class="template-header">
+                                <div class="template-title">👋 Приветствие новому клиенту</div>
+                                <label class="switch">
+                                    <input type="checkbox" id="templateWelcome" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="template-content">
+                                <div class="template-variables">
+                                    <span class="variable-tag" onclick="insertVariable('{client_name}')">{client_name}</span>
+                                    <span class="variable-tag" onclick="insertVariable('{trainer_name}')">{trainer_name}</span>
+                                    <span class="variable-tag" onclick="insertVariable('{first_session}')">{first_session}</span>
+                                    <span class="variable-tag" onclick="insertVariable('{club_address}')">{club_address}</span>
+                                    <span class="variable-tag" onclick="insertVariable('{contacts}')">{contacts}</span>
+                                </div>
+                                <textarea class="input-field" id="welcomeTemplate" rows="4" 
+                                          style="width: 100%; font-family: monospace;">Добро пожаловать в наш фитнес-клуб, {client_name}! Ваш тренер: {trainer_name}. Первое занятие: {first_session}. Адрес: {club_address}. Контакты: {contacts}. Успешных тренировок!</textarea>
+                                <div style="margin-top: 10px; font-size: 12px; color: var(--gray);">
+                                    <strong>Время отправки:</strong> сразу после регистрации
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 30px; padding: 20px; background: var(--light); border-radius: var(--border-radius);">
+                            <h4 style="margin-bottom: 15px; color: var(--secondary);">⚙️ Настройки отправки</h4>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                                <div>
+                                    <label style="display: block; margin-bottom: 5px; font-size: 12px; color: var(--gray);">Тип уведомления</label>
+                                    <select class="input-field" id="notificationType">
+                                        <option value="telegram">Telegram</option>
+                                        <option value="sms">SMS</option>
+                                        <option value="email">Email</option>
+                                        <option value="all">Все способы</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label style="display: block; margin-bottom: 5px; font-size: 12px; color: var(--gray);">Время напоминания (часов до)</label>
+                                    <select class="input-field" id="reminderTime">
+                                        <option value="1">1 час</option>
+                                        <option value="3">3 часа</option>
+                                        <option value="24" selected>24 часа</option>
+                                        <option value="48">48 часов</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-primary" onclick="saveTemplates()" style="margin-top: 20px; width: 100%;">
+                            💾 Сохранить все шаблоны
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Schedule Tab -->
+                <div id="schedule-tab" class="tab-content">
+                    <div class="schedule-container">
+                        <div class="schedule-sidebar">
+                            <h3 style="margin-bottom: 20px; color: var(--secondary);">📅 Расписание на</h3>
+                            <div style="text-align: center; margin-bottom: 20px;">
+                                <div style="font-size: 32px; font-weight: bold; color: var(--primary);" id="currentDate">--</div>
+                                <div style="color: var(--gray);" id="currentDay">--</div>
+                            </div>
+                            
+                            <div style="margin-bottom: 25px;">
+                                <h4 style="margin-bottom: 15px; color: var(--secondary);">Сегодняшние занятия</h4>
+                                <div id="todaySessions">
+                                    <!-- Динамически заполняется -->
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h4 style="margin-bottom: 15px; color: var(--secondary);">Фильтры</h4>
+                                <div class="input-group">
+                                    <label>Тренер</label>
+                                    <select class="input-field" id="trainerFilter">
+                                        <option value="all">Все тренеры</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Тип занятия</label>
+                                    <select class="input-field" id="sessionTypeFilter">
+                                        <option value="all">Все типы</option>
+                                        <option value="individual">Индивидуальное</option>
+                                        <option value="group">Групповое</option>
+                                        <option value="online">Онлайн</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="schedule-calendar">
+                            <div class="calendar-header">
+                                <button class="btn" onclick="prevMonth()">◀️</button>
+                                <h3 id="currentMonth">Месяц Год</h3>
+                                <button class="btn" onclick="nextMonth()">▶️</button>
+                            </div>
+                            
+                            <div class="calendar-week">
+                                <div class="calendar-day">Пн</div>
+                                <div class="calendar-day">Вт</div>
+                                <div class="calendar-day">Ср</div>
+                                <div class="calendar-day">Чт</div>
+                                <div class="calendar-day">Пт</div>
+                                <div class="calendar-day">Сб</div>
+                                <div class="calendar-day">Вс</div>
+                            </div>
+                            
+                            <div id="calendarDays" class="calendar-days">
+                                <!-- Динамически заполняется -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Subscriptions Tab -->
+                <div id="subscriptions-tab" class="tab-content">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                        <h2 style="color: var(--secondary);">🎫 Управление абонементами</h2>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="btn btn-primary" onclick="showAddSubscriptionModal()">➕ Добавить абонемент</button>
+                            <button class="btn btn-warning" onclick="checkAllSubscriptions()">🔍 Проверить все</button>
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                        <div class="stat-card">
+                            <div class="stat-number" id="activeSubs">0</div>
+                            <div class="stat-label">Активных</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="expiringSoon">0</div>
+                            <div class="stat-label">Заканчивается</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="expiredSubs">0</div>
+                            <div class="stat-label">Истекло</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalRevenue">0</div>
+                            <div class="stat-label">Выручка (руб)</div>
+                        </div>
+                    </div>
+                    
+                    <div id="subscriptionsContainer">
+                        <!-- Динамически заполняется -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modals -->
+    <div class="modal-overlay" id="addClientModal">
+        <div class="modal" style="max-width: 500px;">
+            <div class="modal-header">
+                <div class="modal-title">👤 Добавить нового клиента</div>
+                <button class="modal-close" onclick="closeModal('addClientModal')">×</button>
+            </div>
+            
+            <div style="padding: 20px;">
+                <div class="input-group">
+                    <label>ФИО клиента</label>
+                    <input type="text" class="input-field" id="clientName" placeholder="Иванов Иван Иванович">
+                </div>
+                
+                <div class="input-group">
+                    <label>Телефон</label>
+                    <input type="tel" class="input-field" id="clientPhone" placeholder="+7 (999) 123-45-67">
+                </div>
+                
+                <div class="input-group">
+                    <label>Telegram ID (если есть)</label>
+                    <input type="text" class="input-field" id="clientTelegram" placeholder="@username или 123456789">
+                </div>
+                
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" class="input-field" id="clientEmail" placeholder="client@example.com">
+                </div>
+                
+                <div class="input-group">
+                    <label>Тренер</label>
+                    <select class="input-field" id="clientTrainer">
+                        <option value="">Не назначен</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label>Дата рождения</label>
+                    <input type="date" class="input-field" id="clientBirthday">
+                </div>
+                
+                <div class="input-group">
+                    <label>Заметки</label>
+                    <textarea class="input-field" id="clientNotes" rows="3" placeholder="Дополнительная информация..."></textarea>
+                </div>
+                
+                <button class="btn btn-primary" onclick="saveClient()" style="width: 100%; margin-top: 20px;">
+                    💾 Сохранить клиента
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal-overlay" id="addTrainerModal">
+        <div class="modal" style="max-width: 500px;">
+            <div class="modal-header">
+                <div class="modal-title">🏋️ Добавить нового тренера</div>
+                <button class="modal-close" onclick="closeModal('addTrainerModal')">×</button>
+            </div>
+            
+            <div style="padding: 20px;">
+                <div class="input-group">
+                    <label>ФИО тренера</label>
+                    <input type="text" class="input-field" id="trainerName" placeholder="Петров Петр Петрович">
+                </div>
+                
+                <div class="input-group">
+                    <label>Специализация</label>
+                    <select class="input-field" id="trainerSpecialty">
+                        <option value="fitness">Фитнес-тренер</option>
+                        <option value="yoga">Йога</option>
+                        <option value="crossfit">Кроссфит</option>
+                        <option value="pilates">Пилатес</option>
+                        <option value="rehabilitation">Реабилитация</option>
+                        <option value="nutrition">Нутрициолог</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label>Телефон</label>
+                    <input type="tel" class="input-field" id="trainerPhone" placeholder="+7 (999) 123-45-67">
+                </div>
+                
+                <div class="input-group">
+                    <label>Telegram для уведомлений</label>
+                    <input type="text" class="input-field" id="trainerTelegram" placeholder="@trainer_username">
+                </div>
+                
+                <div class="input-group">
+                    <label>Ставка (руб/час)</label>
+                    <input type="number" class="input-field" id="trainerRate" placeholder="1000" min="0">
+                </div>
+                
+                <div class="input-group">
+                    <label>Расписание работы</label>
+                    <textarea class="input-field" id="trainerSchedule" rows="3" placeholder="Пн-Пт: 9:00-21:00, Сб: 10:00-18:00, Вс: выходной"></textarea>
+                </div>
+                
+                <button class="btn btn-primary" onclick="saveTrainer()" style="width: 100%; margin-top: 20px;">
+                    💾 Сохранить тренера
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        // ===================== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ =====================
+        let clients = [];
+        let trainers = [];
+        let subscriptions = [];
+        let trainingSessions = [];
+        let autoMessages = [];
+        let messageTemplates = {};
+        let currentDate = new Date();
+
+        // ===================== ИНИЦИАЛИЗАЦИЯ =====================
+        window.onload = function() {
+            loadMockData();
+            loadTemplates();
+            renderAll();
+            updateCalendar();
+            updateTodaySessions();
+            
+            showToast('FIT Management Pro загружен', 'success');
+        };
+        
+        function loadMockData() {
+            // Тренеры
+            trainers = [
+                {
+                    id: 1,
+                    name: "Александр Иванов",
+                    specialty: "Кроссфит",
+                    phone: "+7 (999) 111-22-33",
+                    telegram: "@alex_crossfit",
+                    rate: 1500,
+                    schedule: "Пн-Пт: 9:00-21:00, Сб: 10:00-18:00",
+                    clients: [1, 2],
+                    stats: {
+                        sessions: 45,
+                        rating: 4.9,
+                        experience: 5
+                    }
+                },
+                {
+                    id: 2,
+                    name: "Мария Петрова",
+                    specialty: "Йога",
+                    phone: "+7 (999) 222-33-44",
+                    telegram: "@maria_yoga",
+                    rate: 1200,
+                    schedule: "Вт-Чт: 10:00-20:00, Сб-Вс: 9:00-15:00",
+                    clients: [3, 4],
+                    stats: {
+                        sessions: 38,
+                        rating: 4.8,
+                        experience: 3
+                    }
+                },
+                {
+                    id: 3,
+                    name: "Дмитрий Смирнов",
+                    specialty: "Реабилитация",
+                    phone: "+7 (999) 333-44-55",
+                    telegram: "@dima_rehab",
+                    rate: 1800,
+                    schedule: "Пн-Ср-Пт: 8:00-16:00",
+                    clients: [5],
+                    stats: {
+                        sessions: 22,
+                        rating: 4.7,
+                        experience: 7
+                    }
+                }
+            ];
+            
+            // Клиенты
+            clients = [
+                {
+                    id: 1,
+                    name: "Иван Сидоров",
+                    phone: "+7 (999) 123-45-67",
+                    telegram: "@ivan_sidorov",
+                    email: "ivan@example.com",
+                    trainerId: 1,
+                    birthday: "1990-05-15",
+                    notes: "Любит интенсивные тренировки",
+                    subscription: {
+                        type: "Индивидуальный, 12 занятий",
+                        startDate: "2024-01-10",
+                        endDate: "2024-03-10",
+                        remaining: 5,
+                        status: "active"
+                    }
+                },
+                {
+                    id: 2,
+                    name: "Елена Кузнецова",
+                    phone: "+7 (999) 234-56-78",
+                    telegram: "@elena_fit",
+                    email: "elena@example.com",
+                    trainerId: 1,
+                    birthday: "1985-08-22",
+                    notes: "Предпочитает утренние занятия",
+                    subscription: {
+                        type: "Групповой, 8 занятий",
+                        startDate: "2024-02-01",
+                        endDate: "2024-03-01",
+                        remaining: 2,
+                        status: "expiring"
+                    }
+                },
+                {
+                    id: 3,
+                    name: "Анна Соколова",
+                    phone: "+7 (999) 345-67-89",
+                    telegram: "@anna_yoga",
+                    email: "anna@example.com",
+                    trainerId: 2,
+                    birthday: "1995-03-30",
+                    notes: "Новичок в йоге",
+                    subscription: {
+                        type: "Пробный, 4 занятия",
+                        startDate: "2024-02-15",
+                        endDate: "2024-03-15",
+                        remaining: 3,
+                        status: "active"
+                    }
+                },
+                {
+                    id: 4,
+                    name: "Сергей Волков",
+                    phone: "+7 (999) 456-78-90",
+                    telegram: "@sergey_gym",
+                    email: "sergey@example.com",
+                    trainerId: 2,
+                    birthday: "1988-11-10",
+                    notes: "Цель - похудение",
+                    subscription: {
+                        type: "Индивидуальный, 16 занятий",
+                        startDate: "2024-01-20",
+                        endDate: "2024-04-20",
+                        remaining: 10,
+                        status: "active"
+                    }
+                },
+                {
+                    id: 5,
+                    name: "Ольга Морозова",
+                    phone: "+7 (999) 567-89-01",
+                    telegram: "@olga_health",
+                    email: "olga@example.com",
+                    trainerId: 3,
+                    birthday: "1975-07-05",
+                    notes: "Посттравматическая реабилитация",
+                    subscription: {
+                        type: "Реабилитационный, 20 занятий",
+                        startDate: "2024-02-05",
+                        endDate: "2024-05-05",
+                        remaining: 15,
+                        status: "active"
+                    }
+                }
+            ];
+            
+            // Абонементы
+            subscriptions = [
+                {
+                    id: 1,
+                    clientId: 1,
+                    type: "Индивидуальный, 12 занятий",
+                    price: 24000,
+                    startDate: "2024-01-10",
+                    endDate: "2024-03-10",
+                    remaining: 5,
+                    status: "active"
+                },
+                {
+                    id: 2,
+                    clientId: 2,
+                    type: "Групповой, 8 занятий",
+                    price: 16000,
+                    startDate: "2024-02-01",
+                    endDate: "2024-03-01",
+                    remaining: 2,
+                    status: "expiring"
+                },
+                {
+                    id: 3,
+                    clientId: 3,
+                    type: "Пробный, 4 занятия",
+                    price: 6000,
+                    startDate: "2024-02-15",
+                    endDate: "2024-03-15",
+                    remaining: 3,
+                    status: "active"
+                },
+                {
+                    id: 4,
+                    clientId: 4,
+                    type: "Индивидуальный, 16 занятий",
+                    price: 32000,
+                    startDate: "2024-01-20",
+                    endDate: "2024-04-20",
+                    remaining: 10,
+                    status: "active"
+                },
+                {
+                    id: 5,
+                    clientId: 5,
+                    type: "Реабилитационный, 20 занятий",
+                    price: 40000,
+                    startDate: "2024-02-05",
+                    endDate: "2024-05-05",
+                    remaining: 15,
+                    status: "active"
+                }
+            ];
+            
+            // Тренировки
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            
+            trainingSessions = [
+                {
+                    id: 1,
+                    clientId: 1,
+                    trainerId: 1,
+                    type: "individual",
+                    date: today.toISOString().split('T')[0],
+                    time: "10:00",
+                    duration: 60,
+                    status: "scheduled",
+                    location: "Зал 1"
+                },
+                {
+                    id: 2,
+                    clientId: 2,
+                    trainerId: 1,
+                    type: "individual",
+                    date: today.toISOString().split('T')[0],
+                    time: "14:00",
+                    duration: 60,
+                    status: "scheduled",
+                    location: "Зал 2"
+                },
+                {
+                    id: 3,
+                    clientId: 3,
+                    trainerId: 2,
+                    type: "group",
+                    date: today.toISOString().split('T')[0],
+                    time: "18:00",
+                    duration: 90,
+                    status: "scheduled",
+                    location: "Йога-студия"
+                },
+                {
+                    id: 4,
+                    clientId: 4,
+                    trainerId: 1,
+                    type: "individual",
+                    date: tomorrow.toISOString().split('T')[0],
+                    time: "11:00",
+                    duration: 60,
+                    status: "scheduled",
+                    location: "Зал 3"
+                }
+            ];
+            
+            // Заполняем селекторы
+            updateTrainerSelectors();
+        }
+        
+        function loadTemplates() {
+            messageTemplates = JSON.parse(localStorage.getItem('fit_message_templates')) || {
+                sessionReminder: {
+                    enabled: true,
+                    text: "Здравствуйте, {client_name}! Напоминаем о Вашем занятии с тренером {trainer_name} завтра в {session_time}. Место: {location}. Ждем Вас!",
+                    sendTime: 24
+                },
+                subscriptionExpiry: {
+                    enabled: true,
+                    text: "Уважаемый(ая) {client_name}! Ваш абонемент \"{subscription_type}\" заканчивается {expiry_date}. Осталось занятий: {remaining_sessions}. Продлите абонемент со скидкой 10%!",
+                    sendTime: 72
+                },
+                welcome: {
+                    enabled: true,
+                    text: "Добро пожаловать в наш фитнес-клуб, {client_name}! Ваш тренер: {trainer_name}. Первое занятие: {first_session}. Адрес: {club_address}. Контакты: {contacts}. Успешных тренировок!",
+                    sendTime: 0
+                }
+            };
+            
+            updateTemplatesUI();
+        }
+        
+        function saveTemplates() {
+            messageTemplates = {
+                sessionReminder: {
+                    enabled: document.getElementById('templateSession').checked,
+                    text: document.getElementById('sessionTemplate').value,
+                    sendTime: parseInt(document.getElementById('reminderTime').value) || 24
+                },
+                subscriptionExpiry: {
+                    enabled: document.getElementById('templateSubscription').checked,
+                    text: document.getElementById('subscriptionTemplate').value,
+                    sendTime: 72
+                },
+                welcome: {
+                    enabled: document.getElementById('templateWelcome').checked,
+                    text: document.getElementById('welcomeTemplate').value,
+                    sendTime: 0
+                }
+            };
+            
+            localStorage.setItem('fit_message_templates', JSON.stringify(messageTemplates));
+            showToast('Шаблоны сохранены', 'success');
+        }
+        
+        function updateTemplatesUI() {
+            if (messageTemplates.sessionReminder) {
+                document.getElementById('templateSession').checked = messageTemplates.sessionReminder.enabled;
+                document.getElementById('sessionTemplate').value = messageTemplates.sessionReminder.text;
+            }
+            
+            if (messageTemplates.subscriptionExpiry) {
+                document.getElementById('templateSubscription').checked = messageTemplates.subscriptionExpiry.enabled;
+                document.getElementById('subscriptionTemplate').value = messageTemplates.subscriptionExpiry.text;
+            }
+            
+            if (messageTemplates.welcome) {
+                document.getElementById('templateWelcome').checked = messageTemplates.welcome.enabled;
+                document.getElementById('welcomeTemplate').value = messageTemplates.welcome.text;
+            }
+        }
+        
+        // ===================== ОСНОВНЫЕ ФУНКЦИИ =====================
+        function renderAll() {
+            renderClients();
+            renderTrainers();
+            renderSubscriptions();
+            updateStats();
+        }
+        
+        function renderClients() {
+            const container = document.getElementById('clientsContainer');
+            
+            if (clients.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">👤</div>
+                        <div>Клиенты не найдены</div>
+                        <button class="btn btn-primary" style="margin-top: 15px;" onclick="showAddClientModal()">
+                            Добавить первого клиента
+                        </button>
+                    </div>`;
+                return;
+            }
+            
+            container.innerHTML = clients.map(client => {
+                const trainer = trainers.find(t => t.id === client.trainerId);
+                const subscription = subscriptions.find(s => s.clientId === client.id);
+                const upcomingSessions = trainingSessions.filter(s => 
+                    s.clientId === client.id && 
+                    new Date(s.date) >= new Date()
+                ).length;
+                
+                return `
+                    <div class="client-card">
+                        <div class="client-header">
+                            <div class="client-avatar">${client.name.charAt(0)}</div>
+                            <div class="client-info">
+                                <div class="client-name">${client.name}</div>
+                                <div class="client-phone">${client.phone}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="client-meta">
+                            <span>🎂 ${new Date(client.birthday).toLocaleDateString('ru-RU')}</span>
+                            <span>🏋️ ${trainer ? trainer.name : 'Нет тренера'}</span>
+                        </div>
+                        
+                        <div class="client-stats">
+                            <div class="client-stat">
+                                <div style="font-size: 18px; font-weight: bold; color: var(--primary);">
+                                    ${upcomingSessions}
+                                </div>
+                                <div style="font-size: 11px; color: var(--gray);">Ближайшие занятия</div>
+                            </div>
+                            <div class="client-stat">
+                                <div style="font-size: 18px; font-weight: bold; color: ${subscription?.status === 'active' ? 'var(--success)' : 'var(--warning)'};">
+                                    ${subscription?.remaining || 0}
+                                </div>
+                                <div style="font-size: 11px; color: var(--gray);">Осталось занятий</div>
+                            </div>
+                        </div>
+                        
+                        ${client.notes ? `<div style="font-size: 12px; color: var(--gray); margin-bottom: 15px;">${client.notes}</div>` : ''}
+                        
+                        <div class="client-actions">
+                            <button class="icon-btn" title="Редактировать" onclick="editClient(${client.id})">✏️</button>
+                            <button class="icon-btn" title="Назначить занятие" onclick="scheduleSession(${client.id})">📅</button>
+                            <button class="icon-btn" title="Отправить сообщение" onclick="sendMessageToClient(${client.id})">💬</button>
+                            <button class="icon-btn" title="Информация" onclick="showClientDetails(${client.id})">ℹ️</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function renderTrainers() {
+            const container = document.getElementById('trainersContainer');
+            
+            if (trainers.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🏋️</div>
+                        <div>Тренеры не найдены</div>
+                        <button class="btn btn-primary" style="margin-top: 15px;" onclick="showAddTrainerModal()">
+                            Добавить первого тренера
+                        </button>
+                    </div>`;
+                return;
+            }
+            
+            container.innerHTML = trainers.map(trainer => {
+                const trainerClients = clients.filter(c => c.trainerId === trainer.id);
+                const todaySessions = trainingSessions.filter(s => 
+                    s.trainerId === trainer.id && 
+                    new Date(s.date).toDateString() === new Date().toDateString()
+                ).length;
+                
+                return `
+                    <div class="trainer-card">
+                        <div class="trainer-header">
+                            <div class="trainer-avatar">${trainer.name.charAt(0)}</div>
+                            <div class="trainer-info">
+                                <div class="trainer-name">${trainer.name}</div>
+                                <div class="trainer-specialty">${getSpecialtyName(trainer.specialty)}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="trainer-stats">
+                            <div class="trainer-stat">
+                                <div class="trainer-stat-number">${trainerClients.length}</div>
+                                <div class="trainer-stat-label">Клиентов</div>
+                            </div>
+                            <div class="trainer-stat">
+                                <div class="trainer-stat-number">${todaySessions}</div>
+                                <div class="trainer-stat-label">Сегодня</div>
+                            </div>
+                            <div class="trainer-stat">
+                                <div class="trainer-stat-number">${trainer.rate} ₽</div>
+                                <div class="trainer-stat-label">/ час</div>
+                            </div>
+                        </div>
+                        
+                        <div style="font-size: 12px; color: var(--gray); margin-bottom: 15px;">
+                            📱 ${trainer.phone} | ${trainer.telegram}
+                        </div>
+                        
+                        <div class="trainer-clients">
+                            <div style="font-size: 12px; color: var(--gray); margin-bottom: 8px;">Клиенты:</div>
+                            ${trainerClients.map(client => `
+                                <span class="client-badge">${client.name}</span>
+                            `).join('')}
+                            ${trainerClients.length === 0 ? '<span style="color: var(--gray); font-size: 12px;">Клиенты не назначены</span>' : ''}
+                        </div>
+                        
+                        <div style="display: flex; gap: 10px; margin-top: 20px;">
+                            <button class="btn" onclick="notifyTrainer(${trainer.id})" style="flex: 1;">
+                                🔔 Уведомить
+                            </button>
+                            <button class="btn" onclick="showTrainerSchedule(${trainer.id})" style="flex: 1;">
+                                📅 Расписание
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function renderSubscriptions() {
+            const container = document.getElementById('subscriptionsContainer');
+            
+            if (subscriptions.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🎫</div>
+                        <div>Абонементы не найдены</div>
+                        <button class="btn btn-primary" style="margin-top: 15px;" onclick="showAddSubscriptionModal()">
+                            Добавить первый абонемент
+                        </button>
+                    </div>`;
+                return;
+            }
+            
+            const groupedSubscriptions = groupByStatus(subscriptions);
+            container.innerHTML = '';
+            
+            // Активные абонементы
+            if (groupedSubscriptions.active?.length > 0) {
+                container.innerHTML += `
+                    <h3 style="margin: 30px 0 15px 0; color: var(--success);">✅ Активные абонементы</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; margin-bottom: 30px;">
+                        ${groupedSubscriptions.active.map(sub => {
+                            const client = clients.find(c => c.id === sub.clientId);
+                            const trainer = trainers.find(t => t.id === client?.trainerId);
+                            const daysLeft = Math.ceil((new Date(sub.endDate) - new Date()) / (1000 * 60 * 60 * 24));
+                            
+                            return `
+                                <div class="client-card">
+                                    <div class="client-header">
+                                        <div class="client-avatar">${client?.name?.charAt(0) || '?'}</div>
+                                        <div class="client-info">
+                                            <div class="client-name">${client?.name || 'Неизвестный клиент'}</div>
+                                            <div class="client-phone">${client?.phone || ''}</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="margin-bottom: 15px;">
+                                        <div style="font-weight: 600; font-size: 14px;">${sub.type}</div>
+                                        <div style="font-size: 12px; color: var(--gray); margin-top: 5px;">
+                                            📅 ${new Date(sub.startDate).toLocaleDateString('ru-RU')} - ${new Date(sub.endDate).toLocaleDateString('ru-RU')}
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <div>
+                                            <div style="font-size: 20px; font-weight: bold; color: var(--primary);">${sub.remaining}</div>
+                                            <div style="font-size: 11px; color: var(--gray);">Осталось занятий</div>
+                                        </div>
+                                        <div>
+                                            <div style="font-size: 20px; font-weight: bold; color: ${daysLeft <= 7 ? 'var(--warning)' : 'var(--success)'};">${daysLeft}</div>
+                                            <div style="font-size: 11px; color: var(--gray);">Дней осталось</div>
+                                        </div>
+                                        <div>
+                                            <div style="font-size: 20px; font-weight: bold; color: var(--info);">${sub.price} ₽</div>
+                                            <div style="font-size: 11px; color: var(--gray);">Стоимость</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="display: flex; gap: 10px; margin-top: 15px;">
+                                        <button class="btn" onclick="extendSubscription(${sub.id})" style="flex: 1;">🔄 Продлить</button>
+                                        <button class="btn" onclick="sendReminder(${sub.id})" style="flex: 1;">🔔 Напомнить</button>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>`;
+            }
+            
+            // Заканчивающиеся абонементы
+            if (groupedSubscriptions.expiring?.length > 0) {
+                container.innerHTML += `
+                    <h3 style="margin: 30px 0 15px 0; color: var(--warning);">⚠️ Заканчиваются в этом месяце</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; margin-bottom: 30px;">
+                        ${groupedSubscriptions.expiring.map(sub => {
+                            const client = clients.find(c => c.id === sub.clientId);
+                            const daysLeft = Math.ceil((new Date(sub.endDate) - new Date()) / (1000 * 60 * 60 * 24));
+                            
+                            return `
+                                <div class="client-card" style="border-color: var(--warning);">
+                                    <div class="client-header">
+                                        <div class="client-avatar" style="background: linear-gradient(45deg, #ff9966, #ff5e62);">${client?.name?.charAt(0) || '?'}</div>
+                                        <div class="client-info">
+                                            <div class="client-name">${client?.name || 'Неизвестный клиент'}</div>
+                                            <div class="client-phone">${client?.phone || ''}</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="margin-bottom: 15px;">
+                                        <div style="font-weight: 600; font-size: 14px;">${sub.type}</div>
+                                        <div style="font-size: 12px; color: var(--warning); margin-top: 5px;">
+                                            ⏳ Окончание: ${new Date(sub.endDate).toLocaleDateString('ru-RU')}
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                                        <div>
+                                            <div style="font-size: 20px; font-weight: bold; color: var(--warning);">${daysLeft}</div>
+                                            <div style="font-size: 11px; color: var(--gray);">Дней осталось</div>
+                                        </div>
+                                        <div>
+                                            <div style="font-size: 20px; font-weight: bold; color: var(--warning);">${sub.remaining}</div>
+                                            <div style="font-size: 11px; color: var(--gray);">Осталось занятий</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <button class="btn btn-warning" onclick="sendReminder(${sub.id})" style="width: 100%;">
+                                        🔔 Напомнить клиенту
+                                    </button>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>`;
+            }
+        }
+        
+        // ===================== ФУНКЦИИ УПРАВЛЕНИЯ =====================
+        function showAddClientModal() {
+            document.getElementById('addClientModal').classList.add('active');
+        }
+        
+        function showAddTrainerModal() {
+            document.getElementById('addTrainerModal').classList.add('active');
+        }
+        
+        function saveClient() {
+            const name = document.getElementById('clientName').value.trim();
+            const phone = document.getElementById('clientPhone').value.trim();
+            
+            if (!name || !phone) {
+                showToast('Заполните обязательные поля', 'error');
+                return;
+            }
+            
+            const newClient = {
+                id: Date.now(),
+                name: name,
+                phone: phone,
+                telegram: document.getElementById('clientTelegram').value.trim(),
+                email: document.getElementById('clientEmail').value.trim(),
+                trainerId: document.getElementById('clientTrainer').value ? parseInt(document.getElementById('clientTrainer').value) : null,
+                birthday: document.getElementById('clientBirthday').value,
+                notes: document.getElementById('clientNotes').value.trim()
+            };
+            
+            clients.push(newClient);
+            
+            // Создаем пробный абонемент для нового клиента
+            const startDate = new Date();
+            const endDate = new Date(startDate);
+            endDate.setDate(endDate.getDate() + 30);
+            
+            const newSubscription = {
+                id: Date.now() + 1,
+                clientId: newClient.id,
+                type: "Пробный, 2 занятия",
+                price: 0,
+                startDate: startDate.toISOString().split('T')[0],
+                endDate: endDate.toISOString().split('T')[0],
+                remaining: 2,
+                status: "active"
+            };
+            
+            subscriptions.push(newSubscription);
+            
+            closeModal('addClientModal');
+            renderAll();
+            updateTrainerSelectors();
+            
+            // Отправляем приветственное сообщение
+            if (messageTemplates.welcome?.enabled && (newClient.telegram || newClient.email)) {
+                sendWelcomeMessage(newClient, newSubscription);
+            }
+            
+            showToast('Клиент добавлен успешно', 'success');
+        }
+        
+        function saveTrainer() {
+            const name = document.getElementById('trainerName').value.trim();
+            const phone = document.getElementById('trainerPhone').value.trim();
+            
+            if (!name || !phone) {
+                showToast('Заполните обязательные поля', 'error');
+                return;
+            }
+            
+            const newTrainer = {
+                id: Date.now(),
+                name: name,
+                specialty: document.getElementById('trainerSpecialty').value,
+                phone: phone,
+                telegram: document.getElementById('trainerTelegram').value.trim(),
+                rate: parseInt(document.getElementById('trainerRate').value) || 1000,
+                schedule: document.getElementById('trainerSchedule').value.trim(),
+                clients: [],
+                stats: {
+                    sessions: 0,
+                    rating: 0,
+                    experience: 0
+                }
+            };
+            
+            trainers.push(newTrainer);
+            closeModal('addTrainerModal');
+            renderAll();
+            updateTrainerSelectors();
+            
+            showToast('Тренер добавлен успешно', 'success');
+        }
+        
+        function updateTrainerSelectors() {
+            const trainerSelect = document.getElementById('clientTrainer');
+            const trainerFilter = document.getElementById('trainerFilter');
+            
+            if (trainerSelect) {
+                trainerSelect.innerHTML = '<option value="">Не назначен</option>' + 
+                    trainers.map(trainer => `<option value="${trainer.id}">${trainer.name} (${getSpecialtyName(trainer.specialty)})</option>`).join('');
+            }
+            
+            if (trainerFilter) {
+                trainerFilter.innerHTML = '<option value="all">Все тренеры</option>' + 
+                    trainers.map(trainer => `<option value="${trainer.id}">${trainer.name}</option>`).join('');
+            }
+        }
+        
+        // ===================== АВТОСООБЩЕНИЯ =====================
+        function scheduleAutoMessage() {
+            const type = document.getElementById('autoMessageType').value;
+            const scheduleTime = document.getElementById('messageSchedule').value;
+            
+            if (!scheduleTime) {
+                showToast('Выберите дату и время отправки', 'error');
+                return;
+            }
+            
+            const message = {
+                id: Date.now(),
+                type: type,
+                scheduledTime: scheduleTime,
+                status: 'scheduled'
+            };
+            
+            autoMessages.push(message);
+            showToast(`Рассылка запланирована на ${new Date(scheduleTime).toLocaleString('ru-RU')}`, 'success');
+            
+            // Имитация отправки по расписанию
+            setTimeout(() => {
+                sendAutoMessage(type);
+            }, 1000);
+        }
+        
+        function sendAutoMessage(type) {
+            let count = 0;
+            let message = '';
+            
+            switch(type) {
+                case 'session_reminder':
+                    count = sendSessionReminders();
+                    message = `Напоминания о занятиях отправлены ${count} клиентам`;
+                    break;
+                    
+                case 'subscription_expiry':
+                    count = checkExpiringSubscriptions();
+                    message = `Напоминания об абонементах отправлены ${count} клиентам`;
+                    break;
+                    
+                case 'new_client':
+                    // Ищем новых клиентов (без занятий)
+                    const newClients = clients.filter(client => 
+                        !trainingSessions.some(session => session.clientId === client.id)
+                    );
+                    newClients.forEach(client => sendWelcomeMessage(client));
+                    count = newClients.length;
+                    message = `Приветственные сообщения отправлены ${count} новым клиентам`;
+                    break;
+            }
+            
+            showToast(message, 'success');
+        }
+        
+        function sendSessionReminders() {
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const tomorrowStr = tomorrow.toISOString().split('T')[0];
+            
+            const tomorrowSessions = trainingSessions.filter(session => 
+                session.date === tomorrowStr && 
+                session.status === 'scheduled'
+            );
+            
+            let sentCount = 0;
+            
+            tomorrowSessions.forEach(session => {
+                const client = clients.find(c => c.id === session.clientId);
+                const trainer = trainers.find(t => t.id === session.trainerId);
+                
+                if (client && trainer && messageTemplates.sessionReminder?.enabled) {
+                    const message = messageTemplates.sessionReminder.text
+                        .replace('{client_name}', client.name.split(' ')[0])
+                        .replace('{trainer_name}', trainer.name)
+                        .replace('{session_time}', session.time)
+                        .replace('{session_date}', formatDate(session.date))
+                        .replace('{location}', session.location);
+                    
+                    // Имитация отправки
+                    console.log(`Отправка напоминания клиенту ${client.name}:`, message);
+                    sentCount++;
+                }
+            });
+            
+            return sentCount;
+        }
+        
+        function checkExpiringSubscriptions() {
+            const now = new Date();
+            const weekFromNow = new Date(now);
+            weekFromNow.setDate(weekFromNow.getDate() + 7);
+            
+            const expiringSubs = subscriptions.filter(sub => {
+                const endDate = new Date(sub.endDate);
+                return endDate > now && endDate <= weekFromNow && sub.status === 'active';
+            });
+            
+            expiringSubs.forEach(sub => {
+                const client = clients.find(c => c.id === sub.clientId);
+                if (client && messageTemplates.subscriptionExpiry?.enabled) {
+                    const message = messageTemplates.subscriptionExpiry.text
+                        .replace('{client_name}', client.name.split(' ')[0])
+                        .replace('{subscription_type}', sub.type)
+                        .replace('{expiry_date}', formatDate(sub.endDate))
+                        .replace('{remaining_sessions}', sub.remaining)
+                        .replace('{renew_link}', `https://fit-club.ru/renew/${sub.id}`);
+                    
+                    // Имитация отправки
+                    console.log(`Напоминание об абонементе клиенту ${client.name}:`, message);
+                    
+                    // Помечаем как "заканчивающийся"
+                    sub.status = 'expiring';
+                }
+            });
+            
+            renderSubscriptions();
+            updateStats();
+            
+            return expiringSubs.length;
+        }
+        
+        function sendWelcomeMessage(client, subscription) {
+            if (!messageTemplates.welcome?.enabled) return;
+            
+            const trainer = client.trainerId ? trainers.find(t => t.id === client.trainerId) : null;
+            const firstSession = trainingSessions
+                .filter(s => s.clientId === client.id)
+                .sort((a, b) => new Date(a.date) - new Date(b.date))[0];
+            
+            let message = messageTemplates.welcome.text
+                .replace('{client_name}', client.name.split(' ')[0])
+                .replace('{trainer_name}', trainer?.name || 'будет назначен')
+                .replace('{first_session}', firstSession ? 
+                    `${formatDate(firstSession.date)} в ${firstSession.time}` : 'будет назначено')
+                .replace('{club_address}', 'ул. Фитнесная, 123, 3 этаж')
+                .replace('{contacts}', '+7 (999) 888-77-66, @fitclub_support');
+            
+            // Имитация отправки
+            console.log(`Приветственное сообщение для ${client.name}:`, message);
+            
+            showToast(`Приветственное сообщение отправлено клиенту ${client.name}`, 'success');
+        }
+        
+        // ===================== КАЛЕНДАРЬ И РАСПИСАНИЕ =====================
+        function updateCalendar() {
+            const monthNames = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
+                "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+            
+            document.getElementById('currentMonth').textContent = 
+                `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
+            
+            document.getElementById('currentDate').textContent = 
+                new Date().getDate();
+            document.getElementById('currentDay').textContent = 
+                new Date().toLocaleDateString('ru-RU', { weekday: 'long' });
+            
+            const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+            const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+            
+            let calendarHTML = '';
+            
+            // Пустые ячейки до первого дня месяца
+            for (let i = 0; i < firstDay.getDay(); i++) {
+                calendarHTML += '<div class="calendar-date"></div>';
+            }
+            
+            // Дни месяца
+            for (let day = 1; day <= lastDay.getDate(); day++) {
+                const dateStr = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+                const hasSessions = trainingSessions.some(session => session.date === dateStr);
+                const isToday = new Date().toISOString().split('T')[0] === dateStr;
+                
+                calendarHTML += `
+                    <div class="calendar-date ${hasSessions ? 'has-sessions' : ''} ${isToday ? 'today' : ''}" 
+                         onclick="showDaySessions('${dateStr}')">
+                        ${day}
+                        ${hasSessions ? '<div class="session-dot"></div>' : ''}
+                    </div>
+                `;
+            }
+            
+            document.getElementById('calendarDays').innerHTML = calendarHTML;
+        }
+        
+        function prevMonth() {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            updateCalendar();
+        }
+        
+        function nextMonth() {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            updateCalendar();
+        }
+        
+        function updateTodaySessions() {
+            const today = new Date().toISOString().split('T')[0];
+            const todaySessions = trainingSessions.filter(session => session.date === today);
+            const container = document.getElementById('todaySessions');
+            
+            if (todaySessions.length === 0) {
+                container.innerHTML = '<div style="color: var(--gray); font-size: 14px;">Сегодня занятий нет</div>';
+                return;
+            }
+            
+            container.innerHTML = todaySessions.map(session => {
+                const client = clients.find(c => c.id === session.clientId);
+                const trainer = trainers.find(t => t.id === session.trainerId);
+                
+                return `
+                    <div style="background: white; padding: 12px; border-radius: 8px; margin-bottom: 10px; border-left: 3px solid var(--primary);">
+                        <div style="font-weight: 600; margin-bottom: 5px;">${session.time} - ${client?.name || 'Клиент'}</div>
+                        <div style="font-size: 12px; color: var(--gray);">
+                            🏋️ ${trainer?.name || 'Тренер'} • ${session.duration} мин • ${session.location}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // ===================== УТИЛИТЫ =====================
+        function updateStats() {
+            document.getElementById('totalClients').textContent = clients.length;
+            document.getElementById('totalTrainers').textContent = trainers.length;
+            document.getElementById('clientsBadge').textContent = clients.length;
+            document.getElementById('trainersBadge').textContent = trainers.length;
+            
+            const today = new Date().toISOString().split('T')[0];
+            const todaySessionsCount = trainingSessions.filter(s => s.date === today).length;
+            document.getElementById('activeSessions').textContent = todaySessionsCount;
+            document.getElementById('scheduleBadge').textContent = todaySessionsCount;
+            
+            const activeSubs = subscriptions.filter(s => s.status === 'active').length;
+            const expiringSoon = subscriptions.filter(s => s.status === 'expiring').length;
+            const expiredSubs = subscriptions.filter(s => {
+                const endDate = new Date(s.endDate);
+                return endDate < new Date() && s.status !== 'expired';
+            }).length;
+            const totalRevenue = subscriptions.reduce((sum, sub) => sum + sub.price, 0);
+            
+            document.getElementById('subscriptions').textContent = subscriptions.length;
+            document.getElementById('subscriptionsBadge').textContent = expiringSoon;
+            document.getElementById('activeSubs').textContent = activeSubs;
+            document.getElementById('expiringSoon').textContent = expiringSoon;
+            document.getElementById('expiredSubs').textContent = expiredSubs;
+            document.getElementById('totalRevenue').textContent = totalRevenue.toLocaleString();
+        }
+        
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+            const tabElement = document.querySelector(`.tab[onclick="switchTab('${tabName}')"]`);
+            if (tabElement) {
+                tabElement.classList.add('active');
+            }
+            
+            // Обновляем данные при переключении на вкладку расписания
+            if (tabName === 'schedule') {
+                updateTodaySessions();
+            }
+        }
+        
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const icons = {
+                success: '✅',
+                error: '❌',
+                warning: '⚠️',
+                info: 'ℹ️'
+            };
+            
+            toast.innerHTML = `
+                <div style="font-size: 20px;">${icons[type] || icons.info}</div>
+                <div style="flex: 1;">
+                    <div style="font-weight: 600;">${type.toUpperCase()}</div>
+                    <div style="font-size: 14px;">${message}</div>
+                </div>
+                <button onclick="this.parentElement.remove()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: var(--gray);">×</button>
+            `;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                if (toast.parentElement) {
+                    toast.remove();
+                }
+            }, 5000);
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+        
+        function insertVariable(variable) {
+            const activeTab = document.querySelector('.tab-content.active').id;
+            let textarea;
+            
+            switch(activeTab) {
+                case 'automessages-tab':
+                    textarea = document.querySelector('.message-template-card:first-child textarea');
+                    break;
+            }
+            
+            if (textarea) {
+                const start = textarea.selectionStart;
+                const end = textarea.selectionEnd;
+                textarea.value = textarea.value.substring(0, start) + variable + textarea.value.substring(end);
+                textarea.focus();
+                textarea.setSelectionRange(start + variable.length, start + variable.length);
+            }
+        }
+        
+        function getSpecialtyName(specialty) {
+            const specialties = {
+                fitness: "Фитнес-тренер",
+                yoga: "Йога",
+                crossfit: "Кроссфит",
+                pilates: "Пилатес",
+                rehabilitation: "Реабилитация",
+                nutrition: "Нутрициолог"
+            };
+            
+            return specialties[specialty] || specialty;
+        }
+        
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('ru-RU', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+        }
+        
+        function groupByStatus(subscriptions) {
+            const now = new Date();
+            const weekFromNow = new Date(now);
+            weekFromNow.setDate(weekFromNow.getDate() + 7);
+            
+            return subscriptions.reduce((groups, sub) => {
+                const endDate = new Date(sub.endDate);
+                let status = sub.status;
+                
+                if (endDate > now && endDate <= weekFromNow && sub.status === 'active') {
+                    status = 'expiring';
+                } else if (endDate < now && sub.status !== 'expired') {
+                    status = 'expired';
+                }
+                
+                if (!groups[status]) {
+                    groups[status] = [];
+                }
+                groups[status].push({...sub, status: status});
+                
+                return groups;
+            }, {});
+        }
+        
+        // ===================== ДОПОЛНИТЕЛЬНЫЕ ФУНКЦИИ =====================
+        function sendTestMessage() {
+            const type = document.getElementById('autoMessageType').value;
+            showToast(`Тестовое сообщение типа "${type}" отправлено`, 'success');
+        }
+        
+        function filterClients() {
+            const searchTerm = document.getElementById('clientSearch').value.toLowerCase();
+            const filteredClients = clients.filter(client => 
+                client.name.toLowerCase().includes(searchTerm) ||
+                client.phone.includes(searchTerm) ||
+                (client.email && client.email.toLowerCase().includes(searchTerm))
+            );
+            
+            const container = document.getElementById('clientsContainer');
+            
+            if (filteredClients.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🔍</div>
+                        <div>Клиенты не найдены</div>
+                    </div>`;
+                return;
+            }
+            
+            // Временный рендер для поиска
+            container.innerHTML = filteredClients.map(client => {
+                const trainer = trainers.find(t => t.id === client.trainerId);
+                return `
+                    <div class="client-card">
+                        <div class="client-header">
+                            <div class="client-avatar">${client.name.charAt(0)}</div>
+                            <div class="client-info">
+                                <div class="client-name">${client.name}</div>
+                                <div class="client-phone">${client.phone}</div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 10px; font-size: 12px; color: var(--gray);">
+                            Тренер: ${trainer ? trainer.name : 'Не назначен'}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function exportClients() {
+            const exportData = {
+                export_date: new Date().toISOString(),
+                total_clients: clients.length,
+                clients: clients.map(client => ({
+                    id: client.id,
+                    name: client.name,
+                    phone: client.phone,
+                    email: client.email,
+                    telegram: client.telegram,
+                    trainer_id: client.trainerId,
+                    birthday: client.birthday,
+                    notes: client.notes
+                }))
+            };
+            
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = `clients_${new Date().toISOString().split('T')[0]}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            
+            showToast('Клиенты экспортированы в JSON', 'success');
+        }
+        
+        function assignClientsToTrainer() {
+            showToast('Выберите тренера для назначения клиентов', 'info');
+        }
+        
+        function showAddSubscriptionModal() {
+            showToast('Функция добавления абонемента', 'info');
+        }
+        
+        function checkAllSubscriptions() {
+            const count = checkExpiringSubscriptions();
+            showToast(`Проверено ${count} абонементов`, 'success');
+        }
+        
+        function notifyTrainer(trainerId) {
+            const trainer = trainers.find(t => t.id === trainerId);
+            if (trainer) {
+                showToast(`Уведомление отправлено тренеру ${trainer.name}`, 'success');
+            }
+        }
+        
+        function showTrainerSchedule(trainerId) {
+            const trainer = trainers.find(t => t.id === trainerId);
+            if (trainer) {
+                alert(`Расписание тренера ${trainer.name}:\n\n${trainer.schedule}`);
+            }
+        }
+        
+        function editClient(clientId) {
+            showToast('Редактирование клиента', 'info');
+        }
+        
+        function scheduleSession(clientId) {
+            showToast('Назначение занятия', 'info');
+        }
+        
+        function sendMessageToClient(clientId) {
+            const client = clients.find(c => c.id === clientId);
+            if (client) {
+                showToast(`Сообщение клиенту ${client.name}`, 'info');
+            }
+        }
+        
+        function showClientDetails(clientId) {
+            const client = clients.find(c => c.id === clientId);
+            if (client) {
+                const trainer = trainers.find(t => t.id === client.trainerId);
+                const subscription = subscriptions.find(s => s.clientId === clientId);
+                
+                const info = `
+Информация о клиенте:
+
+👤 Имя: ${client.name}
+📱 Телефон: ${client.phone}
+📧 Email: ${client.email || 'не указан'}
+✈️ Telegram: ${client.telegram || 'не указан'}
+🎂 Дата рождения: ${client.birthday ? formatDate(client.birthday) : 'не указана'}
+
+🏋️ Тренер: ${trainer ? trainer.name : 'не назначен'}
+
+${subscription ? `
+🎫 Абонемент:
+   Тип: ${subscription.type}
+   Статус: ${subscription.status === 'active' ? '✅ Активен' : '⚠️ Заканчивается'}
+   Осталось занятий: ${subscription.remaining}
+   Окончание: ${formatDate(subscription.endDate)}
+` : '🎫 Абонемент: не оформлен'}
+
+📝 Заметки: ${client.notes || 'нет'}
+                `;
+                
+                alert(info);
+            }
+        }
+        
+        function extendSubscription(subscriptionId) {
+            const subscription = subscriptions.find(s => s.id === subscriptionId);
+            if (subscription) {
+                const newEndDate = new Date(subscription.endDate);
+                newEndDate.setMonth(newEndDate.getMonth() + 1);
+                subscription.endDate = newEndDate.toISOString().split('T')[0];
+                subscription.status = 'active';
+                
+                renderSubscriptions();
+                updateStats();
+                showToast('Абонемент продлен на месяц', 'success');
+            }
+        }
+        
+        function sendReminder(subscriptionId) {
+            const subscription = subscriptions.find(s => s.id === subscriptionId);
+            const client = clients.find(c => c.id === subscription?.clientId);
+            
+            if (subscription && client) {
+                // Имитация отправки напоминания
+                console.log(`Отправка напоминания об абонементе клиенту ${client.name}`);
+                showToast(`Напоминание отправлено клиенту ${client.name}`, 'success');
+            }
+        }
+        
+        function showDaySessions(dateStr) {
+            const sessions = trainingSessions.filter(session => session.date === dateStr);
+            
+            if (sessions.length === 0) {
+                showToast('На выбранную дату занятий нет', 'info');
+                return;
+            }
+            
+            let message = `Занятия на ${formatDate(dateStr)}:\n\n`;
+            
+            sessions.forEach(session => {
+                const client = clients.find(c => c.id === session.clientId);
+                const trainer = trainers.find(t => t.id === session.trainerId);
+                message += `${session.time} - ${client?.name || 'Клиент'} с ${trainer?.name || 'Тренером'}\n`;
+            });
+            
+            alert(message);
+        }
+        
+        function generateReport() {
+            const totalRevenue = subscriptions.reduce((sum, sub) => sum + sub.price, 0);
+            const activeClients = clients.filter(client => {
+                const sub = subscriptions.find(s => s.clientId === client.id);
+                return sub && sub.status === 'active';
+            }).length;
+            
+            const report = `
+📊 Отчет за месяц
+
+Общая статистика:
+👥 Всего клиентов: ${clients.length}
+🏋️ Всего тренеров: ${trainers.length}
+💰 Выручка: ${totalRevenue.toLocaleString()} руб
+🎫 Активных абонементов: ${subscriptions.filter(s => s.status === 'active').length}
+📅 Проведено занятий: ${trainingSessions.length}
+
+Активные клиенты: ${activeClients}
+Новые клиенты в этом месяце: ${clients.length} (все)
+
+Топ тренеры по количеству занятий:
+${trainers.map(t => `  • ${t.name}: ${t.stats.sessions} занятий`).join('\n')}
+
+Абонементы заканчиваются в этом месяце: ${subscriptions.filter(s => s.status === 'expiring').length}
+            `;
+            
+            alert(report);
+        }
+        
+        function syncWithTelegram() {
+            showToast('Синхронизация с Telegram...', 'info');
+            
+            // Имитация синхронизации
+            setTimeout(() => {
+                showToast('Синхронизация завершена', 'success');
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
