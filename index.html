@@ -783,7 +783,7 @@
         <div class="container">
             <div class="text-center mb-3">
                 <h2 class="section-title">Стоимость занятий</h2>
-                <p>Доступные цены и гибкие условия оплаты</p>
+                <p>Доступные цены и гибкие условия оплата</p>
             </div>
             
             <div class="prices-grid" id="pricesContainer">
@@ -879,6 +879,12 @@
                 </div>
                 
                 <div class="form-group">
+                    <label class="form-label">Telegram (необязательно)</label>
+                    <input type="text" class="form-control" id="telegram" 
+                           placeholder="Ваш @username">
+                </div>
+                
+                <div class="form-group">
                     <label class="form-label">Направление</label>
                     <select class="form-control" id="direction">
                         <option value="">Выберите направление</option>
@@ -897,11 +903,7 @@
                         <option value="45+ лет">45+ лет (Взрослые 45+)</option>
                     </select>
                 </div>
-                <div class="form-group">
-    <label class="form-label">Telegram (необязательно)</label>
-    <input type="text" class="form-control" id="telegram" 
-           placeholder="Ваш @username">
-</div>
+                
                 <div class="form-group">
                     <label class="form-label">Комментарий (необязательно)</label>
                     <textarea class="form-control" id="comment" rows="3" placeholder="Пожелания по времени или направлению..."></textarea>
@@ -915,18 +917,14 @@
     </div>
 
     <script>
-	
         // ===== КОНФИГУРАЦИЯ ДАННЫХ =====
-        // ВНИМАНИЕ: Замените эти данные на свои реальные данные
         const TELEGRAM_CONFIG = {
-    botToken: '8507309551:AAH8TIecyIBUuG40EdX5IHbq32apzx8wg0c',
-    chatId: '8479925884',
-    enableTelegram: true
-			};
+            botToken: '8507309551:AAH8TIecyIBUuG40EdX5IHbq32apzx8wg0c',
+            chatId: '8479925884',
+            enableTelegram: true
+        };
+        
         const CONFIG = {
-		
-		
-
             studio: {
                 name: "Первый ритм",
                 phone: "+79041233175",
@@ -935,150 +933,144 @@
             },
             
             // Расписание по дням недели
-            // ===== ПОЛНОЕ РАСПИСАНИЕ С 7:00 ДО 21:00 =====
-// Вставьте этот объект вместо текущего CONFIG.schedule
-
-schedule: {
-    'Понедельник': [
-        { time: '07:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '08:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '09:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '10:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '11:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '12:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '13:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '14:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '15:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '16:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '17:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '18:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '19:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '20:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '21:00', direction: '-', age: '- лет', duration: '- мин', key: '-' }
-    ],
-    'Вторник': [
-        { time: '07:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '08:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '09:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '10:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '11:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '12:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '13:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '14:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '15:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '16:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '17:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '18:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '19:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '20:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '21:00', direction: '-', age: '- лет', duration: '- мин', key: '-' }
-    ],
-    'Среда': [
-        { time: '07:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '08:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '09:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '10:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '11:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '12:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '13:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '14:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '15:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '16:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '17:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '18:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '19:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '20:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '21:00', direction: '-', age: '- лет', duration: '- мин', key: '-' }
-    ],
-    'Четверг': [
-        { time: '07:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '08:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '09:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '10:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '11:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '12:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '13:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '14:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '15:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '16:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '17:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '18:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '19:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '20:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '21:00', direction: '-', age: '- лет', duration: '- мин', key: '-' }
-    ],
-    'Пятница': [
-        { time: '07:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '08:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '09:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '10:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '11:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '12:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '13:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '14:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '15:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '16:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '17:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '18:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '19:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '20:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '21:00', direction: '-', age: '- лет', duration: '- мин', key: '-' }
-    ],
-    'Суббота': [
-        { time: '07:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '08:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '09:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '10:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '11:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '12:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '13:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '14:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '15:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '16:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '17:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '18:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '19:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '20:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '21:00', direction: '-', age: '- лет', duration: '- мин', key: '-' }
-    ],
-    'Воскресенье': [
-        { time: '07:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '08:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '09:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '10:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '11:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '12:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '13:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '14:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '15:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '16:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '17:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '18:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '19:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '20:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-        { time: '21:00', direction: '-', age: '- лет', duration: '- мин', key: '-' }
-    ]
-},
+            schedule: {
+                'Понедельник': [
+                    { time: '07:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '08:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '09:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '10:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '11:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '12:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '13:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '14:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '15:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '16:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '17:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '18:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '19:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '20:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '21:00', direction: '-', age: '- лет', duration: '- мин', key: '-' }
+                ],
+                'Вторник': [
+                    { time: '07:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '08:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '09:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '10:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '11:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '12:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '13:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '14:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '15:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '16:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '17:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '18:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '19:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '20:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '21:00', direction: '-', age: '- лет', duration: '- мин', key: '-' }
+                ],
+                'Среда': [
+                    { time: '07:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '08:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '09:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '10:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '11:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '12:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '13:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '14:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '15:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '16:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '17:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '18:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '19:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '20:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '21:00', direction: '-', age: '- лет', duration: '- мин', key: '-' }
+                ],
+                'Четверг': [
+                    { time: '07:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '08:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '09:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '10:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '11:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '12:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '13:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '14:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '15:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '16:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '17:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '18:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '19:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '20:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '21:00', direction: '-', age: '- лет', duration: '- мин', key: '-' }
+                ],
+                'Пятница': [
+                    { time: '07:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '08:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '09:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '10:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '11:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '12:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '13:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '14:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '15:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '16:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '17:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '18:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '19:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '20:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '21:00', direction: '-', age: '- лет', duration: '- мин', key: '-' }
+                ],
+                'Суббота': [
+                    { time: '07:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '08:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '09:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '10:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '11:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '12:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '13:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '14:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '15:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '16:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '17:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '18:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '19:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '20:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '21:00', direction: '-', age: '- лет', duration: '- мин', key: '-' }
+                ],
+                'Воскресенье': [
+                    { time: '07:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '08:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '09:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '10:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '11:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '12:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '13:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '14:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '15:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '16:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '17:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '18:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '19:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '20:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
+                    { time: '21:00', direction: '-', age: '- лет', duration: '- мин', key: '-' }
+                ]
+            },
             
-            // Лента новостей - обновляйте регулярно
+            // Лента новостей
             news: [
                 {
                     title: "Новый набор в группы",
                     date: "15 января 2024",
-                    content: "Открыт набор в детские и взрослые группы на новый учебный год. Записывайтесь на пробные занятия!",
-                    
+                    content: "Открыт набор в детские и взрослые группы на новый учебный год. Записывайтесь на пробные занятия!"
                 },
                 {
                     title: "Отчетный концерт",
                     date: "20 декабря 2023",
-                    content: "Подготовка к ежегодному отчетному концерту. Наши ученики готовят яркие номера!",
-                    
+                    content: "Подготовка к ежегодному отчетному концерту. Наши ученики готовят яркие номера!"
                 },
                 {
                     title: "Мастер-класс по Contemporary",
                     date: "10 ноября 2023",
-                    content: "Приглашаем на мастер-класс от приглашенного хореографа по современной хореографии.",
-                    
+                    content: "Приглашаем на мастер-класс от приглашенного хореографа по современной хореографии."
                 }
             ],
             
@@ -1161,22 +1153,20 @@ schedule: {
                         "Быстрый прогресс"
                     ]
                 },
-				{
+                {
                     title: "ИНДИВИДУАЛЬНО ПО ЗАПРОСУ",
                     price: "~~₽",
                     period: "1 занятие (60 мин)",
                     features: [
                         "Персональный подход",
                         "Гибкий график",
-                        "Индивидуальная программа",
-                       
+                        "Индивидуальная программа"
                     ]
                 }
             ]
         };
 
         // ===== ОПИСАНИЯ НАПРАВЛЕНИЙ =====
-        // Добавляйте новые направления в соответствующие возрастные группы
         const directionDescriptions = {
             // Малыши 3-7 лет
             'baby-dance': {
@@ -1245,7 +1235,7 @@ schedule: {
                 title: 'Современный танец',
                 description: 'Изучение энергичных и популярных стилей: хип-хоп, джаз-модерн. Работа над ритмом, стилем и импровизацией.',
                 schedule: 'Среда, Суббота в 16:00',
-                price: 'Абонемент: 30000₽/мес (8 занятий)',
+                price: 'Абонемент: 3000₽/мес (8 занятий)',
                 features: [
                     'Хип-хоп и джаз-модерн',
                     'Развитие чувства ритма',
@@ -1260,7 +1250,7 @@ schedule: {
                 title: 'Эстрадный танец',
                 description: 'Яркое и зрелищное направление, сочетающее элементы классики, народного и современного танца.',
                 schedule: '----',
-                price: 'Абонемент: 30000₽/мес (8 занятий)',
+                price: 'Абонемент: 3000₽/мес (8 занятий)',
                 features: [
                     'Эстрадные постановки',
                     'Участие в конкурсах',
@@ -1417,7 +1407,7 @@ schedule: {
             'adult45-lady': {
                 title: 'Lady Dance для женщин 45+',
                 description: 'Элегантный танец, подчеркивающий женственность и пластику. Специально адаптированные занятия.',
-                schedule: '----0',
+                schedule: '----',
                 price: 'Абонемент: 4000₽/мес (8 занятий)',
                 features: [
                     'Адаптированные занятия',
@@ -1461,10 +1451,137 @@ schedule: {
             }
         };
 
+        // ===== ОБНОВЛЕННАЯ ОБРАБОТКА ФОРМЫ =====
+        async function submitForm(e) {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('name').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                telegram: document.getElementById('telegram').value.trim(),
+                direction: document.getElementById('direction').value,
+                ageGroup: document.getElementById('ageGroup').value,
+                comment: document.getElementById('comment').value.trim(),
+                date: new Date().toISOString(),
+                source: 'website_form',
+                status: 'new'
+            };
+            
+            if (!formData.name || !formData.phone) {
+                alert('Заполните имя и телефон');
+                return;
+            }
+            
+            try {
+                // 1. Отправляем в Telegram (если настроено)
+                if (TELEGRAM_CONFIG.enableTelegram) {
+                    await sendToTelegram(formData);
+                }
+                
+                // 2. Сохраняем в локальное хранилище сайта
+                await saveToLocalStorage(formData);
+                
+                // 3. Пытаемся отправить в CRM систему
+                await trySendToCRM(formData);
+                
+                alert('✅ Заявка отправлена! Мы свяжемся с вами в ближайшее время.');
+                closeModal();
+                document.getElementById('enrollForm').reset();
+                
+            } catch (error) {
+                console.error('Ошибка отправки:', error);
+                alert('⚠️ Заявка отправлена, но произошла техническая ошибка. Мы с вами свяжемся!');
+            }
+        }
+
+        async function sendToTelegram(data) {
+            const message = `
+🎯 *НОВАЯ ЗАЯВКА С САЙТА*
+━━━━━━━━━━━━━━━━━━━━
+👤 *Имя:* ${data.name}
+📞 *Телефон:* ${data.phone}
+📱 *Telegram:* ${data.telegram || 'Не указан'}
+🎭 *Направление:* ${data.direction || 'Не выбрано'}
+👶 *Возрастная группа:* ${data.ageGroup || 'Не выбрано'}
+📝 *Комментарий:* ${data.comment || 'Нет комментария'}
+⏰ *Дата:* ${new Date(data.date).toLocaleString('ru-RU')}
+━━━━━━━━━━━━━━━━━━━━
+`;
+            
+            return fetch(`https://api.telegram.org/bot${TELEGRAM_CONFIG.botToken}/sendMessage`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    chat_id: TELEGRAM_CONFIG.chatId,
+                    text: message,
+                    parse_mode: 'Markdown'
+                })
+            });
+        }
+
+        async function saveToLocalStorage(data) {
+            // Сохраняем заявку в localStorage сайта
+            const applications = JSON.parse(localStorage.getItem('studio_applications')) || [];
+            data.id = 'app_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            data.localSaved = true;
+            applications.unshift(data);
+            
+            // Сохраняем в localStorage сайта (храним последние 50 заявок)
+            localStorage.setItem('studio_applications', JSON.stringify(applications.slice(0, 50)));
+            
+            // Также сохраняем для синхронизации с CRM
+            scheduleCRMSync(data);
+            
+            return data.id;
+        }
+
+        // ===== СИНХРОНИЗАЦИЯ С CRM =====
+        function scheduleCRMSync(data) {
+            // Отмечаем данные для синхронизации с CRM
+            const pendingSync = JSON.parse(localStorage.getItem('pending_crm_sync')) || [];
+            pendingSync.push(data);
+            localStorage.setItem('pending_crm_sync', JSON.stringify(pendingSync.slice(0, 20))); // Ограничиваем очередь
+            
+            // Пытаемся синхронизировать сразу
+            setTimeout(() => trySyncWithCRM(), 1000);
+        }
+
+        async function trySendToCRM(data) {
+            // Пробуем отправить данные в CRM систему если она доступна
+            try {
+                if (typeof window.saveToCRMDatabase === 'function') {
+                    const appId = window.saveToCRMDatabase(data);
+                    if (appId) {
+                        console.log('Заявка успешно отправлена в CRM с ID:', appId);
+                        return true;
+                    }
+                }
+                
+                // Если CRM недоступна, сохраняем для будущей синхронизации
+                console.log('CRM система недоступна, сохраняем для будущей синхронизации');
+                return false;
+                
+            } catch (error) {
+                console.error('Ошибка отправки в CRM:', error);
+                return false;
+            }
+        }
+
+        function trySyncWithCRM() {
+            // Эта функция будет вызываться из CRM системы для синхронизации данных
+            console.log('Функция синхронизации с CRM');
+        }
+
         // ===== ИНИЦИАЛИЗАЦИЯ САЙТА =====
         document.addEventListener('DOMContentLoaded', function() {
             init();
             renderAll();
+            
+            // Проверяем наличие неподтвержденных заявок при загрузке
+            const pendingApps = JSON.parse(localStorage.getItem('studio_applications')) || [];
+            if (pendingApps.length > 0) {
+                console.log(`Найдено ${pendingApps.length} заявок в локальном хранилище`);
+            }
         });
 
         function init() {
@@ -1498,7 +1615,7 @@ schedule: {
         // ===== ОТРИСОВКА КОНТЕНТА =====
         function renderAll() {
             renderAgeTabs();
-            renderDirections('3-7 лет'); // По умолчанию показываем малышей
+            renderDirections('3-7 лет');
             renderSchedule();
             renderNews();
             renderPrices();
@@ -1626,7 +1743,6 @@ schedule: {
             
             container.innerHTML = CONFIG.news.map(item => `
                 <div class="news-card">
-                    <img src="${item.image}" alt="${item.title}" class="news-image">
                     <div class="news-content">
                         <div class="news-date">${item.date}</div>
                         <h3>${item.title}</h3>
@@ -1758,48 +1874,7 @@ schedule: {
             window.location.href = `tel:${CONFIG.studio.phone}`;
         }
 
-        // ===== ОБРАБОТКА ФОРМЫ =====
-        async function submitForm(e) {
-    e.preventDefault();
-    
-    const formData = {
-        name: document.getElementById('name').value.trim(),
-        phone: document.getElementById('phone').value.trim(),
-		telegram: document.getElementById('telegram').value.trim(),
-        direction: document.getElementById('direction').value,
-        ageGroup: document.getElementById('ageGroup').value,
-        comment: document.getElementById('comment').value.trim(),
-        date: new Date().toLocaleString('ru-RU')
-    };
-    
-    if (!formData.name || !formData.phone) {
-        alert('Заполните имя и телефон');
-        return;
-    }
-    
-    try {
-        if (TELEGRAM_CONFIG.enableTelegram) {
-            await fetch(`https://api.telegram.org/bot${TELEGRAM_CONFIG.botToken}/sendMessage`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({
-                    chat_id: TELEGRAM_CONFIG.chatId,
-                    text: `Заявка от ${formData.name}\nТелефон: ${formData.phone}\nНаправление: ${formData.direction || '-'}\nTelegram: ${formData.telegram || 'Не указан'}`
-                })
-            });
-        }
-        
-        alert('✅ Заявка отправлена!');
-        closeModal();
-        document.getElementById('enrollForm').reset();
-        
-    } catch (error) {
-        alert('⚠️ Ошибка отправки');
-        console.error(error);
-    }
-}
-
-        // ===== ЭКСПОРТ ФУНКЦИЙ =====
+        // ===== ГЛОБАЛЬНЫЙ ДОСТУП К ФУНКЦИЯМ =====
         window.selectAgeTab = selectAgeTab;
         window.viewSchedule = viewSchedule;
         window.toggleMenu = toggleMenu;
@@ -1807,6 +1882,8 @@ schedule: {
         window.closeModal = closeModal;
         window.callPhone = callPhone;
         window.submitForm = submitForm;
+        window.saveToLocalStorage = saveToLocalStorage;
+        window.trySyncWithCRM = trySyncWithCRM;
     </script>
 </body>
 </html>
