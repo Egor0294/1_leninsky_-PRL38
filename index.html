@@ -50,13 +50,13 @@
             line-height: 1.6;
             color: var(--text);
             background: var(--bg);
-			font-size: max(16px, min(20px, calc(100vw * 0.0125)));
+            font-size: max(16px, min(20px, calc(100vw * 0.0125)));
             -webkit-font-smoothing: antialiased;
         }
         
         /* ===== ТИПОГРАФИЯ ===== */
         h1, h2, h3, h4 {
-			font-size: max(16px, min(20px, calc(100vw * 0.0125)));
+            font-size: max(16px, min(20px, calc(100vw * 0.0125)));
             font-weight: 700;
             line-height: 1.2;
             margin-bottom: 1rem;
@@ -368,7 +368,7 @@
             font-weight: bold;
         }
         
-        /* ===== ТАБЛИЦА РАСПИСАНИЯ ===== */
+        /* ===== ДИНАМИЧЕСКОЕ РАСПИСАНИЕ ===== */
         .schedule-container {
             overflow-x: auto;
             margin-top: 2rem;
@@ -377,58 +377,114 @@
             background: white;
         }
         
-        .schedule-table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 800px;
+        .schedule-grid-view {
+            min-width: 1000px;
         }
         
-        .schedule-table th {
+        .schedule-grid-view table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .schedule-grid-view th {
             background: var(--primary);
             color: white;
             padding: 1rem;
-            text-align: left;
+            text-align: center;
             font-weight: 600;
+            border-right: 1px solid rgba(255,255,255,0.2);
         }
         
-        .schedule-table td {
-            padding: 1rem;
+        .schedule-grid-view th:first-child {
+            background: var(--primary-dark);
+        }
+        
+        .schedule-grid-view td {
+            padding: 2px;
             border-bottom: 1px solid var(--border);
+            border-right: 1px solid var(--border);
             vertical-align: top;
-        }
-        
-        .schedule-table tr:hover {
-            background: rgba(255, 107, 53, 0.05);
+            min-height: 40px;
         }
         
         .time-cell {
             font-weight: 600;
             color: var(--primary);
             white-space: nowrap;
+            padding: 8px;
+            text-align: center;
+            background: #f8f9fa;
         }
         
-        .class-cell {
-            background: rgba(255, 107, 53, 0.1);
-            padding: 0.5rem;
+        .schedule-cell {
+            min-width: 140px;
+            position: relative;
+        }
+        
+        .schedule-event {
+            position: absolute;
+            left: 1px;
+            right: 1px;
+            padding: 6px 8px;
             border-radius: 6px;
-            margin: 2px 0;
+            color: white;
             cursor: pointer;
+            font-size: 11px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
             transition: var(--transition);
+            overflow: hidden;
+            z-index: 1;
         }
         
-        .class-cell:hover {
-            background: rgba(255, 107, 53, 0.2);
+        .schedule-event:hover {
+            transform: scale(1.02);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+            z-index: 2;
         }
         
-        .class-name {
+        .event-title {
             font-weight: 600;
-            color: var(--text);
+            margin-bottom: 2px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
         
-        .class-age {
-            font-size: 0.875rem;
+        .event-age {
+            font-size: 10px;
+            opacity: 0.9;
+        }
+        
+        .empty-schedule {
+            text-align: center;
+            padding: 3rem;
             color: var(--text-light);
-            margin-top: 0.25rem;
+        }
+        
+        .empty-schedule-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 3rem;
+        }
+        
+        .spinner {
+            border: 3px solid var(--border);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         
         /* ===== ЛЕНТА НОВОСТЕЙ ===== */
@@ -637,6 +693,18 @@
             .age-tabs {
                 padding-bottom: 0.5rem;
             }
+            
+            .schedule-container {
+                margin-left: -1rem;
+                margin-right: -1rem;
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+            }
+            
+            .schedule-grid-view {
+                min-width: 1200px;
+            }
         }
         
         @media (max-width: 480px) {
@@ -693,25 +761,24 @@
             <div class="hero-content">
                 <h1>Танцевальная студия в Ленинском районе</h1>
                 <p class="hero-subtitle">
-                    
-             
+                    Профессиональные занятия для детей от 3 лет и взрослых до 65+
                 </p>
                 
                 <div class="hero-stats">
                     <div class="stat-item">
-                        <span class="stat-number"></span>
-                        <span>Профессиональные занятия</span>
+                        <span class="stat-number">18+</span>
+                        <span>Направлений</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-number">Возраст</span>
-                        <span> от 3 лет и взрослых до 65+</span>
+                        <span class="stat-number">3-65+</span>
+                        <span>Возраст</span>
                     </div>
                     <div class="stat-item">
                         <span class="stat-number">от 350₽</span>
                         <span>Пробное занятие</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-number">Более 10</span>
+                        <span class="stat-number">10+</span>
                         <span>Лет опыта</span>
                     </div>
                 </div>
@@ -756,10 +823,22 @@
                 <p>Выберите удобное время для занятий</p>
             </div>
             
-            <div class="schedule-container">
-                <table class="schedule-table" id="scheduleTable">
-                    <!-- Расписание генерируется через JS -->
-                </table>
+            <div class="schedule-container" id="dynamicScheduleContainer">
+                <!-- Динамическое расписание будет загружено через JS -->
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Загрузка расписания...</p>
+                </div>
+            </div>
+            
+            <!-- Ссылка на панель администратора -->
+            <div class="text-center mt-3">
+                <p style="font-size: 0.9rem; color: var(--text-light);">
+                    Администраторам: 
+                    <a href="admin-schedule.html" style="color: var(--primary); text-decoration: underline;">
+                        Управление расписанием
+                    </a>
+                </p>
             </div>
         </div>
     </section>
@@ -783,7 +862,7 @@
         <div class="container">
             <div class="text-center mb-3">
                 <h2 class="section-title">Стоимость занятий</h2>
-                <p>Доступные цены и гибкие условия оплата</p>
+                <p>Доступные цены и гибкие условия оплаты</p>
             </div>
             
             <div class="prices-grid" id="pricesContainer">
@@ -819,7 +898,7 @@
                 <div class="card contact-card">
                     <div class="contact-icon">🎁</div>
                     <h3>Пробное занятие</h3>
-                    <p style="font-size: 1.5rem; font-weight: bold; color: var(--primary); margin: 1rem 0;"> от 350₽</p>
+                    <p style="font-size: 1.5rem; font-weight: bold; color: var(--primary); margin: 1rem 0;">от 350₽</p>
                     <button class="btn btn-primary" onclick="openModal('enroll')">
                         Записаться
                     </button>
@@ -857,6 +936,11 @@
             
             <div class="text-center mt-3">
                 <p>© 2025 Студия танцев "Первый ритм". Все права защищены.</p>
+                <p style="font-size: 0.8rem; color: var(--text-light); margin-top: 0.5rem;">
+                    <a href="admin-schedule.html" style="color: var(--text-light); text-decoration: none;">
+                        Панель администратора
+                    </a>
+                </p>
             </div>
         </div>
     </footer>
@@ -879,12 +963,6 @@
                 </div>
                 
                 <div class="form-group">
-                    <label class="form-label">Telegram (необязательно)</label>
-                    <input type="text" class="form-control" id="telegram" 
-                           placeholder="Ваш @username">
-                </div>
-                
-                <div class="form-group">
                     <label class="form-label">Направление</label>
                     <select class="form-control" id="direction">
                         <option value="">Выберите направление</option>
@@ -902,6 +980,11 @@
                         <option value="18-44 лет">18-44 лет (Взрослые)</option>
                         <option value="45+ лет">45+ лет (Взрослые 45+)</option>
                     </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Telegram (необязательно)</label>
+                    <input type="text" class="form-control" id="telegram" placeholder="@username">
                 </div>
                 
                 <div class="form-group">
@@ -932,145 +1015,25 @@
                 hours: "Ежедневно 7:00 - 22:00"
             },
             
-            // Расписание по дням недели
-            schedule: {
-                'Понедельник': [
-                    { time: '07:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '08:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '09:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '10:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '11:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '12:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '13:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '14:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '15:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '16:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '17:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '18:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '19:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '20:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '21:00', direction: '-', age: '- лет', duration: '- мин', key: '-' }
-                ],
-                'Вторник': [
-                    { time: '07:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '08:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '09:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '10:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '11:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '12:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '13:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '14:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '15:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '16:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '17:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '18:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '19:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '20:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '21:00', direction: '-', age: '- лет', duration: '- мин', key: '-' }
-                ],
-                'Среда': [
-                    { time: '07:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '08:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '09:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '10:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '11:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '12:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '13:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '14:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '15:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '16:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '17:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '18:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '19:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '20:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '21:00', direction: '-', age: '- лет', duration: '- мин', key: '-' }
-                ],
-                'Четверг': [
-                    { time: '07:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '08:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '09:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '10:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '11:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '12:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '13:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '14:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '15:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '16:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '17:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '18:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '19:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '20:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '21:00', direction: '-', age: '- лет', duration: '- мин', key: '-' }
-                ],
-                'Пятница': [
-                    { time: '07:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '08:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '09:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '10:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '11:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '12:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '13:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '14:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '15:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '16:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '17:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '18:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '19:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '20:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '21:00', direction: '-', age: '- лет', duration: '- мин', key: '-' }
-                ],
-                'Суббота': [
-                    { time: '07:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '08:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '09:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '10:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '11:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '12:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '13:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '14:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '15:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '16:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '17:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '18:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '19:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '20:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '21:00', direction: '-', age: '- лет', duration: '- мин', key: '-' }
-                ],
-                'Воскресенье': [
-                    { time: '07:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '08:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '09:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '10:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '11:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '12:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '13:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '14:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '15:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '16:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '17:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '18:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '19:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '20:00', direction: '-', age: '- лет', duration: '- мин', key: '-' },
-                    { time: '21:00', direction: '-', age: '- лет', duration: '- мин', key: '-' }
-                ]
-            },
-            
             // Лента новостей
             news: [
                 {
                     title: "Новый набор в группы",
                     date: "15 января 2024",
-                    content: "Открыт набор в детские и взрослые группы на новый учебный год. Записывайтесь на пробные занятия!"
+                    content: "Открыт набор в детские и взрослые группы на новый учебный год. Записывайтесь на пробные занятия!",
+                    image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&auto=format&fit=crop"
                 },
                 {
                     title: "Отчетный концерт",
                     date: "20 декабря 2023",
-                    content: "Подготовка к ежегодному отчетному концерту. Наши ученики готовят яркие номера!"
+                    content: "Подготовка к ежегодному отчетному концерту. Наши ученики готовят яркие номера!",
+                    image: "https://images.unsplash.com/photo-1519677100203-7c61d0b01354?w-800&auto=format&fit=crop"
                 },
                 {
                     title: "Мастер-класс по Contemporary",
                     date: "10 ноября 2023",
-                    content: "Приглашаем на мастер-класс от приглашенного хореографа по современной хореографии."
+                    content: "Приглашаем на мастер-класс от приглашенного хореографа по современной хореографии.",
+                    image: "https://images.unsplash.com/photo-1536922246289-88c42f957773?w=800&auto=format&fit=crop"
                 }
             ],
             
@@ -1160,7 +1123,7 @@
                     features: [
                         "Персональный подход",
                         "Гибкий график",
-                        "Индивидуальная программа"
+                        "Индивидуальная программа",
                     ]
                 }
             ]
@@ -1219,7 +1182,7 @@
             'kids-classic': {
                 title: 'Классическая хореография',
                 description: 'Углубленное изучение основ балета. Укрепление мышечного корсета, развитие выносливости, грации и дисциплины.',
-                schedule: '-----',
+                schedule: 'В разработке',
                 price: 'Абонемент: 3000₽/мес (8 занятий)',
                 features: [
                     'Углубленное изучение классики',
@@ -1249,7 +1212,7 @@
             'kids-estrade': {
                 title: 'Эстрадный танец',
                 description: 'Яркое и зрелищное направление, сочетающее элементы классики, народного и современного танца.',
-                schedule: '----',
+                schedule: 'В разработке',
                 price: 'Абонемент: 3000₽/мес (8 занятий)',
                 features: [
                     'Эстрадные постановки',
@@ -1266,7 +1229,7 @@
             'teens-contemporary': {
                 title: 'Современная хореография (Contemporary)',
                 description: 'Выразительный танец, основанный на эмоциях и естественности движения. Развитие пластики и творческого потенциала.',
-                schedule: '----',
+                schedule: 'В разработке',
                 price: 'Абонемент: 3000₽/мес (8 занятий)',
                 features: [
                     'Современная хореография',
@@ -1281,7 +1244,7 @@
             'teens-hiphop-old': {
                 title: 'Хип-хоп (Old School)',
                 description: 'Изучение истоков уличной культуры. Мощные и техничные стили: Breaking, Popping, Locking.',
-                schedule: '----',
+                schedule: 'В разработке',
                 price: 'Абонемент: 3000₽/мес (8 занятий)',
                 features: [
                     'Breaking, Popping, Locking',
@@ -1328,7 +1291,7 @@
             'adult-hiphop': {
                 title: 'Хип-хоп для взрослых',
                 description: 'Динамичное кардио, развитие чувства ритма и уверенности в себе. Подходит для любого уровня подготовки.',
-                schedule: '----',
+                schedule: 'В разработке',
                 price: 'Абонемент: 4000₽/мес (8 занятий)',
                 features: [
                     'Кардио-нагрузка',
@@ -1343,7 +1306,7 @@
             'adult-heels': {
                 title: 'High Heels / Lady Dance',
                 description: 'Стильный и женственный танец на каблуках. Развитие грации, сексуальности и уверенности в себе.',
-                schedule: '----',
+                schedule: 'В разработке',
                 price: 'Абонемент: 4000₽/мес (8 занятий)',
                 features: [
                     'Танец на каблуках',
@@ -1360,7 +1323,7 @@
             'adult25-lady': {
                 title: 'Lady Dance, High Heels',
                 description: 'Элегантный танец, подчеркивающий женственность и пластику. Элементы джаза, стрип-пластики и современных стилей.',
-                schedule: '----',
+                schedule: 'В разработке',
                 price: 'Абонемент: 4000₽/мес (8 занятий)',
                 features: [
                     'Элегантная хореография',
@@ -1375,7 +1338,7 @@
             'adult25-contemporary': {
                 title: 'Contemporary, Modern Dance',
                 description: 'Гармоничное сочетание физической нагрузки и творческого самовыражения. Улучшение осанки, гибкости и координации.',
-                schedule: '----',
+                schedule: 'В разработке',
                 price: 'Абонемент: 4000₽/мес (8 занятий)',
                 features: [
                     'Физическая нагрузка',
@@ -1390,7 +1353,7 @@
             'adult25-ballet': {
                 title: 'Body Ballet для взрослых',
                 description: 'Упрощенная и адаптированная версия классического балета для взрослых. Идеально для формирования красивой осанки.',
-                schedule: '----',
+                schedule: 'В разработке',
                 price: 'Абонемент: 4000₽/мес (8 занятий)',
                 features: [
                     'Адаптированный балет',
@@ -1407,7 +1370,7 @@
             'adult45-lady': {
                 title: 'Lady Dance для женщин 45+',
                 description: 'Элегантный танец, подчеркивающий женственность и пластику. Специально адаптированные занятия.',
-                schedule: '----',
+                schedule: 'В разработке',
                 price: 'Абонемент: 4000₽/мес (8 занятий)',
                 features: [
                     'Адаптированные занятия',
@@ -1422,7 +1385,7 @@
             'adult45-ballet': {
                 title: 'Body Ballet 45+',
                 description: 'Адаптированная программа классического балета для женщин 45+. Укрепление мышц, улучшение осанки, развитие гибкости.',
-                schedule: '-----',
+                schedule: 'В разработке',
                 price: 'Абонемент: 4000₽/мес (8 занятий)',
                 features: [
                     'Адаптированный балет',
@@ -1437,7 +1400,7 @@
             'adult45-ballroom': {
                 title: 'Социальные танцы',
                 description: 'Прекрасный способ поддерживать активность, улучшать координацию, память и обретать новые знакомства.',
-                schedule: '---',
+                schedule: 'В разработке',
                 price: 'Абонемент: 4000₽/мес (8 занятий)',
                 features: [
                     'Социальные танцы',
@@ -1451,137 +1414,11 @@
             }
         };
 
-        // ===== ОБНОВЛЕННАЯ ОБРАБОТКА ФОРМЫ =====
-        async function submitForm(e) {
-            e.preventDefault();
-            
-            const formData = {
-                name: document.getElementById('name').value.trim(),
-                phone: document.getElementById('phone').value.trim(),
-                telegram: document.getElementById('telegram').value.trim(),
-                direction: document.getElementById('direction').value,
-                ageGroup: document.getElementById('ageGroup').value,
-                comment: document.getElementById('comment').value.trim(),
-                date: new Date().toISOString(),
-                source: 'website_form',
-                status: 'new'
-            };
-            
-            if (!formData.name || !formData.phone) {
-                alert('Заполните имя и телефон');
-                return;
-            }
-            
-            try {
-                // 1. Отправляем в Telegram (если настроено)
-                if (TELEGRAM_CONFIG.enableTelegram) {
-                    await sendToTelegram(formData);
-                }
-                
-                // 2. Сохраняем в локальное хранилище сайта
-                await saveToLocalStorage(formData);
-                
-                // 3. Пытаемся отправить в CRM систему
-                await trySendToCRM(formData);
-                
-                alert('✅ Заявка отправлена! Мы свяжемся с вами в ближайшее время.');
-                closeModal();
-                document.getElementById('enrollForm').reset();
-                
-            } catch (error) {
-                console.error('Ошибка отправки:', error);
-                alert('⚠️ Заявка отправлена, но произошла техническая ошибка. Мы с вами свяжемся!');
-            }
-        }
-
-        async function sendToTelegram(data) {
-            const message = `
-🎯 *НОВАЯ ЗАЯВКА С САЙТА*
-━━━━━━━━━━━━━━━━━━━━
-👤 *Имя:* ${data.name}
-📞 *Телефон:* ${data.phone}
-📱 *Telegram:* ${data.telegram || 'Не указан'}
-🎭 *Направление:* ${data.direction || 'Не выбрано'}
-👶 *Возрастная группа:* ${data.ageGroup || 'Не выбрано'}
-📝 *Комментарий:* ${data.comment || 'Нет комментария'}
-⏰ *Дата:* ${new Date(data.date).toLocaleString('ru-RU')}
-━━━━━━━━━━━━━━━━━━━━
-`;
-            
-            return fetch(`https://api.telegram.org/bot${TELEGRAM_CONFIG.botToken}/sendMessage`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({
-                    chat_id: TELEGRAM_CONFIG.chatId,
-                    text: message,
-                    parse_mode: 'Markdown'
-                })
-            });
-        }
-
-        async function saveToLocalStorage(data) {
-            // Сохраняем заявку в localStorage сайта
-            const applications = JSON.parse(localStorage.getItem('studio_applications')) || [];
-            data.id = 'app_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-            data.localSaved = true;
-            applications.unshift(data);
-            
-            // Сохраняем в localStorage сайта (храним последние 50 заявок)
-            localStorage.setItem('studio_applications', JSON.stringify(applications.slice(0, 50)));
-            
-            // Также сохраняем для синхронизации с CRM
-            scheduleCRMSync(data);
-            
-            return data.id;
-        }
-
-        // ===== СИНХРОНИЗАЦИЯ С CRM =====
-        function scheduleCRMSync(data) {
-            // Отмечаем данные для синхронизации с CRM
-            const pendingSync = JSON.parse(localStorage.getItem('pending_crm_sync')) || [];
-            pendingSync.push(data);
-            localStorage.setItem('pending_crm_sync', JSON.stringify(pendingSync.slice(0, 20))); // Ограничиваем очередь
-            
-            // Пытаемся синхронизировать сразу
-            setTimeout(() => trySyncWithCRM(), 1000);
-        }
-
-        async function trySendToCRM(data) {
-            // Пробуем отправить данные в CRM систему если она доступна
-            try {
-                if (typeof window.saveToCRMDatabase === 'function') {
-                    const appId = window.saveToCRMDatabase(data);
-                    if (appId) {
-                        console.log('Заявка успешно отправлена в CRM с ID:', appId);
-                        return true;
-                    }
-                }
-                
-                // Если CRM недоступна, сохраняем для будущей синхронизации
-                console.log('CRM система недоступна, сохраняем для будущей синхронизации');
-                return false;
-                
-            } catch (error) {
-                console.error('Ошибка отправки в CRM:', error);
-                return false;
-            }
-        }
-
-        function trySyncWithCRM() {
-            // Эта функция будет вызываться из CRM системы для синхронизации данных
-            console.log('Функция синхронизации с CRM');
-        }
-
         // ===== ИНИЦИАЛИЗАЦИЯ САЙТА =====
         document.addEventListener('DOMContentLoaded', function() {
             init();
             renderAll();
-            
-            // Проверяем наличие неподтвержденных заявок при загрузке
-            const pendingApps = JSON.parse(localStorage.getItem('studio_applications')) || [];
-            if (pendingApps.length > 0) {
-                console.log(`Найдено ${pendingApps.length} заявок в локальном хранилище`);
-            }
+            loadDynamicSchedule();
         });
 
         function init() {
@@ -1616,7 +1453,6 @@
         function renderAll() {
             renderAgeTabs();
             renderDirections('3-7 лет');
-            renderSchedule();
             renderNews();
             renderPrices();
             populateDirectionsSelect();
@@ -1681,60 +1517,137 @@
                         <button class="btn btn-primary" onclick="openModal('enroll', '${data.title}')">
                             Записаться
                         </button>
-                        <button class="btn btn-secondary" onclick="viewSchedule('${key}')">
-                            Расписание
-                        </button>
                     </div>
                 </div>
             `).join('');
         }
 
-        // Таблица расписания
-        function renderSchedule() {
-            const table = document.getElementById('scheduleTable');
-            const days = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
+        // Динамическое расписание
+        function loadDynamicSchedule() {
+            try {
+                const savedSchedule = localStorage.getItem('danceStudioSchedule');
+                const scheduleEvents = savedSchedule ? JSON.parse(savedSchedule) : [];
+                
+                if (scheduleEvents.length === 0) {
+                    showEmptySchedule();
+                    return;
+                }
+                
+                renderDynamicSchedule(scheduleEvents);
+            } catch (error) {
+                console.error('Ошибка загрузки расписания:', error);
+                showEmptySchedule();
+            }
+        }
+
+        function renderDynamicSchedule(scheduleEvents) {
+            const container = document.getElementById('dynamicScheduleContainer');
             
+            // Дни недели
+            const dayNames = {
+                1: 'Понедельник',
+                2: 'Вторник',
+                3: 'Среда',
+                4: 'Четверг',
+                5: 'Пятница',
+                6: 'Суббота',
+                7: 'Воскресенье'
+            };
+            
+            // Генерируем временные слоты с 7:00 до 22:00 каждый час
+            const timeSlots = [];
+            for (let hour = 7; hour <= 22; hour++) {
+                timeSlots.push(hour + 0.0); // Час:00
+                if (hour < 22) timeSlots.push(hour + 0.5); // Час:30
+            }
+            
+            // Создаем HTML для сетки расписания
             let html = `
-                <thead>
-                    <tr>
-                        <th>Время</th>
-                        ${days.map(day => `<th>${day}</th>`).join('')}
-                    </tr>
-                </thead>
-                <tbody>
+                <div class="schedule-grid-view">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Время</th>
+                                ${Object.values(dayNames).map(day => `<th>${day}</th>`).join('')}
+                            </tr>
+                        </thead>
+                        <tbody>
             `;
             
-            // Все возможные времена из расписания
-            const allTimes = [...new Set(
-                Object.values(CONFIG.schedule).flat().map(item => item.time)
-            )].sort();
-            
-            allTimes.forEach(time => {
-                html += `<tr>`;
-                html += `<td class="time-cell">${time}</td>`;
+            // Для каждого временного слота
+            timeSlots.forEach(timeSlot => {
+                const timeStr = decimalToTime(timeSlot);
+                const cellHeight = 40; // Высота ячейки в пикселях
                 
-                days.forEach(day => {
-                    const classes = CONFIG.schedule[day]?.filter(item => item.time === time) || [];
-                    html += `<td>`;
+                html += `<tr style="height: ${cellHeight}px;">`;
+                html += `<td class="time-cell">${timeStr.substring(0, 5)}</td>`;
+                
+                // Для каждого дня недели
+                for (let day = 1; day <= 7; day++) {
+                    // Ищем события в этот день и время
+                    const events = scheduleEvents.filter(event => 
+                        event.day === day && 
+                        timeSlot >= event.startTime && 
+                        timeSlot < event.endTime
+                    );
                     
-                    classes.forEach(cls => {
-                        const dir = directionDescriptions[cls.key];
+                    html += `<td class="schedule-cell" style="position: relative;">`;
+                    
+                    events.forEach(event => {
+                        const startTime = decimalToTime(event.startTime);
+                        const endTime = decimalToTime(event.endTime);
+                        const duration = event.endTime - event.startTime;
+                        const slots = duration * 2; // Количество 30-минутных слотов
+                        
+                        // Вычисляем высоту события
+                        const height = slots * cellHeight;
+                        // Вычисляем смещение от начала слота
+                        const startOffset = (event.startTime - Math.floor(event.startTime)) * 2 * cellHeight;
+                        
                         html += `
-                            <div class="class-cell" onclick="openModal('enroll', '${dir?.title || cls.direction}')">
-                                <div class="class-name">${cls.direction}</div>
-                                <div class="class-age">${cls.age} • ${cls.duration}</div>
+                            <div class="schedule-event" 
+                                 style="height: ${height}px; top: ${startOffset}px; background-color: ${event.color};"
+                                 onclick="openModal('enroll', '${event.title.replace(/'/g, "\\'")}')"
+                                 title="${event.title}\n${startTime.substring(0, 5)}-${endTime.substring(0, 5)}\n${event.instructor || 'Преподаватель не указан'}\n${event.ageGroup || ''}">
+                                <div class="event-title">${event.title}</div>
+                                <div class="event-age">${startTime.substring(0, 5)}-${endTime.substring(0, 5)}</div>
                             </div>
                         `;
                     });
                     
                     html += `</td>`;
-                });
+                }
                 
                 html += `</tr>`;
             });
             
-            html += `</tbody>`;
-            table.innerHTML = html;
+            html += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            
+            container.innerHTML = html;
+        }
+
+        function showEmptySchedule() {
+            const container = document.getElementById('dynamicScheduleContainer');
+            container.innerHTML = `
+                <div class="empty-schedule">
+                    <div class="empty-schedule-icon">📅</div>
+                    <h3>Расписание обновляется</h3>
+                    <p>Наше расписание формируется. Скоро здесь появится актуальное расписание занятий.</p>
+                    <p>Чтобы записаться на занятие, заполните форму или позвоните нам.</p>
+                    <div class="btn-group mt-2">
+                        <button class="btn btn-primary" onclick="openModal('enroll')">
+                            Записаться
+                        </button>
+                        <button class="btn btn-secondary" onclick="callPhone()">
+                            Позвонить
+                        </button>
+                    </div>
+                </div>
+            `;
         }
 
         // Лента новостей
@@ -1743,6 +1656,7 @@
             
             container.innerHTML = CONFIG.news.map(item => `
                 <div class="news-card">
+                    <img src="${item.image}" alt="${item.title}" class="news-image">
                     <div class="news-content">
                         <div class="news-date">${item.date}</div>
                         <h3>${item.title}</h3>
@@ -1805,6 +1719,18 @@
             });
         }
 
+        // ===== УТИЛИТЫ ДЛЯ РАБОТЫ СО ВРЕМЕНЕМ =====
+        function decimalToTime(decimalTime) {
+            const hours = Math.floor(decimalTime);
+            const minutes = Math.round((decimalTime - hours) * 60);
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+        }
+
+        function timeToDecimal(timeStr) {
+            const [hours, minutes] = timeStr.split(':').map(Number);
+            return hours + minutes / 60;
+        }
+
         // ===== ФУНКЦИИ UI =====
         function selectAgeTab(ageGroup) {
             // Обновляем активную вкладку
@@ -1824,22 +1750,6 @@
             
             // Рендерим направления для выбранной возрастной группы
             renderDirections(ageGroup);
-        }
-
-        function viewSchedule(directionKey) {
-            // Прокручиваем к расписанию
-            const section = document.getElementById('schedule');
-            window.scrollTo({
-                top: section.offsetTop - 80,
-                behavior: 'smooth'
-            });
-            
-            // Можно добавить подсветку нужного направления в таблице
-            // Для простоты просто открываем модалку записи
-            const dir = directionDescriptions[directionKey];
-            if (dir) {
-                openModal('enroll', dir.title);
-            }
         }
 
         function toggleMenu() {
@@ -1874,16 +1784,68 @@
             window.location.href = `tel:${CONFIG.studio.phone}`;
         }
 
-        // ===== ГЛОБАЛЬНЫЙ ДОСТУП К ФУНКЦИЯМ =====
+        // ===== ОБРАБОТКА ФОРМЫ =====
+        async function submitForm(e) {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('name').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                telegram: document.getElementById('telegram').value.trim(),
+                direction: document.getElementById('direction').value,
+                ageGroup: document.getElementById('ageGroup').value,
+                comment: document.getElementById('comment').value.trim(),
+                date: new Date().toLocaleString('ru-RU')
+            };
+            
+            if (!formData.name || !formData.phone) {
+                alert('Заполните имя и телефон');
+                return;
+            }
+            
+            try {
+                if (TELEGRAM_CONFIG.enableTelegram) {
+                    await fetch(`https://api.telegram.org/bot${TELEGRAM_CONFIG.botToken}/sendMessage`, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            chat_id: TELEGRAM_CONFIG.chatId,
+                            text: `📋 Новая заявка с сайта\n\n👤 Имя: ${formData.name}\n📞 Телефон: ${formData.phone}\n📱 Telegram: ${formData.telegram || 'Не указан'}\n🎯 Направление: ${formData.direction || 'Не указано'}\n👶 Возраст: ${formData.ageGroup || 'Не указан'}\n💬 Комментарий: ${formData.comment || 'Нет'}\n⏰ Дата: ${formData.date}`
+                        })
+                    });
+                }
+                
+                alert('✅ Заявка отправлена! Мы свяжемся с вами в ближайшее время.');
+                closeModal();
+                document.getElementById('enrollForm').reset();
+                
+            } catch (error) {
+                alert('⚠️ Ошибка отправки заявки. Пожалуйста, позвоните нам по телефону.');
+                console.error(error);
+            }
+        }
+
+        // ===== ОБНОВЛЕНИЕ РАСПИСАНИЯ В РЕАЛЬНОМ ВРЕМЕНИ =====
+        // Функция для обновления расписания при изменениях
+        function updateSchedule() {
+            loadDynamicSchedule();
+        }
+
+        // Слушаем изменения в localStorage (если панель администратора открыта в другом окне)
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'danceStudioSchedule') {
+                loadDynamicSchedule();
+            }
+        });
+
+        // ===== ЭКСПОРТ ФУНКЦИЙ =====
         window.selectAgeTab = selectAgeTab;
-        window.viewSchedule = viewSchedule;
         window.toggleMenu = toggleMenu;
         window.openModal = openModal;
         window.closeModal = closeModal;
         window.callPhone = callPhone;
         window.submitForm = submitForm;
-        window.saveToLocalStorage = saveToLocalStorage;
-        window.trySyncWithCRM = trySyncWithCRM;
+        window.updateSchedule = updateSchedule;
     </script>
 </body>
 </html>
