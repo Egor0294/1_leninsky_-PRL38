@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Антистресс комната в Иркутске | Выпустить пар безопасно | Эмоциональный цикл</title>
+    <meta name="description" content="Уникальная 4-этапная система снятия стресса в Иркутске. Безопасно выпустите агрессию, крикните и расслабьтесь за 60 минут. Запись онлайн.">
+    <style>
+        /* ОСНОВНЫЕ СТИЛИ */
+        :root {
+            --primary: #ff3b30; /* Энергичный красный */
+            --secondary: #007aff; /* Доверительный синий */
+            --dark: #0a0a0f;
+            --light: #f8f9fa;
+            --success: #34c759;
+            --warning: #ff9500;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* ХЕДЕР С ТАЙМЕРОМ */
+        .announcement-bar {
+            background: linear-gradient(90deg, var(--primary), #ff6b6b);
+            color: white;
+            text-align: center;
+            padding: 12px;
+            font-weight: 600;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .timer {
+            display: inline-flex;
+            gap: 5px;
+            font-size: 1.1em;
+        }
+        
+        .timer span {
+            background: rgba(0,0,0,0.3);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        
+        /* ГЛАВНЫЙ ГЕРОЙ-БЛОК */
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding: 40px 20px;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 59, 48, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 122, 255, 0.1) 0%, transparent 50%);
+        }
+        
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        
+        .hero-badge {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.9em;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .hero-title {
+            font-size: 3.5em;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.3em;
+            color: #aaa;
+            margin-bottom: 30px;
+            max-width: 500px;
+        }
+        
+        /* ПРОБЛЕМЫ-РЕШЕНИЯ */
+        .problem-solution {
+            padding: 80px 20px;
+            background: rgba(255,255,255,0.03);
+        }
+        
+        .ps-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .ps-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 30px;
+            transition: transform 0.3s;
+        }
+        
+        .ps-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255,59,48,0.1);
+        }
+        
+        .ps-icon {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        
+        /* ВИДЕО-БЛОК */
+        .video-block {
+            padding: 80px 20px;
+            text-align: center;
+        }
+        
+        .video-container {
+            max-width: 800px;
+            margin: 40px auto;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+        
+        /* ЭТАПЫ С АНИМАЦИЕЙ */
+        .stages-animated {
+            padding: 80px 20px;
+        }
+        
+        .stage-timeline {
+            max-width: 800px;
+            margin: 60px auto;
+            position: relative;
+        }
+        
+        .stage-timeline::before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+        
+        .stage-item {
+            display: flex;
+            margin-bottom: 60px;
+            position: relative;
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.6s ease;
+        }
+        
+        .stage-item.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .stage-number {
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: 800;
+            margin-right: 30px;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* ЦЕНЫ С ВИЗУАЛЬНЫМ ВЫБОРОМ */
+        .pricing-visual {
+            padding: 80px 20px;
+            background: rgba(0,122,255,0.05);
+        }
+        
+        .pricing-cards {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 60px auto;
+        }
+        
+        .price-card {
+            background: white;
+            color: var(--dark);
+            border-radius: 20px;
+            padding: 40px;
+            width: 280px;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .price-card:hover {
+            transform: scale(1.05);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(255,59,48,0.2);
+        }
+        
+        .price-card.popular {
+            transform: scale(1.1);
+            border-color: var(--primary);
+            background: linear-gradient(135deg, white, #fff5f5);
+        }
+        
+        .popular-badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+        
+        .price-amount {
+            font-size: 3em;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 20px 0;
+        }
+        
+        .price-per-person {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        /* ГАРАНТИИ */
+        .guarantees {
+            padding: 80px 20px;
+        }
+        
+        .guarantee-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+        
+        .guarantee-item {
+            text-align: center;
+            padding: 30px;
+        }
+        
+        .guarantee-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(52, 199, 89, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2em;
+        }
+        
+        /* FAQ АККОРДЕОН */
+        .faq {
+            padding: 80px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 10px;
+        }
+        
+        .faq-question {
+            padding: 20px 0;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+        
+        .faq-answer {
+            padding: 0 0 20px;
+            color: #aaa;
+            display: none;
+        }
+        
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+        
+        /* СТИЛИ ДЛЯ ФОРМЫ ЗАПИСИ */
+        .booking-section {
+            padding: 80px 20px;
+            background: linear-gradient(135deg, #2c3e50 0%, #4a6491 100%);
+            border-radius: 25px;
+            margin: 40px auto;
+            max-width: 1200px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+        }
+        
+        .booking-container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .booking-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .booking-header h2 {
+            font-size: 32px;
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .booking-header p {
+            opacity: 0.9;
+            font-size: 16px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .booking-form {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 10px;
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid #e1e8f0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f8fafc;
+            color: #2c3e50;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #3498db;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.15);
+            transform: translateY(-1px);
+        }
+        
+        .form-input::placeholder {
+            color: #94a3b8;
+        }
+        
+        .people-counter-container {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            border: 2px solid #e1e8f0;
+        }
+        
+        .people-counter {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 200px;
+            margin: 0 auto;
+        }
+        
+        .counter-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid #3498db;
+            background: white;
+            color: #3498db;
+            font-size: 24px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .counter-btn:hover:not(:disabled) {
+            background: #3498db;
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .counter-btn:active:not(:disabled) {
+            transform: scale(0.95);
+        }
+        
+        .counter-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            background: #e1e8f0;
+            border-color: #cbd5e1;
+            color: #94a3b8;
+        }
+        
+        .people-count {
+            font-size: 28px;
+            font-weight: 700;
+            min-width: 60px;
+            text-align: center;
+            color: #2c3e50;
+        }
+        
+        .people-label {
+            text-align: center;
+            margin-top: 15px;
+            color: #64748b;
+            font-size: 14px;
+        }
+        
+        .form-submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            letter-spacing: 0.5px;
+        }
+        
+        .form-submit-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(46, 204, 113, 0.4);
+        }
+        
+        .form-submit-btn:active:not(:disabled) {
+            transform: translateY(-1px);
+        }
+        
+        .form-submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .form-message {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 12px;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+        
+        .form-message.success {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            color: #155724;
+            border: 1px solid #b1dfbb;
+        }
+        
+        .form-message.error {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            color: #721c24;
+            border: 1px solid #f1b0b7;
+        }
+        
+        .form-info {
+            background: #e8f4fc;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 25px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .form-info h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form-info p {
+            color: #4a5568;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 5px;
+        }
+        
+        /* КОНТАКТЫ И КАРТА */
+        .contact-map {
+            padding: 80px 20px;
+            background: rgba(255,255,255,0.03);
+        }
+        
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+        
+        .contact-info {
+            background: rgba(255,255,255,0.05);
+            padding: 40px;
+            border-radius: 20px;
+        }
+        
+        .contact-group {
+            margin-bottom: 20px;
+        }
+        
+        .contact-control {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            color: white;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+        
+        .contact-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(255,255,255,0.15);
+        }
+        
+        /* АДАПТИВНОСТЬ */
+        @media (max-width: 768px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .hero-title {
+                font-size: 2.5em;
+            }
+            
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .price-card.popular {
+                transform: none;
+            }
+            
+            .booking-section {
+                padding: 40px 15px;
+                margin: 20px;
+                border-radius: 20px;
+            }
+            
+            .booking-form {
+                padding: 20px;
+            }
+            
+            .counter-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 20px;
+            }
+            
+            .people-count {
+                font-size: 24px;
+                min-width: 50px;
+            }
+        }
+        
+        /* АНИМАЦИИ */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .loader {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- ТАЙМЕР АКЦИИ -->
+    <div class="announcement-bar">
+        <span>🚨 ДО КОНЦА АКЦИИ ОСТАЛОСЬ:</span>
+        <div class="timer" id="timer">
+            <span id="hours">23</span>:
+            <span id="minutes">59</span>:
+            <span id="seconds">59</span>
+        </div>
+        <span>— СКИДКА 30% НА ПЕРВЫЙ СЕАНС!</span>
+    </div>
+
+    <!-- ГЛАВНЫЙ ЭКРАН -->
+    <section class="hero">
+        <div class="hero-content">
+            <div>
+                <div class="hero-badge">🚀 ТОЛЬКО ДО КОНЦА МЕСЯЦА</div>
+                <h1 class="hero-title">
+                    УСТАЛИ СДЕРЖИВАТЬ<br>
+                    <span style="color: white;">ЭМОЦИИ?</span>
+                </h1>
+                <p class="hero-subtitle">
+                    В Иркутске открылась уникальная антистресс-студия, где можно 
+                    <span style="color: var(--primary); font-weight: 600;">безопасно выпустить пар</span>, 
+                    не боясь последствий
+                </p>
+                
+                <div style="margin: 40px 0;">
+                    <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                        <span style="color: var(--success); margin-right: 10px;">✓</span>
+                        <span>Безопасная зона с профессиональной защитой</span>
+                    </div>
+                    <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                        <span style="color: var(--success); margin-right: 10px;">✓</span>
+                        <span>Инструктор сопровождение на всём протяжении</span>
+                    </div>
+                    <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                        <span style="color: var(--success); margin-right: 10px;">✓</span>
+                        <span>95% клиентов отмечают снижение стресса после первого сеанса</span>
+                    </div>
+                </div>
+                
+                <a href="#booking-form" class="form-submit-btn" style="width: auto; padding: 20px 50px; display: inline-block; text-decoration: none;">
+                    🎯 ЗАБРОНИРОВАТЬ СО СКИДКОЙ
+                </a>
+            </div>
+            
+            <div>
+                <div style="background: rgba(255,255,255,0.05); border-radius: 20px; padding: 30px; margin-bottom: 30px;">
+                    <div style="font-size: 0.9em; color: #aaa; margin-bottom: 10px;">👥 КЛИЕНТОВ В ИЮЛЕ</div>
+                    <div style="font-size: 2.5em; font-weight: 800; color: var(--success);">127</div>
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.05); border-radius: 20px; padding: 30px;">
+                    <div style="font-size: 0.9em; color: #aaa; margin-bottom: 10px;">⭐ СРЕДНЯЯ ОЦЕНКА</div>
+                    <div style="font-size: 2.5em; font-weight: 800; color: var(--warning);">4.9/5</div>
+                    <div style="margin-top: 10px; color: #aaa;">по отзывам на Яндекс</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ПРОБЛЕМЫ И РЕШЕНИЯ -->
+    <section class="problem-solution">
+        <div style="text-align: center; margin-bottom: 60px;">
+            <h2 style="font-size: 2.5em; margin-bottom: 20px;">ВЫ УЗНАЛИ СЕБЯ?</h2>
+            <p style="color: #aaa; max-width: 600px; margin: 0 auto;">
+                Большинство наших клиентов приходят с одинаковыми проблемами
+            </p>
+        </div>
+        
+        <div class="ps-grid">
+            <div class="ps-card">
+                <div class="ps-icon">😤</div>
+                <h3 style="margin-bottom: 15px;">«ДУШИТЬ В СЕБЕ ЗЛОСТЬ»</h3>
+                <p style="color: #aaa;">После ссоры с начальником или в семье агрессия копится внутри, вызывая бессонницу и болезни</p>
+            </div>
+            
+            <div class="ps-card">
+                <div class="ps-icon">😰</div>
+                <h3 style="margin-bottom: 15px;">«БОЮСЬ СОРВАТЬСЯ»</h3>
+                <p style="color: #aaa;">Постоянное напряжение на работе, страх накричать на коллег или близких</p>
+            </div>
+            
+            <div class="ps-card">
+                <div class="ps-icon">😔</div>
+                <h3 style="margin-bottom: 15px;">«НЕКУДА ВЫПЛЕСНУТЬ»</h3>
+                <p style="color: #aaa;">Хочется разбить что-то или покричать, но нельзя — будут проблемы</p>
+            </div>
+            
+            <div class="ps-card">
+                <div class="ps-icon">😌</div>
+                <h3 style="margin-bottom: 15px;">НАШЕ РЕШЕНИЕ</h3>
+                <p style="color: #aaa;"><strong>Безопасное пространство</strong>, где можно сделать всё это без последствий для себя и окружающих</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ВИДЕО ОТЗЫВ -->
+    <section class="video-block">
+        <h2 style="font-size: 2.5em; margin-bottom: 20px;">КАК ЭТО РАБОТАЕТ?</h2>
+        <p style="color: #aaa; max-width: 600px; margin: 0 auto 40px;">
+            Посмотрите 90-секундный обзор от наших первых клиентов из Иркутска
+        </p>
+        
+        <div class="video-container">
+            <div style="position: relative; padding-bottom: 56.25%; height: 0; background: #222;">
+                <!-- Заглушка для видео -->
+                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+                           display: flex; align-items: center; justify-content: center; 
+                           background: linear-gradient(135deg, var(--primary), var(--secondary));">
+                    <div style="text-align: center; padding: 20px;">
+                        <div style="font-size: 3em; margin-bottom: 20px;">▶️</div>
+                        <div style="font-size: 1.5em; font-weight: 600;">ВИДЕО-ОБЗОР СЕАНСА</div>
+                        <div style="margin-top: 10px; color: rgba(255,255,255,0.8);">(здесь будет ваше видео)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div style="margin-top: 40px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+            <div style="text-align: center;">
+                <div style="font-size: 2em; font-weight: 800; color: var(--primary);">60</div>
+                <div style="color: #aaa;">минут длится сеанс</div>
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 2em; font-weight: 800; color: var(--primary);">4</div>
+                <div style="color: #aaa;">этапа перезагрузки</div>
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 2em; font-weight: 800; color: var(--primary);">100%</div>
+                <div style="color: #aaa;">безопасность</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- АНИМИРОВАННЫЕ ЭТАПЫ -->
+    <section class="stages-animated">
+        <div style="text-align: center; margin-bottom: 60px;">
+            <h2 style="font-size: 2.5em; margin-bottom: 20px;">4 ЭТАПА КАК В КИНО</h2>
+            <p style="color: #aaa; max-width: 600px; margin: 0 auto;">
+                Проживите полный эмоциональный цикл от напряжения до умиротворения
+            </p>
+        </div>
+        
+        <div class="stage-timeline">
+            <div class="stage-item" id="stage1">
+                <div class="stage-number">1</div>
+                <div>
+                    <h3 style="margin-bottom: 10px;">СИЛА — 30 минут</h3>
+                    <p style="color: #aaa;">Работа с боксёрским манекеном. Выпускаем мышечное напряжение, телесные зажимы. Инструктор показывает правильные удары, чтобы не травмироваться.</p>
+                </div>
+            </div>
+            
+            <div class="stage-item" id="stage2">
+                <div class="stage-number">2</div>
+                <div>
+                    <h3 style="margin-bottom: 10px;">ВЗРЫВ — 15 минут</h3>
+                    <p style="color: #aaa;">Катарсис от разбития стекла в защищённом контейнере. Специально подобранные предметы дают максимально удовлетворительный хруст.</p>
+                </div>
+            </div>
+            
+            <div class="stage-item" id="stage3">
+                <div class="stage-number">3</div>
+                <div>
+                    <h3 style="margin-bottom: 10px;">ЗВУК — 10 минут</h3>
+                    <p style="color: #aaa;">Звукоизолированная комната крика. Микрофон с эффектами (эхо, реверберация). Кричите слова или просто звуки — вас никто не услышит.</p>
+                </div>
+            </div>
+            
+            <div class="stage-item" id="stage4">
+                <div class="stage-number">4</div>
+                <div>
+                    <h3 style="margin-bottom: 10px;">ТИШИНА — 15 минут</h3>
+                    <p style="color: #aaa;">Релаксация в креслах-мешках с травяным чаем. Звуки природы, приглушённый свет. Возвращаем нервную систему в норму.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ЦЕНЫ С ВИЗУАЛЬНЫМ ВЫБОРОМ -->
+    <section class="pricing-visual" id="booking">
+        <div style="text-align: center; margin-bottom: 60px;">
+            <h2 style="font-size: 2.5em; margin-bottom: 20px;">ВЫБЕРИТЕ СВОЙ ФОРМАТ</h2>
+            <p style="color: #aaa; max-width: 600px; margin: 0 auto;">
+                Самый популярный вариант — на троих. Экономия 1500₽ с человека!
+            </p>
+        </div>
+        
+        <div class="pricing-cards">
+            <div class="price-card">
+                <h3 style="margin-bottom: 20px;">СОЛО</h3>
+                <div class="price-amount">3 500₽</div>
+                <div class="price-per-person">за 1 человека</div>
+                <ul style="list-style: none; margin: 30px 0; text-align: left;">
+                    <li style="padding: 8px 0; border-bottom: 1px solid #eee;">✓ 60 минут сеанса</li>
+                    <li style="padding: 8px 0; border-bottom: 1px solid #eee;">✓ Все 4 этапа</li>
+                    <li style="padding: 8px 0; border-bottom: 1px solid #eee;">✓ Защитное снаряжение</li>
+                    <li style="padding: 8px 0; border-bottom: 1px solid #eee;">✓ Травяной чай</li>
+                </ul>
+                <button class="form-submit-btn" onclick="scrollToBooking()" style="width: 100%;">ВЫБРАТЬ</button>
+            </div>
+            
+            <div class="price-card">
+                <h3 style="margin-bottom: 20px;">ДУЭТ</h3>
+                <div class="price-amount">5 000₽</div>
+                <div class="price-per-person">2 500₽ с человека</div>
+                <ul style="list-style: none; margin: 30px 0; text-align: left;">
+                    <li style="padding: 8px 0; border-bottom: 1px solid #eee;">✓ Всё из тарифа «Соло»</li>
+                    <li style="padding: 8px 0; border-bottom: 1px solid #eee;">✓ Можно приходить вдвоём</li>
+                    <li style="padding: 8px 0; border-bottom: 1px solid #eee;">✓ Экономия 500₽ на человека</li>
+                    <li style="padding: 8px 0; border-bottom: 1px solid #eee;">✓ Идеально для пар</li>
+                </ul>
+                <button class="form-submit-btn" onclick="scrollToBooking()" style="width: 100%;">ВЫБРАТЬ</button>
+            </div>
+            
+            <div class="price-card popular">
+                <div class="popular-badge">🔥 ВЫБОР 68% КЛИЕНТОВ</div>
+                <h3 style="margin-bottom: 20px;">ТРИО</h3>
+                <div class="price-amount">6 000₽</div>
+                <div class="price-per-person">2 000₽ с человека</div>
+                <ul style="list-style: none; margin: 30px 0; text-align: left;">
+                    <li style="padding: 8px 0; border-bottom: 1px solid #eee;">✓ Всё из тарифа «Дуэт»</li>
+                    <li style="padding: 8px 0; border-bottom: 1px solid #eee;">✓ Можно втроём</li>
+                    <li style="padding: 8px 0; border-bottom: 1px solid #eee;">✓ Экономия 1500₽ на человека</li>
+                    <li style="padding: 8px 0; border-bottom: 1px solid #eee;">✓ Идеально для друзей</li>
+                </ul>
+                <button class="form-submit-btn" onclick="scrollToBooking()" style="width: 100%; background: var(--primary);">ВЫБРАТЬ</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ФОРМА ЗАПИСИ -->
+    <section class="booking-section" id="booking-form">
+        <div class="booking-container">
+            <div class="booking-header">
+                <h2>🧘 Запись на сеанс</h2>
+                <p>Забронируйте сеанс гармонии и спокойствия для вас и ваших близких</p>
+            </div>
+
+            <form class="booking-form" id="antistressBookingForm">
+                <!-- Поле ФИО -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <span>👤</span> ФИО *
+                    </label>
+                    <input type="text" 
+                           id="bookingFio" 
+                           class="form-input" 
+                           placeholder="Введите ваше полное имя"
+                           required>
+                </div>
+
+                <!-- Поле телефона -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <span>📱</span> Телефон *
+                    </label>
+                    <input type="tel" 
+                           id="bookingPhone" 
+                           class="form-input" 
+                           placeholder="+7 (999) 123-45-67"
+                           required
+                           pattern="\+7\s?[\(]?\d{3}[\)]?\s?\d{3}[\s-]?\d{2}[\s-]?\d{2}">
+                </div>
+
+                <!-- Счетчик людей -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <span>👥</span> Количество человек
+                    </label>
+                    <div class="people-counter-container">
+                        <div class="people-counter">
+                            <button type="button" class="counter-btn" id="decreasePeople">-</button>
+                            <span class="people-count" id="peopleCount">1</span>
+                            <button type="button" class="counter-btn" id="increasePeople">+</button>
+                        </div>
+                        <div class="people-label" id="peopleLabel">Выберите количество участников (макс. 6)</div>
+                    </div>
+                </div>
+
+                <!-- Дата -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <span>📅</span> Дата сеанса *
+                    </label>
+                    <input type="date" 
+                           id="bookingDate" 
+                           class="form-input" 
+                           required>
+                </div>
+
+                <!-- Кнопка отправки -->
+                <button type="submit" class="form-submit-btn" id="submitBtn">
+                    <span id="submitText">✅ Забронировать сеанс</span>
+                    <div class="loader" id="loader"></div>
+                </button>
+
+                <!-- Сообщение -->
+                <div class="form-message" id="message"></div>
+
+                <!-- Информация -->
+                <div class="form-info">
+                    <h4>
+                        <span>ℹ️</span> Важная информация
+                    </h4>
+                    <p>• Продолжительность сеанса: 60 минут</p>
+                    <p>• Максимальная группа: 6 человек</p>
+                    <p>• Подтверждение записи происходит в течение 2 часов</p>
+                    <p>• При отмене сообщите за 24 часа</p>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- ГАРАНТИИ -->
+    <section class="guarantees">
+        <div style="text-align: center; margin-bottom: 60px;">
+            <h2 style="font-size: 2.5em; margin-bottom: 20px;">МЫ ГАРАНТИРУЕМ</h2>
+            <p style="color: #aaa; max-width: 600px; margin: 0 auto;">
+                Безопасность и результат — наш главный приоритет
+            </p>
+        </div>
+        
+        <div class="guarantee-grid">
+            <div class="guarantee-item">
+                <div class="guarantee-icon">🛡️</div>
+                <h3 style="margin-bottom: 15px;">ПОЛНАЯ БЕЗОПАСНОСТЬ</h3>
+                <p style="color: #aaa;">Профессиональная защита (очки, перчатки, каски), инструктор всегда рядом</p>
+            </div>
+            
+            <div class="guarantee-item">
+                <div class="guarantee-icon">💰</div>
+                <h3 style="margin-bottom: 15px;">ВОЗВРАТ ДЕНЕГ</h3>
+                <p style="color: #aaa;">Если не понравится — вернём 100% оплаты после первых 15 минут</p>
+            </div>
+            
+            <div class="guarantee-item">
+                <div class="guarantee-icon">🏥</div>
+                <h3 style="margin-bottom: 15px;">МЕДИЦИНСКАЯ СТРАХОВКА</h3>
+                <p style="color: #aaa;">Все клиенты застрахованы на 500 000₽ на случай травмы (никогда не пригодилось)</p>
+            </div>
+            
+            <div class="guarantee-item">
+                <div class="guarantee-icon">🤫</div>
+                <h3 style="margin-bottom: 15px;">ПОЛНАЯ КОНФИДЕНЦИАЛЬНОСТЬ</h3>
+                <p style="color: #aaa;">Никаких камер внутри, никакой регистрации. Вы останетесь анонимны</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq">
+        <h2 style="text-align: center; font-size: 2.5em; margin-bottom: 60px;">ОТВЕТЫ НА ВОПРОСЫ</h2>
+        
+        <div class="faq-item">
+            <div class="faq-question">Это безопасно для здоровья?<span>▼</span></div>
+            <div class="faq-answer">Абсолютно. Мы используем профессиональную защиту (строительные каски с забралом, защитные очки, перчатки). Все предметы для битья подготовлены специальным образом. Инструктор всегда рядом. За 2 года работы — ни одной серьёзной травмы.</div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question">Что будет, если я передумаю во время сеанса?<span>▼</span></div>
+            <div class="faq-answer">Вы можете остановиться в любой момент. Просто скажите инструктору «стоп». Мы сразу перейдём в зону релакса или завершим сеанс. Деньги вернём пропорционально.</div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question">Можно прийти с друзьями?<span>▼</span></div>
+            <div class="faq-answer">Да, и даже нужно! Самый популярный формат — на троих (экономия 1500₽ с человека). Максимальная группа — 6 человек (для корпоративов).</div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question">Что нельзя с собой брать?<span>▼</span></div>
+            <div class="faq-answer">Алкоголь, наркотические вещества, своё оружие или инструменты, фото/видеотехнику (можно телефон). Мы выдаём всё необходимое.</div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question">Есть ли противопоказания?<span>▼</span></div>
+            <div class="faq-answer">Да: беременность, проблемы с сердцем, психические заболевания, алкогольное/наркотическое опьянение, эпилепсия. При других заболеваниях — проконсультируйтесь с врачом.</div>
+        </div>
+    </section>
+
+    <!-- КОНТАКТЫ -->
+    <section class="contact-map" id="contacts">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <h2 style="text-align: center; font-size: 2.5em; margin-bottom: 60px;">КАК НАС НАЙТИ</h2>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px;">
+                <div>
+                    <div style="background: #222; border-radius: 20px; padding: 30px; margin-bottom: 30px;">
+                        <div style="font-size: 1.2em; margin-bottom: 15px; color: var(--primary);">📍 АДРЕС</div>
+                        <div style="font-size: 1.1em; margin-bottom: 10px;">г. Иркутск, ул. Ленина, 15</div>
+                        <div style="color: #aaa;">Вход с торца, цокольный этаж (ищем вывеску «Эмоциональный цикл»)</div>
+                    </div>
+                    
+                    <div style="background: #222; border-radius: 20px; padding: 30px; margin-bottom: 30px;">
+                        <div style="font-size: 1.2em; margin-bottom: 15px; color: var(--primary);">📞 ТЕЛЕФОН</div>
+                        <div style="font-size: 1.3em; font-weight: 600; margin-bottom: 10px;">+7 (964) 123-45-67</div>
+                        <div style="color: #aaa;">Работаем в WhatsApp и Telegram</div>
+                    </div>
+                    
+                    <div style="background: #222; border-radius: 20px; padding: 30px;">
+                        <div style="font-size: 1.2em; margin-bottom: 15px; color: var(--primary);">⏰ РЕЖИМ РАБОТЫ</div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <span>Пн-Пт</span>
+                            <span>16:00 — 23:00</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>Сб-Вс</span>
+                            <span>12:00 — 23:00</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <!-- Карта (заглушка) -->
+                    <div style="background: #222; border-radius: 20px; padding: 30px; height: 100%; display: flex; align-items: center; justify-content: center;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 4em; margin-bottom: 20px; color: var(--primary);">🗺️</div>
+                            <div style="font-size: 1.2em; font-weight: 600; margin-bottom: 10px;">Карта проезда</div>
+                            <div style="color: #aaa;">(здесь будет интерактивная карта Яндекс/Google)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // ====================
+        // ТАЙМЕР АКЦИИ
+        // ====================
+        function updateTimer() {
+            const now = new Date();
+            const endOfDay = new Date();
+            endOfDay.setHours(23, 59, 59, 999);
+            
+            const diff = endOfDay - now;
+            
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+        }
+        
+        setInterval(updateTimer, 1000);
+        updateTimer();
+        
+        // ====================
+        // АНИМАЦИЯ ЭТАПОВ
+        // ====================
+        function checkScroll() {
+            const stages = document.querySelectorAll('.stage-item');
+            
+            stages.forEach(stage => {
+                const rect = stage.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.8) {
+                    stage.classList.add('visible');
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', checkScroll);
+        checkScroll();
+        
+        // ====================
+        // ФОРМА ЗАПИСИ
+        // ====================
+        const MAX_PEOPLE = 6;
+        let peopleCount = 1;
+        let selectedBookingDate = '';
+        
+        // Инициализация формы
+        function initBookingForm() {
+            const dateInput = document.getElementById('bookingDate');
+            if (dateInput) {
+                const tomorrow = new Date();
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                dateInput.min = tomorrow.toISOString().split('T')[0];
+                dateInput.value = tomorrow.toISOString().split('T')[0];
+                selectedBookingDate = dateInput.value;
+                
+                dateInput.addEventListener('change', function() {
+                    selectedBookingDate = this.value;
+                });
+            }
+            
+            // Обработчики счетчика
+            const decreaseBtn = document.getElementById('decreasePeople');
+            const increaseBtn = document.getElementById('increasePeople');
+            
+            if (decreaseBtn) {
+                decreaseBtn.addEventListener('click', function() {
+                    if (peopleCount > 1) {
+                        peopleCount--;
+                        updatePeopleCounter();
+                    }
+                });
+            }
+            
+            if (increaseBtn) {
+                increaseBtn.addEventListener('click', function() {
+                    if (peopleCount < MAX_PEOPLE) {
+                        peopleCount++;
+                        updatePeopleCounter();
+                    }
+                });
+            }
+            
+            // Обработчик отправки формы
+            const form = document.getElementById('antistressBookingForm');
+            if (form) {
+                form.addEventListener('submit', handleBookingSubmit);
+            }
+            
+            updatePeopleCounter();
+        }
+        
+        // Обновление счетчика людей
+        function updatePeopleCounter() {
+            const countElement = document.getElementById('peopleCount');
+            const labelElement = document.getElementById('peopleLabel');
+            const decreaseBtn = document.getElementById('decreasePeople');
+            const increaseBtn = document.getElementById('increasePeople');
+            
+            if (countElement) {
+                countElement.textContent = peopleCount;
+            }
+            
+            if (decreaseBtn) {
+                decreaseBtn.disabled = peopleCount <= 1;
+            }
+            
+            if (increaseBtn) {
+                increaseBtn.disabled = peopleCount >= MAX_PEOPLE;
+            }
+            
+            if (labelElement) {
+                let labelText = '';
+                if (peopleCount === 1) {
+                    labelText = '1 человек';
+                } else if (peopleCount >= 2 && peopleCount <= 4) {
+                    labelText = `${peopleCount} человека`;
+                } else {
+                    labelText = `${peopleCount} человек`;
+                }
+                
+                if (peopleCount === MAX_PEOPLE) {
+                    labelText += ' (максимум)';
+                    labelElement.style.color = '#e74c3c';
+                    labelElement.style.fontWeight = '600';
+                } else {
+                    labelElement.style.color = '#64748b';
+                    labelElement.style.fontWeight = '400';
+                }
+                
+                labelElement.textContent = labelText;
+            }
+        }
+        
+        // Обработка отправки формы
+        async function handleBookingSubmit(e) {
+            e.preventDefault();
+            
+            const fioInput = document.getElementById('bookingFio');
+            const phoneInput = document.getElementById('bookingPhone');
+            const submitText = document.getElementById('submitText');
+            const loader = document.getElementById('loader');
+            const messageElement = document.getElementById('message');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            // Валидация
+            if (!fioInput.value.trim()) {
+                showMessage('Пожалуйста, введите ваше ФИО', 'error', messageElement);
+                fioInput.focus();
+                return;
+            }
+            
+            if (!phoneInput.value.trim()) {
+                showMessage('Пожалуйста, введите ваш телефон', 'error', messageElement);
+                phoneInput.focus();
+                return;
+            }
+            
+            // Проверка формата телефона
+            const phoneRegex = /^\+7\s?[\(]?\d{3}[\)]?\s?\d{3}[\s-]?\d{2}[\s-]?\d{2}$/;
+            if (!phoneRegex.test(phoneInput.value.trim())) {
+                showMessage('Пожалуйста, введите корректный номер телефона (+7 XXX XXX-XX-XX)', 'error', messageElement);
+                phoneInput.focus();
+                return;
+            }
+            
+            // Показать загрузку
+            if (submitText) submitText.style.display = 'none';
+            if (loader) loader.style.display = 'block';
+            if (submitBtn) submitBtn.disabled = true;
+            
+            // Имитация отправки на сервер
+            setTimeout(() => {
+                // Создание объекта записи
+                const bookingData = {
+                    fio: fioInput.value.trim(),
+                    phone: phoneInput.value.trim(),
+                    people: peopleCount,
+                    date: selectedBookingDate,
+                    timestamp: new Date().toISOString(),
+                    source: window.location.href
+                };
+                
+                // Сохранение в localStorage
+                try {
+                    const existingBookings = JSON.parse(localStorage.getItem('antistressBookings')) || [];
+                    existingBookings.push({
+                        ...bookingData,
+                        id: Date.now() + Math.random().toString(36).substr(2, 9)
+                    });
+                    localStorage.setItem('antistressBookings', JSON.stringify(existingBookings));
+                } catch (error) {
+                    console.log('Ошибка сохранения:', error);
+                }
+                
+                // Показать успешное сообщение
+                const successMessage = `
+                    ✅ <strong>Заявка успешно отправлена!</strong><br><br>
+                    <div style="text-align: left; line-height: 1.8;">
+                        <strong>Детали записи:</strong><br>
+                        • ФИО: ${bookingData.fio}<br>
+                        • Телефон: ${bookingData.phone}<br>
+                        • Дата: ${formatDate(bookingData.date)}<br>
+                        • Количество человек: ${bookingData.people}<br><br>
+                        <em>Мы свяжемся с вами для подтверждения в течение 2 часов.</em>
+                    </div>
+                `;
+                
+                showMessage(successMessage, 'success', messageElement);
+                
+                // Сброс формы
+                fioInput.value = '';
+                phoneInput.value = '';
+                peopleCount = 1;
+                updatePeopleCounter();
+                
+                // Установка даты на завтра
+                const dateInput = document.getElementById('bookingDate');
+                if (dateInput) {
+                    const tomorrow = new Date();
+                    tomorrow.setDate(tomorrow.getDate() + 1);
+                    dateInput.value = tomorrow.toISOString().split('T')[0];
+                    selectedBookingDate = dateInput.value;
+                }
+                
+                // Скрыть загрузку
+                if (submitText) submitText.style.display = 'block';
+                if (loader) loader.style.display = 'none';
+                if (submitBtn) submitBtn.disabled = false;
+                
+                // Прокрутка к сообщению
+                messageElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+            }, 1500);
+        }
+        
+        // Показать сообщение
+        function showMessage(html, type, element) {
+            if (!element) return;
+            
+            element.innerHTML = html;
+            element.className = 'form-message ' + type;
+            element.style.display = 'block';
+            
+            // Автоскрытие через 15 секунд
+            setTimeout(() => {
+                element.style.animation = 'slideIn 0.3s ease reverse';
+                setTimeout(() => {
+                    element.style.display = 'none';
+                    element.style.animation = 'slideIn 0.3s ease';
+                }, 300);
+            }, 15000);
+        }
+        
+        // Форматирование даты
+        function formatDate(dateString) {
+            const date = new Date(dateString + 'T00:00:00');
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            };
+            return date.toLocaleDateString('ru-RU', options);
+        }
+        
+        // ====================
+        // FAQ АККОРДЕОН
+        // ====================
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const item = question.parentElement;
+                item.classList.toggle('active');
+                
+                // Закрытие других открытых
+                document.querySelectorAll('.faq-item').forEach(otherItem => {
+                    if (otherItem !== item && otherItem.classList.contains('active')) {
+                        otherItem.classList.remove('active');
+                    }
+                });
+            });
+        });
+        
+        // ====================
+        // ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
+        // ====================
+        function scrollToBooking() {
+            document.getElementById('booking-form').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+        
+        // Плавная прокрутка для якорей
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Анимация при загрузке
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelector('.hero').style.opacity = '0';
+            document.querySelector('.hero').style.transform = 'translateY(30px)';
+            
+            setTimeout(() => {
+                document.querySelector('.hero').style.transition = 'opacity 0.8s, transform 0.8s';
+                document.querySelector('.hero').style.opacity = '1';
+                document.querySelector('.hero').style.transform = 'translateY(0)';
+            }, 300);
+            
+            // Инициализация формы
+            initBookingForm();
+        });
+    </script>
+</body>
+</html>

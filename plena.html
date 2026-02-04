@@ -1,0 +1,2626 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление студией танца "Грация"</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            color: #333;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            color: white;
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "💃🕺";
+            position: absolute;
+            font-size: 5rem;
+            opacity: 0.1;
+            right: 30px;
+            top: 10px;
+        }
+        
+        h1 {
+            margin-bottom: 10px;
+            font-size: 2.8rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+        
+        .studio-name {
+            font-weight: bold;
+            color: #ffeaa7;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        /* Табы */
+        .tabs {
+            display: flex;
+            background: white;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .tab.active {
+            background-color: #ffeaa7;
+            border-bottom: 3px solid #ff6b6b;
+            color: #2d3436;
+        }
+        
+        .tab-content {
+            display: none;
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Календарь */
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: linear-gradient(to right, #a29bfe, #6c5ce7);
+            border-radius: 10px;
+            color: white;
+        }
+        
+        .calendar-nav {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .calendar-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 25px;
+        }
+        
+        .calendar-day-header {
+            background: linear-gradient(to right, #ff6b6b, #ee5a52);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .calendar-day {
+            background-color: white;
+            min-height: 120px;
+            padding: 10px;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.3s ease;
+            position: relative;
+        }
+        
+        .calendar-day:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .calendar-day.today {
+            background-color: #ffeaa7;
+        }
+        
+        .calendar-day.weekend {
+            background-color: #f8f9fa;
+        }
+        
+        .day-number {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: #2d3436;
+        }
+        
+        .day-events {
+            font-size: 0.85rem;
+        }
+        
+        .event-item {
+            background-color: #74b9ff;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-bottom: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .event-item:hover {
+            opacity: 0.9;
+            transform: translateX(3px);
+        }
+        
+        .event-beginner {
+            background-color: #00b894;
+        }
+        
+        .event-intermediate {
+            background-color: #0984e3;
+        }
+        
+        .event-advanced {
+            background-color: #fd79a8;
+        }
+        
+        .event-all {
+            background-color: #a29bfe;
+        }
+        
+        .event-more {
+            background-color: #636e72;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            text-align: center;
+            margin-top: 5px;
+        }
+        
+        /* Группы клиентов */
+        .groups-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+        
+        .group-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .group-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+        
+        .group-header {
+            padding: 20px;
+            background: linear-gradient(to right, #a29bfe, #6c5ce7);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .group-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        
+        .group-level {
+            background-color: white;
+            color: #6c5ce7;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+        
+        .group-body {
+            padding: 20px;
+        }
+        
+        .group-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .group-trainer, .group-time, .group-room {
+            font-size: 0.9rem;
+            color: #636e72;
+        }
+        
+        .group-trainer i, .group-time i, .group-room i {
+            margin-right: 5px;
+            color: #ff6b6b;
+        }
+        
+        .group-members {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .group-member {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #f8f9fa;
+        }
+        
+        .group-member:last-child {
+            border-bottom: none;
+        }
+        
+        .member-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .member-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: linear-gradient(to right, #74b9ff, #0984e3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .member-name {
+            font-weight: 500;
+        }
+        
+        .member-subscription {
+            font-size: 0.8rem;
+            color: #636e72;
+        }
+        
+        .member-status {
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+        
+        .status-active {
+            background-color: #00b894;
+            color: white;
+        }
+        
+        .status-expiring {
+            background-color: #fdcb6e;
+            color: white;
+        }
+        
+        .status-expired {
+            background-color: #e17055;
+            color: white;
+        }
+        
+        .group-footer {
+            padding: 15px 20px;
+            background-color: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .group-count {
+            font-size: 0.9rem;
+            color: #636e72;
+        }
+        
+        /* Общие стили */
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #ffeaa7;
+        }
+        
+        .content-title {
+            font-size: 1.8rem;
+            color: #2d3436;
+            font-weight: 600;
+        }
+        
+        .content-icon {
+            font-size: 2.2rem;
+            color: #ff6b6b;
+        }
+        
+        /* Кнопки управления */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .action-btn {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .edit-btn {
+            background-color: #74b9ff;
+            color: white;
+        }
+        
+        .edit-btn:hover {
+            background-color: #0984e3;
+        }
+        
+        .delete-btn {
+            background-color: #e17055;
+            color: white;
+        }
+        
+        .delete-btn:hover {
+            background-color: #d63031;
+        }
+        
+        .add-btn {
+            background-color: #00b894;
+            color: white;
+        }
+        
+        .add-btn:hover {
+            background-color: #00a085;
+        }
+        
+        /* Таблицы */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .data-table th, .data-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #f1f2f6;
+        }
+        
+        .data-table th {
+            background: linear-gradient(to right, #a29bfe, #6c5ce7);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .data-table tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        /* Кнопки */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(to right, #ff6b6b, #ee5a52);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(to right, #ff5252, #e74c3c);
+            transform: scale(1.05);
+        }
+        
+        .btn-success {
+            background: linear-gradient(to right, #00b894, #00a085);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: linear-gradient(to right, #00a085, #008b74);
+            transform: scale(1.05);
+        }
+        
+        .btn-info {
+            background: linear-gradient(to right, #74b9ff, #0984e3);
+            color: white;
+        }
+        
+        .btn-info:hover {
+            background: linear-gradient(to right, #0984e3, #0770c4);
+            transform: scale(1.05);
+        }
+        
+        .btn-warning {
+            background: linear-gradient(to right, #fdcb6e, #f9a825);
+            color: white;
+        }
+        
+        .btn-warning:hover {
+            background: linear-gradient(to right, #f9a825, #f57f17);
+            transform: scale(1.05);
+        }
+        
+        /* Модальные окна */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 800px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #636e72;
+            transition: color 0.3s ease;
+        }
+        
+        .close:hover {
+            color: #d63031;
+        }
+        
+        .modal-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #2d3436;
+            border-bottom: 2px solid #ffeaa7;
+            padding-bottom: 10px;
+        }
+        
+        /* Формы */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-col {
+            flex: 1;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2d3436;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: #74b9ff;
+            outline: none;
+        }
+        
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        select.form-control {
+            background-color: white;
+        }
+        
+        /* Подвал */
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 25px;
+            border-top: 1px solid #e0e0e0;
+            color: #636e72;
+            font-size: 0.95rem;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Панель инструментов */
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+            font-size: 1rem;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #636e72;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 1200px) {
+            .calendar-grid {
+                grid-template-columns: repeat(7, 1fr);
+            }
+            
+            .groups-container {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .calendar-grid {
+                grid-template-columns: repeat(7, 1fr);
+            }
+            
+            .calendar-day {
+                min-height: 100px;
+            }
+            
+            .groups-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-box {
+                min-width: 100%;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .calendar-grid {
+                grid-template-columns: repeat(7, 1fr);
+            }
+            
+            .calendar-day-header {
+                padding: 10px 5px;
+                font-size: 0.9rem;
+            }
+            
+            .calendar-day {
+                min-height: 80px;
+                padding: 5px;
+            }
+            
+            .day-number {
+                font-size: 1rem;
+            }
+            
+            .event-item {
+                font-size: 0.7rem;
+                padding: 2px 5px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-heart"></i> Управление студией танца</h1>
+            <p class="subtitle">Танцевальная студия <span class="studio-name">"Грация"</span></p>
+            <div class="current-date" id="currentDate"></div>
+        </header>
+        
+        <!-- Табы -->
+        <div class="tabs">
+            <div class="tab active" data-tab="calendar">Календарь</div>
+            <div class="tab" data-tab="groups">Группы</div>
+            <div class="tab" data-tab="trainers">Тренеры</div>
+            <div class="tab" data-tab="clients">Клиенты</div>
+            <div class="tab" data-tab="subscriptions">Абонементы</div>
+        </div>
+        
+        <!-- Контент табов -->
+        
+        <!-- Календарь -->
+        <div class="tab-content active" id="calendar-content">
+            <div class="content-header">
+                <h2 class="content-title">Календарь занятий</h2>
+                <div class="content-icon"><i class="fas fa-calendar-alt"></i></div>
+            </div>
+            
+            <div class="toolbar">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchCalendar" placeholder="Поиск по занятию или тренеру...">
+                </div>
+                <div>
+                    <button class="btn btn-success" id="addClassBtn">
+                        <i class="fas fa-plus"></i> Добавить занятие
+                    </button>
+                    <button class="btn btn-info" id="todayBtn">
+                        <i class="fas fa-calendar-day"></i> Сегодня
+                    </button>
+                </div>
+            </div>
+            
+            <div class="calendar-header">
+                <div class="calendar-nav">
+                    <button class="btn btn-primary" id="prevMonth">
+                        <i class="fas fa-chevron-left"></i> Предыдущий
+                    </button>
+                    <h3 class="calendar-title" id="calendarMonth">Май 2023</h3>
+                    <button class="btn btn-primary" id="nextMonth">
+                        Следующий <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="calendar-grid" id="calendarGrid">
+                <!-- Календарь будет заполнен с помощью JavaScript -->
+            </div>
+            
+            <div style="display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 15px; height: 15px; background-color: #00b894; border-radius: 3px;"></div>
+                    <span>Начинающий уровень</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 15px; height: 15px; background-color: #0984e3; border-radius: 3px;"></div>
+                    <span>Средний уровень</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 15px; height: 15px; background-color: #fd79a8; border-radius: 3px;"></div>
+                    <span>Продвинутый уровень</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 15px; height: 15px; background-color: #a29bfe; border-radius: 3px;"></div>
+                    <span>Все уровни</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Группы -->
+        <div class="tab-content" id="groups-content">
+            <div class="content-header">
+                <h2 class="content-title">Группы клиентов</h2>
+                <div class="content-icon"><i class="fas fa-users"></i></div>
+            </div>
+            
+            <div class="toolbar">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchGroups" placeholder="Поиск по названию группы...">
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn btn-info active" data-level="all">
+                        Все группы
+                    </button>
+                    <button class="btn btn-info" data-level="beginner">
+                        Начинающие
+                    </button>
+                    <button class="btn btn-info" data-level="intermediate">
+                        Средние
+                    </button>
+                    <button class="btn btn-info" data-level="advanced">
+                        Продвинутые
+                    </button>
+                    <button class="btn btn-success" id="addGroupBtn">
+                        <i class="fas fa-plus"></i> Добавить группу
+                    </button>
+                </div>
+            </div>
+            
+            <div class="groups-container" id="groupsContainer">
+                <!-- Группы будут заполнены с помощью JavaScript -->
+            </div>
+        </div>
+        
+        <!-- Тренеры -->
+        <div class="tab-content" id="trainers-content">
+            <div class="content-header">
+                <h2 class="content-title">Тренеры студии</h2>
+                <div class="content-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+            </div>
+            
+            <div class="toolbar">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchTrainer" placeholder="Поиск тренера...">
+                </div>
+                <button class="btn btn-success" id="addTrainerBtn">
+                    <i class="fas fa-plus"></i> Добавить тренера
+                </button>
+            </div>
+            
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>ФИО</th>
+                        <th>Специализация</th>
+                        <th>Телефон</th>
+                        <th>Группы</th>
+                        <th>Статус</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody id="trainersTable">
+                    <!-- Данные тренеров будут заполнены с помощью JavaScript -->
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Клиенты -->
+        <div class="tab-content" id="clients-content">
+            <div class="content-header">
+                <h2 class="content-title">Клиенты студии</h2>
+                <div class="content-icon"><i class="fas fa-user-friends"></i></div>
+            </div>
+            
+            <div class="toolbar">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchClient" placeholder="Поиск клиента...">
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <select id="filterGroup" class="form-control" style="min-width: 200px;">
+                        <option value="all">Все группы</option>
+                    </select>
+                    <button class="btn btn-success" id="addClientBtn">
+                        <i class="fas fa-plus"></i> Добавить клиента
+                    </button>
+                </div>
+            </div>
+            
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>ФИО</th>
+                        <th>Телефон</th>
+                        <th>Группа</th>
+                        <th>Абонемент</th>
+                        <th>Статус</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody id="clientsTable">
+                    <!-- Данные клиентов будут заполнены с помощью JavaScript -->
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Абонементы -->
+        <div class="tab-content" id="subscriptions-content">
+            <div class="content-header">
+                <h2 class="content-title">Абонементы клиентов</h2>
+                <div class="content-icon"><i class="fas fa-id-card"></i></div>
+            </div>
+            
+            <div class="toolbar">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchSubscription" placeholder="Поиск по клиенту...">
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <select id="filterSubscriptionStatus" class="form-control" style="min-width: 150px;">
+                        <option value="all">Все статусы</option>
+                        <option value="active">Активные</option>
+                        <option value="expiring">Заканчиваются</option>
+                        <option value="expired">Просроченные</option>
+                    </select>
+                    <button class="btn btn-success" id="addSubscriptionBtn">
+                        <i class="fas fa-plus"></i> Добавить абонемент
+                    </button>
+                </div>
+            </div>
+            
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Клиент</th>
+                        <th>Группа</th>
+                        <th>Тип абонемента</th>
+                        <th>Окончание</th>
+                        <th>Осталось занятий</th>
+                        <th>Статус</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody id="subscriptionsTable">
+                    <!-- Данные абонементов будут заполнены с помощью JavaScript -->
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Подвал -->
+        <div class="footer">
+            <p>Студия танца "Грация" © 2023 | Тел: +7 (999) 123-45-67 | Адрес: ул. Танцевальная, 15</p>
+            <p style="margin-top: 10px;">Обновлено: <span id="updateTime"></span> | <i class="fas fa-music"></i> Танцуйте с нами! <i class="fas fa-music"></i></p>
+        </div>
+    </div>
+    
+    <!-- Модальные окна -->
+    
+    <!-- Модальное окно для занятия -->
+    <div id="classModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3 class="modal-title" id="classModalTitle">Добавить занятие</h3>
+            <form id="classForm">
+                <input type="hidden" id="classId">
+                
+                <div class="form-group">
+                    <label for="classDate">Дата *</label>
+                    <input type="date" id="classDate" class="form-control" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="classStartTime">Время начала *</label>
+                        <input type="time" id="classStartTime" class="form-control" required>
+                    </div>
+                    <div class="form-col">
+                        <label for="classEndTime">Время окончания *</label>
+                        <input type="time" id="classEndTime" class="form-control" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="classGroup">Группа *</label>
+                    <select id="classGroup" class="form-control" required>
+                        <option value="">Выберите группу</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="classTrainer">Тренер *</label>
+                    <select id="classTrainer" class="form-control" required>
+                        <option value="">Выберите тренера</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="classRoom">Зал *</label>
+                    <input type="text" id="classRoom" class="form-control" required placeholder="Например: Зал 1">
+                </div>
+                
+                <div class="form-group">
+                    <label for="classNotes">Примечания</label>
+                    <textarea id="classNotes" class="form-control" rows="3"></textarea>
+                </div>
+                
+                <div style="display: flex; justify-content: flex-end; gap: 15px; margin-top: 25px;">
+                    <button type="button" class="btn btn-warning" id="cancelClassBtn">Отмена</button>
+                    <button type="submit" class="btn btn-success">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Модальное окно для группы -->
+    <div id="groupModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3 class="modal-title" id="groupModalTitle">Добавить группу</h3>
+            <form id="groupForm">
+                <input type="hidden" id="groupId">
+                
+                <div class="form-group">
+                    <label for="groupName">Название группы *</label>
+                    <input type="text" id="groupName" class="form-control" required placeholder="Например: Бальные танцы">
+                </div>
+                
+                <div class="form-group">
+                    <label for="groupLevel">Уровень *</label>
+                    <select id="groupLevel" class="form-control" required>
+                        <option value="">Выберите уровень</option>
+                        <option value="beginner">Начинающий</option>
+                        <option value="intermediate">Средний</option>
+                        <option value="advanced">Продвинутый</option>
+                    </select>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="groupTrainer">Тренер *</label>
+                        <select id="groupTrainer" class="form-control" required>
+                            <option value="">Выберите тренера</option>
+                        </select>
+                    </div>
+                    <div class="form-col">
+                        <label for="groupMaxMembers">Макс. участников *</label>
+                        <input type="number" id="groupMaxMembers" class="form-control" required min="1" max="50" value="12">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="groupSchedule">Расписание *</label>
+                    <textarea id="groupSchedule" class="form-control" required rows="2" placeholder="Например: Пн, Ср, Пт 10:00-11:30"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="groupRoom">Зал *</label>
+                    <input type="text" id="groupRoom" class="form-control" required placeholder="Например: Зал 1">
+                </div>
+                
+                <div class="form-group">
+                    <label for="groupDescription">Описание группы</label>
+                    <textarea id="groupDescription" class="form-control" rows="3"></textarea>
+                </div>
+                
+                <div style="display: flex; justify-content: flex-end; gap: 15px; margin-top: 25px;">
+                    <button type="button" class="btn btn-warning" id="cancelGroupBtn">Отмена</button>
+                    <button type="submit" class="btn btn-success">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Модальное окно для тренера -->
+    <div id="trainerModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3 class="modal-title" id="trainerModalTitle">Добавить тренера</h3>
+            <form id="trainerForm">
+                <input type="hidden" id="trainerId">
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="trainerLastName">Фамилия *</label>
+                        <input type="text" id="trainerLastName" class="form-control" required>
+                    </div>
+                    <div class="form-col">
+                        <label for="trainerFirstName">Имя *</label>
+                        <input type="text" id="trainerFirstName" class="form-control" required>
+                    </div>
+                    <div class="form-col">
+                        <label for="trainerMiddleName">Отчество</label>
+                        <input type="text" id="trainerMiddleName" class="form-control">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="trainerSpecialization">Специализация *</label>
+                    <select id="trainerSpecialization" class="form-control" required>
+                        <option value="">Выберите специализацию</option>
+                        <option value="Бальные танцы">Бальные танцы</option>
+                        <option value="Хип-хоп">Хип-хоп</option>
+                        <option value="Сальса">Сальса</option>
+                        <option value="Контемпорари">Контемпорари</option>
+                        <option value="Бачата">Бачата</option>
+                        <option value="Джаз-фанк">Джаз-фанк</option>
+                        <option value="Танго">Танго</option>
+                        <option value="Зумба">Зумба</option>
+                        <option value="Восточные танцы">Восточные танцы</option>
+                        <option value="Брейк-данс">Брейк-данс</option>
+                        <option value="Кизомба">Кизомба</option>
+                        <option value="Вог">Вог</option>
+                        <option value="Джаз-модерн">Джаз-модерн</option>
+                        <option value="Йога">Йога</option>
+                        <option value="Растяжка">Растяжка</option>
+                    </select>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="trainerPhone">Телефон *</label>
+                        <input type="tel" id="trainerPhone" class="form-control" required>
+                    </div>
+                    <div class="form-col">
+                        <label for="trainerEmail">Email</label>
+                        <input type="email" id="trainerEmail" class="form-control">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="trainerExperience">Опыт работы (лет)</label>
+                    <input type="number" id="trainerExperience" class="form-control" min="0" max="50">
+                </div>
+                
+                <div class="form-group">
+                    <label for="trainerGroups">Группы</label>
+                    <select id="trainerGroups" class="form-control" multiple style="height: 120px;">
+                        <!-- Группы будут заполнены динамически -->
+                    </select>
+                    <small>Удерживайте Ctrl для выбора нескольких групп</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="trainerStatus">Статус</label>
+                    <select id="trainerStatus" class="form-control">
+                        <option value="active">Активный</option>
+                        <option value="inactive">Неактивный</option>
+                        <option value="vacation">В отпуске</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="trainerNotes">Дополнительная информация</label>
+                    <textarea id="trainerNotes" class="form-control" rows="3"></textarea>
+                </div>
+                
+                <div style="display: flex; justify-content: flex-end; gap: 15px; margin-top: 25px;">
+                    <button type="button" class="btn btn-warning" id="cancelTrainerBtn">Отмена</button>
+                    <button type="submit" class="btn btn-success">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Модальное окно для клиента -->
+    <div id="clientModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3 class="modal-title" id="clientModalTitle">Добавить клиента</h3>
+            <form id="clientForm">
+                <input type="hidden" id="clientId">
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="clientLastName">Фамилия *</label>
+                        <input type="text" id="clientLastName" class="form-control" required>
+                    </div>
+                    <div class="form-col">
+                        <label for="clientFirstName">Имя *</label>
+                        <input type="text" id="clientFirstName" class="form-control" required>
+                    </div>
+                    <div class="form-col">
+                        <label for="clientMiddleName">Отчество</label>
+                        <input type="text" id="clientMiddleName" class="form-control">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="clientPhone">Телефон *</label>
+                        <input type="tel" id="clientPhone" class="form-control" required>
+                    </div>
+                    <div class="form-col">
+                        <label for="clientEmail">Email</label>
+                        <input type="email" id="clientEmail" class="form-control">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="clientBirthDate">Дата рождения</label>
+                        <input type="date" id="clientBirthDate" class="form-control">
+                    </div>
+                    <div class="form-col">
+                        <label for="clientGender">Пол</label>
+                        <select id="clientGender" class="form-control">
+                            <option value="">Не указан</option>
+                            <option value="male">Мужской</option>
+                            <option value="female">Женский</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="clientGroup">Группа *</label>
+                    <select id="clientGroup" class="form-control" required>
+                        <option value="">Выберите группу</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="clientSource">Откуда узнал о нас?</label>
+                    <select id="clientSource" class="form-control">
+                        <option value="">Не указано</option>
+                        <option value="recommendation">Рекомендация друга</option>
+                        <option value="social">Социальные сети</option>
+                        <option value="search">Поиск в интернете</option>
+                        <option value="ads">Реклама</option>
+                        <option value="street">Увидел студию</option>
+                        <option value="other">Другое</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="clientNotes">Примечания</label>
+                    <textarea id="clientNotes" class="form-control" rows="3"></textarea>
+                </div>
+                
+                <div style="display: flex; justify-content: flex-end; gap: 15px; margin-top: 25px;">
+                    <button type="button" class="btn btn-warning" id="cancelClientBtn">Отмена</button>
+                    <button type="submit" class="btn btn-success">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Модальное окно для абонемента -->
+    <div id="subscriptionModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3 class="modal-title" id="subscriptionModalTitle">Добавить абонемент</h3>
+            <form id="subscriptionForm">
+                <input type="hidden" id="subscriptionId">
+                
+                <div class="form-group">
+                    <label for="subscriptionClient">Клиент *</label>
+                    <select id="subscriptionClient" class="form-control" required>
+                        <option value="">Выберите клиента</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="subscriptionGroup">Группа *</label>
+                    <select id="subscriptionGroup" class="form-control" required>
+                        <option value="">Выберите группу</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="subscriptionType">Тип абонемента *</label>
+                    <select id="subscriptionType" class="form-control" required>
+                        <option value="">Выберите тип</option>
+                        <option value="4 занятия">4 занятия (2 недели)</option>
+                        <option value="8 занятий">8 занятий (1 месяц)</option>
+                        <option value="12 занятий">12 занятий (1.5 месяца)</option>
+                        <option value="16 занятий">16 занятий (2 месяца)</option>
+                        <option value="безлимитный месяц">Безлимитный (1 месяц)</option>
+                        <option value="разовое">Разовое посещение</option>
+                        <option value="индивидуальный">Индивидуальный</option>
+                    </select>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="subscriptionStart">Начало действия *</label>
+                        <input type="date" id="subscriptionStart" class="form-control" required>
+                    </div>
+                    <div class="form-col">
+                        <label for="subscriptionEnd">Окончание действия *</label>
+                        <input type="date" id="subscriptionEnd" class="form-control" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="subscriptionPrice">Стоимость (руб.)</label>
+                        <input type="number" id="subscriptionPrice" class="form-control" min="0" step="100">
+                    </div>
+                    <div class="form-col">
+                        <label for="subscriptionClasses">Количество занятий</label>
+                        <input type="number" id="subscriptionClasses" class="form-control" min="1" max="100">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="subscriptionStatus">Статус *</label>
+                    <select id="subscriptionStatus" class="form-control" required>
+                        <option value="active">Активный</option>
+                        <option value="expiring">Заканчивается</option>
+                        <option value="expired">Просроченный</option>
+                        <option value="paused">Приостановлен</option>
+                        <option value="cancelled">Отменен</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="subscriptionNotes">Примечания</label>
+                    <textarea id="subscriptionNotes" class="form-control" rows="3"></textarea>
+                </div>
+                
+                <div style="display: flex; justify-content: flex-end; gap: 15px; margin-top: 25px;">
+                    <button type="button" class="btn btn-warning" id="cancelSubscriptionBtn">Отмена</button>
+                    <button type="submit" class="btn btn-success">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Модальное окно для деталей дня -->
+    <div id="dayModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3 class="modal-title" id="dayModalTitle">Занятия на <span id="modalDate"></span></h3>
+            <div id="dayEvents">
+                <!-- События дня будут заполнены с помощью JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Текущая дата
+        const currentDate = new Date();
+        document.getElementById('currentDate').textContent = `Сегодня: ${formatDate(currentDate)}`;
+        document.getElementById('updateTime').textContent = new Date().toLocaleTimeString('ru-RU');
+        
+        // Данные для календаря
+        let currentCalendarDate = new Date();
+        
+        // Данные для системы
+        let groups = JSON.parse(localStorage.getItem('danceStudioGroups')) || [
+            {
+                id: 1,
+                name: "Бальные танцы",
+                level: "beginner",
+                trainerId: 1,
+                time: "Пн, Ср, Пт 10:00-11:30",
+                room: "Зал 1",
+                maxMembers: 12,
+                description: "Группа для начинающих танцоров"
+            },
+            {
+                id: 2,
+                name: "Хип-хоп",
+                level: "intermediate",
+                trainerId: 2,
+                time: "Пн, Ср, Пт 12:00-13:30",
+                room: "Зал 2",
+                maxMembers: 15,
+                description: "Средняя группа по хип-хопу"
+            },
+            {
+                id: 3,
+                name: "Сальса",
+                level: "beginner",
+                trainerId: 3,
+                time: "Вт, Чт 14:00-15:30",
+                room: "Зал 1",
+                maxMembers: 10,
+                description: "Основы сальсы для начинающих"
+            }
+        ];
+        
+        let trainers = JSON.parse(localStorage.getItem('danceStudioTrainers')) || [
+            { id: 1, lastName: "Смирнова", firstName: "Анна", middleName: "Петровна", specialization: "Бальные танцы", 
+              phone: "+7 (911) 111-11-11", email: "anna@studio.ru", experience: 8, groups: [1], status: "active", notes: "" },
+            { id: 2, lastName: "Волков", firstName: "Дмитрий", middleName: "Сергеевич", specialization: "Хип-хоп", 
+              phone: "+7 (911) 222-22-22", email: "dmitry@studio.ru", experience: 5, groups: [2], status: "active", notes: "" },
+            { id: 3, lastName: "Гонсалес", firstName: "Мария", middleName: "", specialization: "Сальса", 
+              phone: "+7 (911) 333-33-33", email: "maria@studio.ru", experience: 10, groups: [3], status: "active", notes: "" }
+        ];
+        
+        let clients = JSON.parse(localStorage.getItem('danceStudioClients')) || [
+            { id: 1, lastName: "Иванова", firstName: "Александра", middleName: "Сергеевна", phone: "+7 (900) 123-45-67", 
+              email: "alexandra@example.com", birthDate: "1990-05-15", gender: "female", groupId: 1, 
+              subscription: "active", subscriptionEnd: "2023-06-15", classesLeft: 4, source: "recommendation", notes: "", regDate: "2023-01-15" },
+            { id: 2, lastName: "Петров", firstName: "Максим", middleName: "Андреевич", phone: "+7 (900) 234-56-78", 
+              email: "maxim@example.com", birthDate: "1988-11-22", gender: "male", groupId: 2, 
+              subscription: "active", subscriptionEnd: "2023-06-30", classesLeft: 8, source: "social", notes: "", regDate: "2023-02-20" },
+            { id: 3, lastName: "Смирнова", firstName: "Екатерина", middleName: "Дмитриевна", phone: "+7 (900) 345-67-89", 
+              email: "ekaterina@example.com", birthDate: "1995-07-30", gender: "female", groupId: 3, 
+              subscription: "expiring", subscriptionEnd: "2023-05-30", classesLeft: 1, source: "search", notes: "", regDate: "2023-03-10" }
+        ];
+        
+        let subscriptions = JSON.parse(localStorage.getItem('danceStudioSubscriptions')) || [
+            { id: 1, clientId: 1, groupId: 1, type: "8 занятий", startDate: "2023-05-01", endDate: "2023-06-15", 
+              price: 3000, classes: 8, status: "active", notes: "Оплачено онлайн" },
+            { id: 2, clientId: 2, groupId: 2, type: "12 занятий", startDate: "2023-05-15", endDate: "2023-06-30", 
+              price: 4500, classes: 12, status: "active", notes: "" },
+            { id: 3, clientId: 3, groupId: 3, type: "4 занятия", startDate: "2023-05-10", endDate: "2023-05-30", 
+              price: 1500, classes: 4, status: "expiring", notes: "Осталось 1 занятие" }
+        ];
+        
+        let classes = JSON.parse(localStorage.getItem('danceStudioClasses')) || [
+            { id: 1, date: "2023-05-15", startTime: "10:00", endTime: "11:30", groupId: 1, trainerId: 1, room: "Зал 1", notes: "Регулярное занятие" },
+            { id: 2, date: "2023-05-15", startTime: "12:00", endTime: "13:30", groupId: 2, trainerId: 2, room: "Зал 2", notes: "" },
+            { id: 3, date: "2023-05-16", startTime: "14:00", endTime: "15:30", groupId: 3, trainerId: 3, room: "Зал 1", notes: "Первое занятие новой группы" }
+        ];
+        
+        // ID для новых записей
+        let nextGroupId = groups.length > 0 ? Math.max(...groups.map(g => g.id)) + 1 : 1;
+        let nextTrainerId = trainers.length > 0 ? Math.max(...trainers.map(t => t.id)) + 1 : 1;
+        let nextClientId = clients.length > 0 ? Math.max(...clients.map(c => c.id)) + 1 : 1;
+        let nextSubscriptionId = subscriptions.length > 0 ? Math.max(...subscriptions.map(s => s.id)) + 1 : 1;
+        let nextClassId = classes.length > 0 ? Math.max(...classes.map(c => c.id)) + 1 : 1;
+        
+        // Дни недели
+        const daysOfWeek = ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
+        const months = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", 
+                       "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+        
+        // Функция для сохранения данных в localStorage
+        function saveData() {
+            localStorage.setItem('danceStudioGroups', JSON.stringify(groups));
+            localStorage.setItem('danceStudioTrainers', JSON.stringify(trainers));
+            localStorage.setItem('danceStudioClients', JSON.stringify(clients));
+            localStorage.setItem('danceStudioSubscriptions', JSON.stringify(subscriptions));
+            localStorage.setItem('danceStudioClasses', JSON.stringify(classes));
+        }
+        
+        // Функция для форматирования даты
+        function formatDate(date) {
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}.${month}.${year}`;
+        }
+        
+        // Функция для получения названия уровня
+        function getLevelName(level) {
+            switch(level) {
+                case "beginner": return "Начинающий";
+                case "intermediate": return "Средний";
+                case "advanced": return "Продвинутый";
+                default: return level;
+            }
+        }
+        
+        // Функция для получения класса уровня
+        function getLevelClass(level) {
+            switch(level) {
+                case "beginner": return "event-beginner";
+                case "intermediate": return "event-intermediate";
+                case "advanced": return "event-advanced";
+                default: return "event-all";
+            }
+        }
+        
+        // Функция для получения цвета события
+        function getEventColor(level, dark = false) {
+            switch(level) {
+                case "beginner": return dark ? "#00a085" : "#00b894";
+                case "intermediate": return dark ? "#0770c4" : "#0984e3";
+                case "advanced": return dark ? "#e84393" : "#fd79a8";
+                default: return dark ? "#5b4fcf" : "#a29bfe";
+            }
+        }
+        
+        // Функция для отображения календаря
+        function renderCalendar(date) {
+            const calendarGrid = document.getElementById('calendarGrid');
+            const calendarMonth = document.getElementById('calendarMonth');
+            
+            // Устанавливаем заголовок месяца
+            calendarMonth.textContent = `${months[date.getMonth()]} ${date.getFullYear()}`;
+            
+            // Очищаем календарь
+            calendarGrid.innerHTML = '';
+            
+            // Добавляем заголовки дней недели
+            daysOfWeek.forEach(day => {
+                const dayHeader = document.createElement('div');
+                dayHeader.className = 'calendar-day-header';
+                dayHeader.textContent = day;
+                calendarGrid.appendChild(dayHeader);
+            });
+            
+            // Получаем первый день месяца и первый день отображаемого календаря
+            const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+            const startDay = new Date(firstDayOfMonth);
+            startDay.setDate(startDay.getDate() - startDay.getDay());
+            
+            // Получаем последний день месяца и последний день отображаемого календаря
+            const lastDayOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+            const endDay = new Date(lastDayOfMonth);
+            endDay.setDate(endDay.getDate() + (6 - endDay.getDay()));
+            
+            // Создаем дни календаря
+            const currentDay = new Date(startDay);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            while (currentDay <= endDay) {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day';
+                
+                // Проверяем, является ли день сегодняшним
+                const checkDate = new Date(currentDay);
+                checkDate.setHours(0, 0, 0, 0);
+                if (checkDate.getTime() === today.getTime()) {
+                    dayElement.classList.add('today');
+                }
+                
+                // Проверяем, является ли день выходным
+                if (currentDay.getDay() === 0 || currentDay.getDay() === 6) {
+                    dayElement.classList.add('weekend');
+                }
+                
+                // Номер дня
+                const dayNumber = document.createElement('div');
+                dayNumber.className = 'day-number';
+                dayNumber.textContent = currentDay.getDate();
+                dayElement.appendChild(dayNumber);
+                
+                // События дня
+                const dayEvents = document.createElement('div');
+                dayEvents.className = 'day-events';
+                
+                // Получаем занятия на этот день
+                const dateStr = currentDay.toISOString().split('T')[0];
+                const dayClasses = classes.filter(c => c.date === dateStr);
+                
+                // Ограничиваем отображаемые события (максимум 3)
+                const maxEvents = 3;
+                const eventsToShow = dayClasses.slice(0, maxEvents);
+                const moreEvents = dayClasses.length - maxEvents;
+                
+                eventsToShow.forEach(cls => {
+                    const group = groups.find(g => g.id === cls.groupId);
+                    const trainer = trainers.find(t => t.id === cls.trainerId);
+                    
+                    if (group && trainer) {
+                        const eventElement = document.createElement('div');
+                        eventElement.className = `event-item ${getLevelClass(group.level)}`;
+                        eventElement.textContent = `${group.name} ${cls.startTime}`;
+                        eventElement.onclick = () => openDayModal(currentDay, dayClasses);
+                        dayEvents.appendChild(eventElement);
+                    }
+                });
+                
+                // Показать "еще N" если событий больше, чем maxEvents
+                if (moreEvents > 0) {
+                    const moreElement = document.createElement('div');
+                    moreElement.className = 'event-more';
+                    moreElement.textContent = `+${moreEvents} еще`;
+                    moreElement.onclick = () => openDayModal(currentDay, dayClasses);
+                    dayEvents.appendChild(moreElement);
+                }
+                
+                dayElement.appendChild(dayEvents);
+                dayElement.onclick = () => {
+                    if (dayClasses.length > 0) {
+                        openDayModal(currentDay, dayClasses);
+                    }
+                };
+                
+                calendarGrid.appendChild(dayElement);
+                currentDay.setDate(currentDay.getDate() + 1);
+            }
+        }
+        
+        // Функция для отображения групп
+        function renderGroups(level = 'all') {
+            const groupsContainer = document.getElementById('groupsContainer');
+            groupsContainer.innerHTML = '';
+            
+            // Фильтруем группы по уровню
+            const filteredGroups = level === 'all' 
+                ? groups 
+                : groups.filter(group => group.level === level);
+            
+            filteredGroups.forEach(group => {
+                // Получаем тренера
+                const trainer = trainers.find(t => t.id === group.trainerId);
+                const trainerName = trainer ? `${trainer.firstName} ${trainer.lastName}` : 'Не назначен';
+                
+                // Получаем участников группы
+                const groupMembers = clients.filter(client => client.groupId === group.id);
+                
+                const groupCard = document.createElement('div');
+                groupCard.className = 'group-card';
+                
+                groupCard.innerHTML = `
+                    <div class="group-header">
+                        <div class="group-title">${group.name}</div>
+                        <div class="group-level">${getLevelName(group.level)}</div>
+                    </div>
+                    <div class="group-body">
+                        <div class="group-info">
+                            <div class="group-trainer">
+                                <i class="fas fa-chalkboard-teacher"></i> ${trainerName}
+                            </div>
+                            <div class="group-time">
+                                <i class="fas fa-clock"></i> ${group.time}
+                            </div>
+                            <div class="group-room">
+                                <i class="fas fa-map-marker-alt"></i> ${group.room}
+                            </div>
+                        </div>
+                        <div class="group-members">
+                            ${groupMembers.map(member => {
+                                const fullName = `${member.lastName} ${member.firstName} ${member.middleName}`;
+                                const initials = `${member.lastName[0]}${member.firstName[0]}`;
+                                const statusClass = `member-status status-${member.subscription}`;
+                                const statusText = member.subscription === 'active' ? 'Активен' : 
+                                                 member.subscription === 'expiring' ? 'Заканчивается' : 'Просрочен';
+                                
+                                return `
+                                    <div class="group-member">
+                                        <div class="member-info">
+                                            <div class="member-avatar">${initials}</div>
+                                            <div>
+                                                <div class="member-name">${fullName}</div>
+                                                <div class="member-subscription">${member.classesLeft} занятий</div>
+                                            </div>
+                                        </div>
+                                        <div class="${statusClass}">${statusText}</div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                    <div class="group-footer">
+                        <div class="group-count">
+                            ${groupMembers.length} из ${group.maxMembers} участников
+                        </div>
+                        <div class="action-buttons">
+                            <button class="action-btn edit-btn" onclick="editGroup(${group.id})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn delete-btn" onclick="deleteGroup(${group.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                groupsContainer.appendChild(groupCard);
+            });
+        }
+        
+        // Функция для отображения тренеров
+        function renderTrainers() {
+            const trainersTable = document.getElementById('trainersTable');
+            trainersTable.innerHTML = '';
+            
+            trainers.forEach(trainer => {
+                const row = document.createElement('tr');
+                const fullName = `${trainer.lastName} ${trainer.firstName} ${trainer.middleName || ''}`.trim();
+                
+                // Получаем группы тренера
+                const trainerGroups = groups.filter(g => trainer.groups && trainer.groups.includes(g.id));
+                const groupNames = trainerGroups.map(g => g.name).join(', ');
+                
+                const statusText = trainer.status === 'active' ? 'Активный' : 
+                                 trainer.status === 'inactive' ? 'Неактивный' : 'В отпуске';
+                const statusClass = trainer.status === 'active' ? 'status-active' : 
+                                  trainer.status === 'inactive' ? 'status-expired' : 'status-warning';
+                
+                row.innerHTML = `
+                    <td>${trainer.id}</td>
+                    <td><strong>${fullName}</strong></td>
+                    <td>${trainer.specialization}</td>
+                    <td>${trainer.phone}</td>
+                    <td>${groupNames || 'Не назначены'}</td>
+                    <td><span class="${statusClass}">${statusText}</span></td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="action-btn edit-btn" onclick="editTrainer(${trainer.id})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn delete-btn" onclick="deleteTrainer(${trainer.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                trainersTable.appendChild(row);
+            });
+        }
+        
+        // Функция для отображения клиентов
+        function renderClients() {
+            const clientsTable = document.getElementById('clientsTable');
+            clientsTable.innerHTML = '';
+            
+            // Обновляем фильтр групп
+            updateGroupFilter();
+            
+            clients.forEach(client => {
+                const row = document.createElement('tr');
+                const fullName = `${client.lastName} ${client.firstName} ${client.middleName}`;
+                
+                // Получаем группу клиента
+                const clientGroup = groups.find(g => g.id === client.groupId);
+                const groupName = clientGroup ? `${clientGroup.name} (${getLevelName(clientGroup.level)})` : 'Не назначена';
+                
+                // Получаем статус абонемента
+                const statusText = client.subscription === 'active' ? 'Активен' : 
+                                 client.subscription === 'expiring' ? 'Заканчивается' : 'Просрочен';
+                const statusClass = client.subscription === 'active' ? 'status-active' : 
+                                  client.subscription === 'expiring' ? 'status-warning' : 'status-expired';
+                
+                // Тип абонемента
+                const subscription = subscriptions.find(s => s.clientId === client.id);
+                const subscriptionType = subscription ? subscription.type : 'Нет';
+                
+                row.innerHTML = `
+                    <td>${client.id}</td>
+                    <td><strong>${fullName}</strong></td>
+                    <td>${client.phone}</td>
+                    <td>${groupName}</td>
+                    <td>${subscriptionType}</td>
+                    <td><span class="${statusClass}">${statusText}</span></td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="action-btn edit-btn" onclick="editClient(${client.id})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn delete-btn" onclick="deleteClient(${client.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                clientsTable.appendChild(row);
+            });
+        }
+        
+        // Функция для отображения абонементов
+        function renderSubscriptions() {
+            const subscriptionsTable = document.getElementById('subscriptionsTable');
+            subscriptionsTable.innerHTML = '';
+            
+            subscriptions.forEach(sub => {
+                const row = document.createElement('tr');
+                
+                // Получаем клиента
+                const client = clients.find(c => c.id === sub.clientId);
+                const clientName = client ? `${client.lastName} ${client.firstName} ${client.middleName}` : 'Неизвестен';
+                
+                // Получаем группу
+                const group = groups.find(g => g.id === sub.groupId);
+                const groupName = group ? group.name : 'Неизвестна';
+                
+                // Форматируем дату окончания
+                const endDate = new Date(sub.endDate);
+                const formattedEndDate = formatDate(endDate);
+                
+                // Статус абонемента
+                const statusText = sub.status === 'active' ? 'Активен' : 
+                                 sub.status === 'expiring' ? 'Заканчивается' : 
+                                 sub.status === 'expired' ? 'Просрочен' : 
+                                 sub.status === 'paused' ? 'Приостановлен' : 'Отменен';
+                const statusClass = sub.status === 'active' ? 'status-active' : 
+                                  sub.status === 'expiring' ? 'status-warning' : 
+                                  sub.status === 'expired' ? 'status-expired' : 
+                                  sub.status === 'paused' ? 'status-warning' : 'status-expired';
+                
+                row.innerHTML = `
+                    <td>${sub.id}</td>
+                    <td><strong>${clientName}</strong></td>
+                    <td>${groupName}</td>
+                    <td>${sub.type}</td>
+                    <td>${formattedEndDate}</td>
+                    <td>${sub.classes || '∞'}</td>
+                    <td><span class="${statusClass}">${statusText}</span></td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="action-btn edit-btn" onclick="editSubscription(${sub.id})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn delete-btn" onclick="deleteSubscription(${sub.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                subscriptionsTable.appendChild(row);
+            });
+        }
+        
+        // Функция для обновления фильтра групп
+        function updateGroupFilter() {
+            const filterGroup = document.getElementById('filterGroup');
+            filterGroup.innerHTML = '<option value="all">Все группы</option>';
+            
+            groups.forEach(group => {
+                const option = document.createElement('option');
+                option.value = group.id;
+                option.textContent = `${group.name} (${getLevelName(group.level)})`;
+                filterGroup.appendChild(option);
+            });
+        }
+        
+        // Функции для работы с группами
+        function openGroupModal(groupId = null) {
+            const modal = document.getElementById('groupModal');
+            const title = document.getElementById('groupModalTitle');
+            const form = document.getElementById('groupForm');
+            
+            // Заполняем список тренеров
+            const trainerSelect = document.getElementById('groupTrainer');
+            trainerSelect.innerHTML = '<option value="">Выберите тренера</option>';
+            trainers.forEach(trainer => {
+                const option = document.createElement('option');
+                option.value = trainer.id;
+                option.textContent = `${trainer.lastName} ${trainer.firstName}`;
+                trainerSelect.appendChild(option);
+            });
+            
+            if (groupId) {
+                // Редактирование существующей группы
+                title.textContent = 'Редактировать группу';
+                const group = groups.find(g => g.id === groupId);
+                
+                document.getElementById('groupId').value = group.id;
+                document.getElementById('groupName').value = group.name;
+                document.getElementById('groupLevel').value = group.level;
+                document.getElementById('groupTrainer').value = group.trainerId;
+                document.getElementById('groupMaxMembers').value = group.maxMembers;
+                document.getElementById('groupSchedule').value = group.time;
+                document.getElementById('groupRoom').value = group.room;
+                document.getElementById('groupDescription').value = group.description || '';
+            } else {
+                // Добавление новой группы
+                title.textContent = 'Добавить группу';
+                form.reset();
+                document.getElementById('groupId').value = '';
+            }
+            
+            modal.style.display = 'block';
+        }
+        
+        function saveGroup(event) {
+            event.preventDefault();
+            
+            const id = document.getElementById('groupId').value;
+            const name = document.getElementById('groupName').value;
+            const level = document.getElementById('groupLevel').value;
+            const trainerId = parseInt(document.getElementById('groupTrainer').value);
+            const maxMembers = parseInt(document.getElementById('groupMaxMembers').value);
+            const time = document.getElementById('groupSchedule').value;
+            const room = document.getElementById('groupRoom').value;
+            const description = document.getElementById('groupDescription').value;
+            
+            if (id) {
+                // Обновление существующей группы
+                const index = groups.findIndex(g => g.id == id);
+                groups[index] = {
+                    ...groups[index],
+                    name,
+                    level,
+                    trainerId,
+                    maxMembers,
+                    time,
+                    room,
+                    description
+                };
+            } else {
+                // Добавление новой группы
+                groups.push({
+                    id: nextGroupId++,
+                    name,
+                    level,
+                    trainerId,
+                    maxMembers,
+                    time,
+                    room,
+                    description
+                });
+            }
+            
+            saveData();
+            renderGroups();
+            renderTrainers();
+            renderClients();
+            closeModal('groupModal');
+            alert('Группа успешно сохранена!');
+        }
+        
+        function editGroup(id) {
+            openGroupModal(id);
+        }
+        
+        function deleteGroup(id) {
+            if (confirm('Вы уверены, что хотите удалить эту группу? Все клиенты этой группы будут перемещены в "Без группы".')) {
+                // Перемещаем клиентов в "без группы"
+                clients = clients.map(client => {
+                    if (client.groupId === id) {
+                        return { ...client, groupId: null };
+                    }
+                    return client;
+                });
+                
+                // Удаляем группу
+                groups = groups.filter(g => g.id !== id);
+                
+                saveData();
+                renderGroups();
+                renderClients();
+                renderSubscriptions();
+                alert('Группа удалена!');
+            }
+        }
+        
+        // Функции для работы с тренерами
+        function openTrainerModal(trainerId = null) {
+            const modal = document.getElementById('trainerModal');
+            const title = document.getElementById('trainerModalTitle');
+            const form = document.getElementById('trainerForm');
+            
+            // Заполняем список групп
+            const groupsSelect = document.getElementById('trainerGroups');
+            groupsSelect.innerHTML = '';
+            groups.forEach(group => {
+                const option = document.createElement('option');
+                option.value = group.id;
+                option.textContent = `${group.name} (${getLevelName(group.level)})`;
+                groupsSelect.appendChild(option);
+            });
+            
+            if (trainerId) {
+                // Редактирование существующего тренера
+                title.textContent = 'Редактировать тренера';
+                const trainer = trainers.find(t => t.id === trainerId);
+                
+                document.getElementById('trainerId').value = trainer.id;
+                document.getElementById('trainerLastName').value = trainer.lastName;
+                document.getElementById('trainerFirstName').value = trainer.firstName;
+                document.getElementById('trainerMiddleName').value = trainer.middleName || '';
+                document.getElementById('trainerSpecialization').value = trainer.specialization;
+                document.getElementById('trainerPhone').value = trainer.phone;
+                document.getElementById('trainerEmail').value = trainer.email || '';
+                document.getElementById('trainerExperience').value = trainer.experience || '';
+                document.getElementById('trainerStatus').value = trainer.status;
+                document.getElementById('trainerNotes').value = trainer.notes || '';
+                
+                // Устанавливаем выбранные группы
+                Array.from(groupsSelect.options).forEach(option => {
+                    option.selected = trainer.groups && trainer.groups.includes(parseInt(option.value));
+                });
+            } else {
+                // Добавление нового тренера
+                title.textContent = 'Добавить тренера';
+                form.reset();
+                document.getElementById('trainerId').value = '';
+            }
+            
+            modal.style.display = 'block';
+        }
+        
+        function saveTrainer(event) {
+            event.preventDefault();
+            
+            const id = document.getElementById('trainerId').value;
+            const lastName = document.getElementById('trainerLastName').value;
+            const firstName = document.getElementById('trainerFirstName').value;
+            const middleName = document.getElementById('trainerMiddleName').value;
+            const specialization = document.getElementById('trainerSpecialization').value;
+            const phone = document.getElementById('trainerPhone').value;
+            const email = document.getElementById('trainerEmail').value;
+            const experience = document.getElementById('trainerExperience').value;
+            const status = document.getElementById('trainerStatus').value;
+            const notes = document.getElementById('trainerNotes').value;
+            
+            // Получаем выбранные группы
+            const groupsSelect = document.getElementById('trainerGroups');
+            const selectedGroups = Array.from(groupsSelect.selectedOptions).map(option => parseInt(option.value));
+            
+            if (id) {
+                // Обновление существующего тренера
+                const index = trainers.findIndex(t => t.id == id);
+                trainers[index] = {
+                    id: parseInt(id),
+                    lastName,
+                    firstName,
+                    middleName,
+                    specialization,
+                    phone,
+                    email,
+                    experience: parseInt(experience) || 0,
+                    groups: selectedGroups,
+                    status,
+                    notes
+                };
+            } else {
+                // Добавление нового тренера
+                trainers.push({
+                    id: nextTrainerId++,
+                    lastName,
+                    firstName,
+                    middleName,
+                    specialization,
+                    phone,
+                    email,
+                    experience: parseInt(experience) || 0,
+                    groups: selectedGroups,
+                    status,
+                    notes
+                });
+            }
+            
+            saveData();
+            renderTrainers();
+            renderGroups();
+            closeModal('trainerModal');
+            alert('Тренер успешно сохранен!');
+        }
+        
+        function editTrainer(id) {
+            openTrainerModal(id);
+        }
+        
+        function deleteTrainer(id) {
+            if (confirm('Вы уверены, что хотите удалить этого тренера? Группы, которые он вел, останутся без тренера.')) {
+                trainers = trainers.filter(t => t.id !== id);
+                saveData();
+                renderTrainers();
+                renderGroups();
+                alert('Тренер удален!');
+            }
+        }
+        
+        // Функции для работы с клиентами
+        function openClientModal(clientId = null) {
+            const modal = document.getElementById('clientModal');
+            const title = document.getElementById('clientModalTitle');
+            const form = document.getElementById('clientForm');
+            
+            // Заполняем список групп
+            const groupSelect = document.getElementById('clientGroup');
+            groupSelect.innerHTML = '<option value="">Выберите группу</option>';
+            groups.forEach(group => {
+                const option = document.createElement('option');
+                option.value = group.id;
+                option.textContent = `${group.name} (${getLevelName(group.level)})`;
+                groupSelect.appendChild(option);
+            });
+            
+            if (clientId) {
+                // Редактирование существующего клиента
+                title.textContent = 'Редактировать клиента';
+                const client = clients.find(c => c.id === clientId);
+                
+                document.getElementById('clientId').value = client.id;
+                document.getElementById('clientLastName').value = client.lastName;
+                document.getElementById('clientFirstName').value = client.firstName;
+                document.getElementById('clientMiddleName').value = client.middleName || '';
+                document.getElementById('clientPhone').value = client.phone;
+                document.getElementById('clientEmail').value = client.email || '';
+                document.getElementById('clientBirthDate').value = client.birthDate || '';
+                document.getElementById('clientGender').value = client.gender || '';
+                document.getElementById('clientGroup').value = client.groupId || '';
+                document.getElementById('clientSource').value = client.source || '';
+                document.getElementById('clientNotes').value = client.notes || '';
+            } else {
+                // Добавление нового клиента
+                title.textContent = 'Добавить клиента';
+                form.reset();
+                document.getElementById('clientId').value = '';
+                
+                // Устанавливаем текущую дату как дату регистрации
+                const today = new Date().toISOString().split('T')[0];
+                // Для нового клиента дата регистрации будет установлена автоматически при сохранении
+            }
+            
+            modal.style.display = 'block';
+        }
+        
+        function saveClient(event) {
+            event.preventDefault();
+            
+            const id = document.getElementById('clientId').value;
+            const lastName = document.getElementById('clientLastName').value;
+            const firstName = document.getElementById('clientFirstName').value;
+            const middleName = document.getElementById('clientMiddleName').value;
+            const phone = document.getElementById('clientPhone').value;
+            const email = document.getElementById('clientEmail').value;
+            const birthDate = document.getElementById('clientBirthDate').value;
+            const gender = document.getElementById('clientGender').value;
+            const groupId = document.getElementById('clientGroup').value;
+            const source = document.getElementById('clientSource').value;
+            const notes = document.getElementById('clientNotes').value;
+            
+            if (id) {
+                // Обновление существующего клиента
+                const index = clients.findIndex(c => c.id == id);
+                clients[index] = {
+                    ...clients[index],
+                    lastName,
+                    firstName,
+                    middleName,
+                    phone,
+                    email,
+                    birthDate,
+                    gender,
+                    groupId: groupId ? parseInt(groupId) : null,
+                    source,
+                    notes
+                };
+            } else {
+                // Добавление нового клиента
+                const today = new Date().toISOString().split('T')[0];
+                clients.push({
+                    id: nextClientId++,
+                    lastName,
+                    firstName,
+                    middleName,
+                    phone,
+                    email,
+                    birthDate,
+                    gender,
+                    groupId: groupId ? parseInt(groupId) : null,
+                    subscription: 'active',
+                    subscriptionEnd: '',
+                    classesLeft: 0,
+                    source,
+                    notes,
+                    regDate: today
+                });
+            }
+            
+            saveData();
+            renderClients();
+            renderSubscriptions();
+            renderGroups();
+            closeModal('clientModal');
+            alert('Клиент успешно сохранен!');
+        }
+        
+        function editClient(id) {
+            openClientModal(id);
+        }
+        
+        function deleteClient(id) {
+            if (confirm('Вы уверены, что хотите удалить этого клиента?')) {
+                clients = clients.filter(c => c.id !== id);
+                subscriptions = subscriptions.filter(s => s.clientId !== id);
+                saveData();
+                renderClients();
+                renderSubscriptions();
+                renderGroups();
+                alert('Клиент удален!');
+            }
+        }
+        
+        // Функции для работы с абонементами
+        function openSubscriptionModal(subscriptionId = null) {
+            const modal = document.getElementById('subscriptionModal');
+            const title = document.getElementById('subscriptionModalTitle');
+            const form = document.getElementById('subscriptionForm');
+            
+            // Заполняем список клиентов
+            const clientSelect = document.getElementById('subscriptionClient');
+            clientSelect.innerHTML = '<option value="">Выберите клиента</option>';
+            clients.forEach(client => {
+                const option = document.createElement('option');
+                option.value = client.id;
+                option.textContent = `${client.lastName} ${client.firstName} ${client.middleName}`;
+                clientSelect.appendChild(option);
+            });
+            
+            // Заполняем список групп
+            const groupSelect = document.getElementById('subscriptionGroup');
+            groupSelect.innerHTML = '<option value="">Выберите группу</option>';
+            groups.forEach(group => {
+                const option = document.createElement('option');
+                option.value = group.id;
+                option.textContent = `${group.name} (${getLevelName(group.level)})`;
+                groupSelect.appendChild(option);
+            });
+            
+            if (subscriptionId) {
+                // Редактирование существующего абонемента
+                title.textContent = 'Редактировать абонемент';
+                const subscription = subscriptions.find(s => s.id === subscriptionId);
+                
+                document.getElementById('subscriptionId').value = subscription.id;
+                document.getElementById('subscriptionClient').value = subscription.clientId;
+                document.getElementById('subscriptionGroup').value = subscription.groupId;
+                document.getElementById('subscriptionType').value = subscription.type;
+                document.getElementById('subscriptionStart').value = subscription.startDate;
+                document.getElementById('subscriptionEnd').value = subscription.endDate;
+                document.getElementById('subscriptionPrice').value = subscription.price || '';
+                document.getElementById('subscriptionClasses').value = subscription.classes || '';
+                document.getElementById('subscriptionStatus').value = subscription.status;
+                document.getElementById('subscriptionNotes').value = subscription.notes || '';
+            } else {
+                // Добавление нового абонемента
+                title.textContent = 'Добавить абонемент';
+                form.reset();
+                document.getElementById('subscriptionId').value = '';
+                
+                // Устанавливаем даты по умолчанию
+                const today = new Date().toISOString().split('T')[0];
+                const monthLater = new Date();
+                monthLater.setMonth(monthLater.getMonth() + 1);
+                const monthLaterStr = monthLater.toISOString().split('T')[0];
+                
+                document.getElementById('subscriptionStart').value = today;
+                document.getElementById('subscriptionEnd').value = monthLaterStr;
+            }
+            
+            modal.style.display = 'block';
+        }
+        
+        function saveSubscription(event) {
+            event.preventDefault();
+            
+            const id = document.getElementById('subscriptionId').value;
+            const clientId = parseInt(document.getElementById('subscriptionClient').value);
+            const groupId = parseInt(document.getElementById('subscriptionGroup').value);
+            const type = document.getElementById('subscriptionType').value;
+            const startDate = document.getElementById('subscriptionStart').value;
+            const endDate = document.getElementById('subscriptionEnd').value;
+            const price = document.getElementById('subscriptionPrice').value;
+            const classesCount = document.getElementById('subscriptionClasses').value;
+            const status = document.getElementById('subscriptionStatus').value;
+            const notes = document.getElementById('subscriptionNotes').value;
+            
+            // Находим клиента
+            const client = clients.find(c => c.id === clientId);
+            if (!client) {
+                alert('Клиент не найден!');
+                return;
+            }
+            
+            if (id) {
+                // Обновление существующего абонемента
+                const index = subscriptions.findIndex(s => s.id == id);
+                subscriptions[index] = {
+                    id: parseInt(id),
+                    clientId,
+                    groupId,
+                    type,
+                    startDate,
+                    endDate,
+                    price: price ? parseInt(price) : 0,
+                    classes: classesCount ? parseInt(classesCount) : null,
+                    status,
+                    notes
+                };
+            } else {
+                // Добавление нового абонемента
+                subscriptions.push({
+                    id: nextSubscriptionId++,
+                    clientId,
+                    groupId,
+                    type,
+                    startDate,
+                    endDate,
+                    price: price ? parseInt(price) : 0,
+                    classes: classesCount ? parseInt(classesCount) : null,
+                    status,
+                    notes
+                });
+            }
+            
+            // Обновляем информацию о клиенте
+            const clientIndex = clients.findIndex(c => c.id === clientId);
+            if (clientIndex !== -1) {
+                clients[clientIndex].subscription = status;
+                clients[clientIndex].subscriptionEnd = endDate;
+                clients[clientIndex].classesLeft = classesCount ? parseInt(classesCount) : 0;
+                clients[clientIndex].groupId = groupId;
+            }
+            
+            saveData();
+            renderSubscriptions();
+            renderClients();
+            renderGroups();
+            closeModal('subscriptionModal');
+            alert('Абонемент успешно сохранен!');
+        }
+        
+        function editSubscription(id) {
+            openSubscriptionModal(id);
+        }
+        
+        function deleteSubscription(id) {
+            if (confirm('Вы уверены, что хотите удалить этот абонемент?')) {
+                const subscription = subscriptions.find(s => s.id === id);
+                if (subscription) {
+                    // Обновляем информацию о клиенте
+                    const clientIndex = clients.findIndex(c => c.id === subscription.clientId);
+                    if (clientIndex !== -1) {
+                        clients[clientIndex].subscription = 'expired';
+                        clients[clientIndex].classesLeft = 0;
+                    }
+                }
+                
+                subscriptions = subscriptions.filter(s => s.id !== id);
+                
+                saveData();
+                renderSubscriptions();
+                renderClients();
+                alert('Абонемент удален!');
+            }
+        }
+        
+        // Функции для работы с занятиями
+        function openClassModal(classId = null) {
+            const modal = document.getElementById('classModal');
+            const title = document.getElementById('classModalTitle');
+            const form = document.getElementById('classForm');
+            
+            // Заполняем список групп
+            const groupSelect = document.getElementById('classGroup');
+            groupSelect.innerHTML = '<option value="">Выберите группу</option>';
+            groups.forEach(group => {
+                const option = document.createElement('option');
+                option.value = group.id;
+                option.textContent = `${group.name} (${getLevelName(group.level)})`;
+                groupSelect.appendChild(option);
+            });
+            
+            // Заполняем список тренеров
+            const trainerSelect = document.getElementById('classTrainer');
+            trainerSelect.innerHTML = '<option value="">Выберите тренера</option>';
+            trainers.forEach(trainer => {
+                const option = document.createElement('option');
+                option.value = trainer.id;
+                option.textContent = `${trainer.lastName} ${trainer.firstName}`;
+                trainerSelect.appendChild(option);
+            });
+            
+            if (classId) {
+                // Редактирование существующего занятия
+                title.textContent = 'Редактировать занятие';
+                const cls = classes.find(c => c.id === classId);
+                
+                document.getElementById('classId').value = cls.id;
+                document.getElementById('classDate').value = cls.date;
+                document.getElementById('classStartTime').value = cls.startTime;
+                document.getElementById('classEndTime').value = cls.endTime;
+                document.getElementById('classGroup').value = cls.groupId;
+                document.getElementById('classTrainer').value = cls.trainerId;
+                document.getElementById('classRoom').value = cls.room;
+                document.getElementById('classNotes').value = cls.notes || '';
+            } else {
+                // Добавление нового занятия
+                title.textContent = 'Добавить занятие';
+                form.reset();
+                document.getElementById('classId').value = '';
+                
+                // Устанавливаем текущую дату
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('classDate').value = today;
+            }
+            
+            modal.style.display = 'block';
+        }
+        
+        function saveClass(event) {
+            event.preventDefault();
+            
+            const id = document.getElementById('classId').value;
+            const date = document.getElementById('classDate').value;
+            const startTime = document.getElementById('classStartTime').value;
+            const endTime = document.getElementById('classEndTime').value;
+            const groupId = parseInt(document.getElementById('classGroup').value);
+            const trainerId = parseInt(document.getElementById('classTrainer').value);
+            const room = document.getElementById('classRoom').value;
+            const notes = document.getElementById('classNotes').value;
+            
+            if (id) {
+                // Обновление существующего занятия
+                const index = classes.findIndex(c => c.id == id);
+                classes[index] = {
+                    id: parseInt(id),
+                    date,
+                    startTime,
+                    endTime,
+                    groupId,
+                    trainerId,
+                    room,
+                    notes
+                };
+            } else {
+                // Добавление нового занятия
+                classes.push({
+                    id: nextClassId++,
+                    date,
+                    startTime,
+                    endTime,
+                    groupId,
+                    trainerId,
+                    room,
+                    notes
+                });
+            }
+            
+            saveData();
+            renderCalendar(currentCalendarDate);
+            closeModal('classModal');
+            alert('Занятие успешно сохранено!');
+        }
+        
+        function deleteClass(id) {
+            if (confirm('Вы уверены, что хотите удалить это занятие?')) {
+                classes = classes.filter(c => c.id !== id);
+                saveData();
+                renderCalendar(currentCalendarDate);
+                alert('Занятие удалено!');
+            }
+        }
+        
+        // Функция для открытия модального окна дня
+        function openDayModal(date, dayClasses) {
+            const modal = document.getElementById('dayModal');
+            const modalDate = document.getElementById('modalDate');
+            const dayEvents = document.getElementById('dayEvents');
+            
+            // Устанавливаем дату
+            modalDate.textContent = formatDate(date);
+            
+            // Очищаем события
+            dayEvents.innerHTML = '';
+            
+            // Добавляем события
+            dayClasses.forEach(cls => {
+                const group = groups.find(g => g.id === cls.groupId);
+                const trainer = trainers.find(t => t.id === cls.trainerId);
+                
+                if (group && trainer) {
+                    const trainerName = `${trainer.firstName} ${trainer.lastName}`;
+                    
+                    // Получаем участников группы
+                    const groupMembers = clients.filter(client => client.groupId === group.id);
+                    
+                    const eventElement = document.createElement('div');
+                    eventElement.className = 'group-card';
+                    eventElement.style.marginBottom = '15px';
+                    
+                    eventElement.innerHTML = `
+                        <div class="group-header" style="background: linear-gradient(to right, ${getEventColor(group.level)}, ${getEventColor(group.level, true)});">
+                            <div class="group-title">${group.name}</div>
+                            <div class="group-level">${cls.startTime} - ${cls.endTime}</div>
+                        </div>
+                        <div class="group-body">
+                            <div class="group-info">
+                                <div class="group-trainer">
+                                    <i class="fas fa-chalkboard-teacher"></i> ${trainerName}
+                                </div>
+                                <div class="group-room">
+                                    <i class="fas fa-map-marker-alt"></i> ${cls.room}
+                                </div>
+                            </div>
+                            <div style="margin-top: 15px;">
+                                <strong>Участники (${groupMembers.length} чел.):</strong>
+                                <div style="margin-top: 10px;">
+                                    ${groupMembers.map(member => {
+                                        const fullName = `${member.lastName} ${member.firstName} ${member.middleName}`;
+                                        const statusClass = `member-status status-${member.subscription}`;
+                                        const statusText = member.subscription === 'active' ? 'А' : 
+                                                         member.subscription === 'expiring' ? 'З' : 'П';
+                                        
+                                        return `
+                                            <div style="display: inline-block; margin: 2px 5px 2px 0; padding: 3px 8px; background: #f8f9fa; border-radius: 4px; font-size: 0.85rem;">
+                                                ${fullName.split(' ')[1]} 
+                                                <span class="${statusClass}" style="margin-left: 5px; padding: 1px 4px; font-size: 0.7rem;">${statusText}</span>
+                                            </div>
+                                        `;
+                                    }).join('')}
+                                </div>
+                            </div>
+                            ${cls.notes ? `<div style="margin-top: 15px; padding: 10px; background: #ffeaa7; border-radius: 5px;"><strong>Примечание:</strong> ${cls.notes}</div>` : ''}
+                        </div>
+                        <div class="group-footer">
+                            <div class="action-buttons">
+                                <button class="action-btn edit-btn" onclick="openClassModal(${cls.id})">
+                                    <i class="fas fa-edit"></i> Редактировать
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteClass(${cls.id})">
+                                    <i class="fas fa-trash"></i> Удалить
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    dayEvents.appendChild(eventElement);
+                }
+            });
+            
+            modal.style.display = 'block';
+        }
+        
+        // Функция для закрытия модальных окон
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        
+        // Обработчики событий для табов
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Убираем активный класс у всех табов и контента
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Добавляем активный класс к выбранному табу
+                tab.classList.add('active');
+                
+                // Показываем соответствующий контент
+                const tabId = tab.getAttribute('data-tab');
+                document.getElementById(`${tabId}-content`).classList.add('active');
+            });
+        });
+        
+        // Обработчики для календаря
+        document.getElementById('prevMonth').addEventListener('click', () => {
+            currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1);
+            renderCalendar(currentCalendarDate);
+        });
+        
+        document.getElementById('nextMonth').addEventListener('click', () => {
+            currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1);
+            renderCalendar(currentCalendarDate);
+        });
+        
+        document.getElementById('todayBtn').addEventListener('click', () => {
+            currentCalendarDate = new Date();
+            renderCalendar(currentCalendarDate);
+        });
+        
+        // Обработчики для фильтров групп
+        document.querySelectorAll('[data-level]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Убираем активный класс у всех кнопок
+                document.querySelectorAll('[data-level]').forEach(b => b.classList.remove('active'));
+                // Добавляем активный класс к выбранной кнопке
+                this.classList.add('active');
+                // Рендерим группы с выбранным уровнем
+                const level = this.getAttribute('data-level');
+                renderGroups(level);
+            });
+        });
+        
+        // Обработчики для кнопок добавления
+        document.getElementById('addClassBtn').addEventListener('click', () => openClassModal());
+        document.getElementById('addGroupBtn').addEventListener('click', () => openGroupModal());
+        document.getElementById('addTrainerBtn').addEventListener('click', () => openTrainerModal());
+        document.getElementById('addClientBtn').addEventListener('click', () => openClientModal());
+        document.getElementById('addSubscriptionBtn').addEventListener('click', () => openSubscriptionModal());
+        
+        // Обработчики для форм
+        document.getElementById('classForm').addEventListener('submit', saveClass);
+        document.getElementById('groupForm').addEventListener('submit', saveGroup);
+        document.getElementById('trainerForm').addEventListener('submit', saveTrainer);
+        document.getElementById('clientForm').addEventListener('submit', saveClient);
+        document.getElementById('subscriptionForm').addEventListener('submit', saveSubscription);
+        
+        // Обработчики для закрытия модальных окон
+        document.querySelectorAll('.close').forEach(closeBtn => {
+            closeBtn.addEventListener('click', function() {
+                this.closest('.modal').style.display = 'none';
+            });
+        });
+        
+        // Обработчики для кнопок отмены
+        document.getElementById('cancelClassBtn').addEventListener('click', () => closeModal('classModal'));
+        document.getElementById('cancelGroupBtn').addEventListener('click', () => closeModal('groupModal'));
+        document.getElementById('cancelTrainerBtn').addEventListener('click', () => closeModal('trainerModal'));
+        document.getElementById('cancelClientBtn').addEventListener('click', () => closeModal('clientModal'));
+        document.getElementById('cancelSubscriptionBtn').addEventListener('click', () => closeModal('subscriptionModal'));
+        
+        // Закрытие модальных окон при клике вне их
+        window.addEventListener('click', (event) => {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        });
+        
+        // Инициализация при загрузке
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCalendar(currentCalendarDate);
+            renderGroups();
+            renderTrainers();
+            renderClients();
+            renderSubscriptions();
+        });
+        
+        // Обновление времени каждую минуту
+        setInterval(() => {
+            document.getElementById('updateTime').textContent = new Date().toLocaleTimeString('ru-RU');
+        }, 60000);
+    </script>
+</body>
+</html>
