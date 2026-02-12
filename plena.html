@@ -166,6 +166,7 @@
         .stat-groups { background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%); color: white; }
         .stat-directions { background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%); color: white; }
         .stat-classes { background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%); color: #2d3436; }
+        .stat-subscriptions { background: linear-gradient(135deg, #00cec9 0%, #00b894 100%); color: white; }
         
         /* ===== КАЛЕНДАРЬ ===== */
         .calendar-header {
@@ -281,7 +282,7 @@
         /* ===== НАПРАВЛЕНИЯ ===== */
         .directions-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
             gap: 25px;
             margin-top: 25px;
         }
@@ -308,10 +309,6 @@
             align-items: center;
         }
         
-        .direction-editor-header {
-            background: linear-gradient(to right, #fd79a8, #e84393);
-        }
-        
         .direction-title {
             font-size: 1.2rem;
             font-weight: 600;
@@ -332,6 +329,7 @@
             display: flex;
             align-items: center;
             gap: 5px;
+            flex-wrap: wrap;
         }
         
         .direction-description {
@@ -355,6 +353,7 @@
             margin-bottom: 15px;
             font-size: 0.9rem;
             color: #636e72;
+            flex-wrap: wrap;
         }
         
         .direction-features {
@@ -399,7 +398,7 @@
             font-size: 0.7rem;
             font-weight: bold;
             text-transform: uppercase;
-            margin-left: 10px;
+            margin-left: 5px;
         }
         
         .badge-new {
@@ -417,6 +416,21 @@
             color: #2d3436;
         }
         
+        .badge-family {
+            background-color: #00b894;
+            color: white;
+        }
+        
+        .badge-pregnancy {
+            background-color: #e84393;
+            color: white;
+        }
+        
+        .badge-couple {
+            background-color: #6c5ce7;
+            color: white;
+        }
+        
         .auto-generate-badge {
             background: #00b894;
             color: white;
@@ -431,7 +445,7 @@
         /* ===== ГРУППЫ ===== */
         .groups-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
             gap: 25px;
             margin-top: 25px;
         }
@@ -482,6 +496,7 @@
             margin-bottom: 15px;
             padding-bottom: 15px;
             border-bottom: 1px solid #f0f0f0;
+            flex-wrap: wrap;
         }
         
         .group-trainer, .group-time, .group-room {
@@ -599,6 +614,89 @@
             color: #636e72;
         }
         
+        /* ===== АБОНЕМЕНТЫ ===== */
+        .subscriptions-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .subscription-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .subscription-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+        
+        .subscription-header {
+            padding: 15px;
+            background: linear-gradient(to right, #00b894, #00a085);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .subscription-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .subscription-price {
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+        
+        .subscription-body {
+            padding: 20px;
+        }
+        
+        .subscription-period {
+            font-size: 0.9rem;
+            color: #636e72;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .subscription-features {
+            list-style-type: none;
+        }
+        
+        .subscription-features li {
+            padding: 5px 0;
+            font-size: 0.9rem;
+            color: #636e72;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .subscription-features li:before {
+            content: "✓";
+            color: #00b894;
+            font-weight: bold;
+        }
+        
+        .subscription-age {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 15px;
+            background: #f8f9fa;
+            color: #6c5ce7;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
         /* ===== РЕДАКТОР РАСПИСАНИЯ ===== */
         .schedule-editor {
             background: #f8f9fa;
@@ -617,6 +715,7 @@
             background: white;
             border-radius: 8px;
             border-left: 4px solid #6c5ce7;
+            flex-wrap: wrap;
         }
         
         .schedule-time-input {
@@ -1076,8 +1175,8 @@
                 grid-template-columns: repeat(7, 1fr);
             }
             
-            .groups-container, .directions-container {
-                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            .groups-container, .directions-container, .subscriptions-container {
+                grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             }
         }
         
@@ -1090,7 +1189,7 @@
                 min-height: 100px;
             }
             
-            .groups-container, .directions-container {
+            .groups-container, .directions-container, .subscriptions-container {
                 grid-template-columns: 1fr;
             }
             
@@ -1219,10 +1318,10 @@
             <div class="tab" data-tab="subscriptions">Абонементы</div>
         </div>
         
-        <!-- ===== НАПРАВЛЕНИЯ (Активная вкладка) ===== -->
+        <!-- ===== НАПРАВЛЕНИЯ ===== -->
         <div class="tab-content active" id="directions-content">
             <div class="content-header">
-                <h2 class="content-title">Редактор направлений</h2>
+                <h2 class="content-title">Направления студии</h2>
                 <div class="content-icon"><i class="fas fa-directions"></i></div>
             </div>
             
@@ -1234,12 +1333,12 @@
                 <div style="display: flex; gap: 10px; flex-wrap: wrap;">
                     <select id="filterDirectionAge" class="form-control" style="min-width: 200px;">
                         <option value="all">Все возрастные группы</option>
-                        <option value="baby">Малыши 3-7 лет</option>
-                        <option value="kids">Дети 8-12 лет</option>
-                        <option value="teens">Подростки 13-17 лет</option>
-                        <option value="adult">Взрослые 18-44 лет</option>
-                        <option value="adult25">Взрослые 25+ лет</option>
-                        <option value="adult45">Взрослые 45+ лет</option>
+                        <option value="3-7">Малыши 3-7 лет</option>
+                        <option value="8-12">Дети 8-12 лет</option>
+                        <option value="13-17">Подростки 13-17 лет</option>
+                        <option value="18-44">Взрослые 18-44 лет</option>
+                        <option value="25+">Взрослые 25+ лет</option>
+                        <option value="45+">Взрослые 45+ лет</option>
                         <option value="special">Спецпредложения</option>
                     </select>
                     <button class="btn btn-success" id="addDirectionBtn">
@@ -1256,7 +1355,9 @@
             
             <div class="classes-indicator">
                 <i class="fas fa-info-circle"></i>
-                <span>Направления автоматически создают группы по расписанию. При изменении расписания нажмите "Синхронизировать группы".</span>
+                <span>Всего направлений: <span id="totalDirectionsCount">27</span> | 
+                       С расписанием: <span id="scheduledDirectionsCount">13</span> | 
+                       В разработке: <span id="developingDirectionsCount">14</span></span>
             </div>
             
             <div class="directions-container" id="directionsContainer"></div>
@@ -1318,10 +1419,6 @@
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <div style="width: 15px; height: 15px; background-color: #fd79a8; border-radius: 3px;"></div>
                     <span>Продвинутый уровень</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <div style="width: 15px; height: 15px; background-color: #a29bfe; border-radius: 3px;"></div>
-                    <span>Связано с направлением</span>
                 </div>
             </div>
         </div>
@@ -1480,6 +1577,12 @@
                 </div>
             </div>
             
+            <div style="margin-bottom: 20px;">
+                <h3>Тарифы студии</h3>
+                <div class="subscriptions-container" id="pricesContainer"></div>
+            </div>
+            
+            <h3>Абонементы клиентов</h3>
             <table class="data-table">
                 <thead>
                     <tr>
@@ -1515,7 +1618,7 @@
                 
                 <div class="form-group">
                     <label for="directionTitle">Название направления *</label>
-                    <input type="text" id="directionTitle" class="form-control" required placeholder="Например: Танец-игра / Ритмика">
+                    <input type="text" id="directionTitle" class="form-control" required>
                 </div>
                 
                 <div class="form-row">
@@ -1523,29 +1626,29 @@
                         <label for="directionAgeGroup">Возрастная группа *</label>
                         <select id="directionAgeGroup" class="form-control" required>
                             <option value="">Выберите возрастную группу</option>
-                            <option value="baby">Малыши 3-7 лет</option>
-                            <option value="kids">Дети 8-12 лет</option>
-                            <option value="teens">Подростки 13-17 лет</option>
-                            <option value="adult">Взрослые 18-44 лет</option>
-                            <option value="adult25">Взрослые 25+ лет</option>
-                            <option value="adult45">Взрослые 45+ лет</option>
+                            <option value="3-7">Малыши 3-7 лет</option>
+                            <option value="8-12">Дети 8-12 лет</option>
+                            <option value="13-17">Подростки 13-17 лет</option>
+                            <option value="18-44">Взрослые 18-44 лет</option>
+                            <option value="25+">Взрослые 25+ лет</option>
+                            <option value="45+">Взрослые 45+ лет</option>
                             <option value="special">Спецпредложения</option>
                         </select>
                     </div>
                     <div class="form-col">
                         <label for="directionIcon">Иконка</label>
-                        <input type="text" id="directionIcon" class="form-control" placeholder="Например: 💃">
+                        <input type="text" id="directionIcon" class="form-control" placeholder="Например: 🩰">
                     </div>
                 </div>
                 
                 <div class="form-group">
                     <label for="directionDescription">Описание направления</label>
-                    <textarea id="directionDescription" class="form-control" rows="3" placeholder="Краткое описание направления..."></textarea>
+                    <textarea id="directionDescription" class="form-control" rows="3"></textarea>
                 </div>
                 
                 <div class="form-group">
                     <label for="directionPrice">Стоимость</label>
-                    <input type="text" id="directionPrice" class="form-control" placeholder="Например: Абонемент: 3000₽/мес (8 занятий)">
+                    <input type="text" id="directionPrice" class="form-control">
                 </div>
                 
                 <div class="form-group">
@@ -1558,6 +1661,8 @@
                         <option value="👶 ДЛЯ БУДУЩИХ МАМ">👶 ДЛЯ БУДУЩИХ МАМ</option>
                         <option value="❤️ МАМА+МАЛЫШ">❤️ МАМА+МАЛЫШ</option>
                         <option value="💘 ДЛЯ ПАР">💘 ДЛЯ ПАР</option>
+                        <option value="👨‍👩‍👧‍👦 СЕМЕЙНОЕ">👨‍👩‍👧‍👦 СЕМЕЙНОЕ</option>
+                        <option value="🌈 БЕЗОПАСНО">🌈 БЕЗОПАСНО</option>
                     </select>
                 </div>
                 
@@ -1578,7 +1683,6 @@
                             </div>
                         </div>
                     </div>
-                    <small>Добавьте особенности направления</small>
                 </div>
                 
                 <div class="schedule-editor">
@@ -1586,7 +1690,7 @@
                         <i class="fas fa-clock"></i> Расписание занятий
                     </h4>
                     <p style="margin-bottom: 15px; font-size: 0.9rem; color: #636e72;">
-                        На основе расписания будут автоматически создаваться группы и занятия в календаре
+                        Укажите дни и время занятий
                     </p>
                     
                     <div id="scheduleDaysContainer"></div>
@@ -1597,7 +1701,7 @@
                     
                     <div class="form-group" style="margin-top: 20px;">
                         <label for="directionRoom">Зал по умолчанию</label>
-                        <input type="text" id="directionRoom" class="form-control" placeholder="Например: Зал 1" value="Зал 1">
+                        <input type="text" id="directionRoom" class="form-control" value="Зал 1">
                     </div>
                     
                     <div class="form-group">
@@ -1608,18 +1712,8 @@
                     <div class="form-group">
                         <label>
                             <input type="checkbox" id="autoCreateGroups" checked>
-                            Автоматически создавать группы при сохранении
+                            Автоматически создавать группы
                         </label>
-                    </div>
-                    
-                    <div class="group-preview" id="groupPreview">
-                        <strong><i class="fas fa-users"></i> Будет создана группа:</strong>
-                        <div id="previewGroupName"></div>
-                        <div class="direction-stats">
-                            <span><i class="fas fa-calendar"></i> <span id="previewSchedule"></span></span>
-                            <span><i class="fas fa-map-marker-alt"></i> <span id="previewRoom"></span></span>
-                            <span><i class="fas fa-users"></i> <span id="previewMaxMembers"></span> мест</span>
-                        </div>
                     </div>
                 </div>
                 
@@ -1641,7 +1735,7 @@
                 
                 <div class="form-group">
                     <label for="groupName">Название группы *</label>
-                    <input type="text" id="groupName" class="form-control" required placeholder="Например: Бальные танцы">
+                    <input type="text" id="groupName" class="form-control" required>
                 </div>
                 
                 <div class="form-group">
@@ -1649,9 +1743,6 @@
                     <select id="groupDirection" class="form-control" required onchange="window.onGroupDirectionChange()">
                         <option value="">Выберите направление</option>
                     </select>
-                    <small style="color: #00b894;">
-                        <i class="fas fa-magic"></i> Группа будет связана с направлением
-                    </small>
                 </div>
                 
                 <div class="form-group">
@@ -1679,15 +1770,15 @@
                 
                 <div class="form-group">
                     <label for="groupSchedule">Расписание *</label>
-                    <textarea id="groupSchedule" class="form-control" required rows="2" placeholder="Например: Пн, Ср, Пт 10:00-11:30"></textarea>
+                    <textarea id="groupSchedule" class="form-control" required rows="2"></textarea>
                     <small id="scheduleFromDirection" style="color: #6c5ce7; display: none;">
-                        <i class="fas fa-info-circle"></i> Расписание автоматически загружено из направления
+                        <i class="fas fa-info-circle"></i> Расписание из направления
                     </small>
                 </div>
                 
                 <div class="form-group">
                     <label for="groupRoom">Зал *</label>
-                    <input type="text" id="groupRoom" class="form-control" required placeholder="Например: Зал 1">
+                    <input type="text" id="groupRoom" class="form-control" required>
                 </div>
                 
                 <div class="form-group">
@@ -1698,7 +1789,7 @@
                 <div class="form-group">
                     <label>
                         <input type="checkbox" id="autoGenerateClasses" checked>
-                        Автоматически создавать занятия в календаре
+                        Автоматически создавать занятия
                     </label>
                 </div>
                 
@@ -1750,7 +1841,7 @@
                 
                 <div class="form-group">
                     <label for="classRoom">Зал *</label>
-                    <input type="text" id="classRoom" class="form-control" required placeholder="Например: Зал 1">
+                    <input type="text" id="classRoom" class="form-control" required>
                 </div>
                 
                 <div class="form-group">
@@ -1797,24 +1888,15 @@
                         <option value="Хип-хоп">Хип-хоп</option>
                         <option value="Сальса">Сальса</option>
                         <option value="Контемпорари">Контемпорари</option>
-                        <option value="Бачата">Бачата</option>
                         <option value="Джаз-фанк">Джаз-фанк</option>
-                        <option value="Танго">Танго</option>
-                        <option value="Зумба">Зумба</option>
-                        <option value="Восточные танцы">Восточные танцы</option>
-                        <option value="Брейк-данс">Брейк-данс</option>
-                        <option value="Кизомба">Кизомба</option>
-                        <option value="Вог">Вог</option>
-                        <option value="Джаз-модерн">Джаз-модерн</option>
-                        <option value="Йога">Йога</option>
-                        <option value="Растяжка">Растяжка</option>
                         <option value="Классическая хореография">Классическая хореография</option>
                         <option value="Современный танец">Современный танец</option>
                         <option value="Эстрадный танец">Эстрадный танец</option>
-                        <option value="High Heels/Lady Dance">High Heels/Lady Dance</option>
+                        <option value="High Heels">High Heels</option>
+                        <option value="Lady Dance">Lady Dance</option>
                         <option value="Body Ballet">Body Ballet</option>
                         <option value="Социальные танцы">Социальные танцы</option>
-                        <option value="Танцы для беременных">Танцы для беременных</option>
+                        <option value="Фитнес для беременных">Фитнес для беременных</option>
                     </select>
                 </div>
                 
@@ -1837,7 +1919,6 @@
                 <div class="form-group">
                     <label for="trainerGroups">Группы</label>
                     <select id="trainerGroups" class="form-control" multiple style="height: 120px;"></select>
-                    <small>Удерживайте Ctrl для выбора нескольких групп</small>
                 </div>
                 
                 <div class="form-group">
@@ -1896,7 +1977,7 @@
                 <div id="childFields" style="display: none;">
                     <div class="form-group">
                         <label for="clientAge">Возраст (лет) *</label>
-                        <input type="number" id="clientAge" class="form-control" min="3" max="17" placeholder="От 3 до 17 лет">
+                        <input type="number" id="clientAge" class="form-control" min="3" max="17">
                     </div>
                     
                     <h4 style="margin: 20px 0 10px 0; color: #6c5ce7;">Контактная информация родителя</h4>
@@ -1919,7 +2000,7 @@
                 </div>
                 
                 <!-- Поля для взрослого -->
-                <div id="adultFields" style="display: none;">
+                <div id="adultFields" style="display: block;">
                     <div class="form-group">
                         <label for="clientBirthDate">Дата рождения</label>
                         <input type="date" id="clientBirthDate" class="form-control">
@@ -2004,16 +2085,6 @@
                     <label for="subscriptionType">Тип абонемента *</label>
                     <select id="subscriptionType" class="form-control" required>
                         <option value="">Выберите тип</option>
-                        <option value="ПРОБНОЕ ДЕТСКОЕ">ПРОБНОЕ ДЕТСКОЕ (350₽)</option>
-                        <option value="ПРОБНОЕ ВЗРОСЛОЕ">ПРОБНОЕ ВЗРОСЛОЕ (400₽)</option>
-                        <option value="ДЕТСКИЙ (3-12 лет)">ДЕТСКИЙ (3-12 лет) - 3000₽/8 занятий</option>
-                        <option value="ПОДРОСТКИ (13-17 лет)">ПОДРОСТКИ (13-17 лет) - 3000₽/8 занятий</option>
-                        <option value="ВЗРОСЛЫЙ (18+ лет)">ВЗРОСЛЫЙ (18+ лет) - 4000₽/8 занятий</option>
-                        <option value="ВЗРОСЛЫЙ 45+">ВЗРОСЛЫЙ 45+ - 4000₽/8 занятий</option>
-                        <option value="ИНДИВИДУАЛЬНО">ИНДИВИДУАЛЬНО - 1500₽/занятие</option>
-                        <option value="СЕМЕЙНЫЙ">СЕМЕЙНЫЙ - 2800₽/4 занятия</option>
-                        <option value="ОНЛАЙН">ОНЛАЙН - 2500₽/4 занятия</option>
-                        <option value="ДЛЯ БЕРЕМЕННЫХ">ДЛЯ БЕРЕМЕННЫХ - 3500₽/8 занятий</option>
                     </select>
                 </div>
                 
@@ -2067,85 +2138,662 @@
     </div>
 
     <script>
-        // ===== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ =====
-        let currentDate = new Date();
-        let currentCalendarDate = new Date();
-        
-        // ===== ДАННЫЕ НАПРАВЛЕНИЙ =====
-        let directions = JSON.parse(localStorage.getItem('danceStudioDirections')) || {
+        // ===== ЦЕНЫ И АБОНЕМЕНТЫ =====
+        const PRICES = [
+            {
+                title: "ПРОБНОЕ ЗАНЯТИЕ ДЕТСКОЕ",
+                price: "350₽",
+                period: "1 занятие",
+                features: [
+                    "Знакомство со студией",
+                    "Консультация педагога",
+                    "Определение уровня",
+                    "Подбор направления"
+                ],
+                ageGroup: "3-12"
+            },
+            {
+                title: "ПРОБНОЕ ЗАНЯТИЕ ВЗРОСЛОЕ",
+                price: "400₽",
+                period: "1 занятие",
+                features: [
+                    "Знакомство со студией",
+                    "Консультация педагога",
+                    "Определение уровня",
+                    "Подбор направления"
+                ],
+                ageGroup: "18+"
+            },
+            {
+                title: "ДЕТСКИЙ (3-12 лет)",
+                price: "3000₽",
+                period: "8 занятий",
+                features: [
+                    "Абонемент на 30 дней",
+                    "Любое детское направление",
+                    "Заморозка на 7 дней",
+                    "Скидка на 2-го ребенка"
+                ],
+                ageGroup: "3-12"
+            },
+            {
+                title: "ПОДРОСТКИ (13-17 лет)",
+                price: "3000₽",
+                period: "8 занятий",
+                features: [
+                    "Абонемент на 30 дней",
+                    "Современные направления",
+                    "Подготовка к выступлениям",
+                    "Участие в конкурсах"
+                ],
+                ageGroup: "13-17"
+            },
+            {
+                title: "ВЗРОСЛЫЕ (18+ лет)",
+                price: "4000₽",
+                period: "8 занятий",
+                features: [
+                    "Абонемент на 30 дней",
+                    "Все взрослые направления",
+                    "Индивидуальный подход",
+                    "Гибкое расписание"
+                ],
+                ageGroup: "18+"
+            },
+            {
+                title: "ВЗРОСЛЫЕ 45+",
+                price: "4000₽",
+                period: "8 занятий",
+                features: [
+                    "Абонемент на 30 дней",
+                    "Адаптированные нагрузки",
+                    "Щадящие тренировки",
+                    "Оздоровительный эффект"
+                ],
+                ageGroup: "45+"
+            },
+            {
+                title: "ИНДИВИДУАЛЬНО",
+                price: "1500₽",
+                period: "1 занятие (60 мин)",
+                features: [
+                    "Персональный подход",
+                    "Гибкий график",
+                    "Индивидуальная программа",
+                    "Быстрый прогресс"
+                ],
+                ageGroup: "all"
+            },
+            {
+                title: "ИНДИВИДУАЛЬНО ПО ЗАПРОСУ",
+                price: "~~₽",
+                period: "1 занятие (60 мин)",
+                features: [
+                    "Персональный подход",
+                    "Гибкий график",
+                    "Индивидуальная программа"
+                ],
+                ageGroup: "all"
+            }
+        ];
+
+        // ===== НАПРАВЛЕНИЯ =====
+        const DIRECTIONS_DATA = {
+            // Малыши 3-7 лет (3 направления)
             'baby-dance': {
-                id: 'baby-dance',
                 title: 'Танец-игра / Ритмика',
-                description: 'Развитие чувства ритма, координации и любви к движению через веселые игры.',
-                ageGroup: 'baby',
+                description: 'Развитие чувства ритма, координации и любви к движению через веселые игры и простые танцевальные комбинации.',
+                schedule: 'Понедельник и четверг в 17:30',
+                price: 'Пробное занятие: 350₽, абонемент: 3000₽/8 занятий',
+                features: [
+                    'Развитие координации движений',
+                    'Формирование чувства ритма',
+                    'Адаптация к коллективу',
+                    'Игровая форма занятий',
+                    'Раскрепощение и творческое развитие'
+                ],
                 icon: '🎵',
-                price: 'Пробное: 350₽, абонемент: 3000₽/8 занятий',
-                badge: '',
+                ageGroup: '3-7',
                 room: 'Зал 1',
                 maxMembers: 12,
                 scheduleDays: [
                     { day: 1, startTime: '17:30', endTime: '18:30' },
                     { day: 4, startTime: '17:30', endTime: '18:30' }
-                ],
-                features: [
-                    'Развитие координации движений',
-                    'Формирование чувства ритма',
-                    'Игровая форма занятий'
-                ],
-                autoCreateGroups: true,
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString()
+                ]
             },
             'baby-classic': {
-                id: 'baby-classic',
                 title: 'Азбука классического танца',
-                description: 'Первое знакомство с основами балета в игровой форме.',
-                ageGroup: 'baby',
+                description: 'Первое знакомство с основами балета в игровой форме. Постановка корпуса, развитие гибкости и музыкальности.',
+                schedule: 'Понедельник и четверг в 18:30',
+                price: 'Пробное занятие: 350₽, абонемент: 3000₽/8 занятий',
+                features: [
+                    'Основы классической хореографии',
+                    'Развитие гибкости и пластики',
+                    'Постановка корпуса и осанки',
+                    'Музыкальное развитие',
+                    'Подготовка к сложным направлениям'
+                ],
                 icon: '🩰',
-                price: 'Пробное: 350₽, абонемент: 3000₽/8 занятий',
-                badge: '',
+                ageGroup: '3-7',
                 room: 'Зал 1',
                 maxMembers: 12,
                 scheduleDays: [
                     { day: 1, startTime: '18:30', endTime: '19:30' },
                     { day: 4, startTime: '18:30', endTime: '19:30' }
-                ],
-                features: [
-                    'Основы классической хореографии',
-                    'Развитие гибкости и пластики',
-                    'Постановка корпуса и осанки'
-                ],
-                autoCreateGroups: true,
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString()
+                ]
             },
+            'baby-mult': {
+                title: 'Беби-мульт-денс',
+                description: 'Зажигательные танцы под любимые детские песни и мелодии из мультфильмов. Идеально для раскрепощения.',
+                schedule: 'Среда, Суббота в 17:30',
+                price: 'Пробное занятие: 350₽, абонемент: 3000₽/8 занятий',
+                features: [
+                    'Танцы под любимые детские песни',
+                    'Развитие артистизма',
+                    'Эмоциональное раскрепощение',
+                    'Работа в коллективе',
+                    'Развитие музыкального слуха'
+                ],
+                icon: '📺',
+                ageGroup: '3-7',
+                room: 'Зал 2',
+                maxMembers: 12,
+                scheduleDays: [
+                    { day: 3, startTime: '17:30', endTime: '18:30' },
+                    { day: 6, startTime: '17:30', endTime: '18:30' }
+                ]
+            },
+            
+            // Дети 8-12 лет (3 направления)
+            'kids-classic': {
+                title: 'Классическая хореография',
+                description: 'Углубленное изучение основ балета. Укрепление мышечного корсета, развитие выносливости, грации и дисциплины.',
+                schedule: 'В разработке',
+                price: 'Абонемент: 3000₽/8 занятий',
+                features: [
+                    'Углубленное изучение классики',
+                    'Укрепление мышечного корсета',
+                    'Развитие грации и пластики',
+                    'Подготовка к выступлениям',
+                    'Профессиональные педагоги'
+                ],
+                icon: '🌟',
+                ageGroup: '8-12',
+                room: 'Зал 1',
+                maxMembers: 12,
+                scheduleDays: []
+            },
+            'kids-modern': {
+                title: 'Современный танец',
+                description: 'Изучение энергичных и популярных стилей: хип-хоп, джаз-модерн. Работа над ритмом, стилем и импровизацией.',
+                schedule: 'Среда, Суббота в 16:00',
+                price: 'Абонемент: 3000₽/8 занятий',
+                features: [
+                    'Хип-хоп и джаз-модерн',
+                    'Развитие чувства ритма',
+                    'Индивидуальный стиль',
+                    'Импровизация',
+                    'Современная музыка'
+                ],
+                icon: '🔥',
+                ageGroup: '8-12',
+                room: 'Зал 2',
+                maxMembers: 15,
+                scheduleDays: [
+                    { day: 3, startTime: '16:00', endTime: '17:30' },
+                    { day: 6, startTime: '16:00', endTime: '17:30' }
+                ]
+            },
+            'kids-estrade': {
+                title: 'Эстрадный танец',
+                description: 'Яркое и зрелищное направление, сочетающее элементы классики, народного и современного танца.',
+                schedule: 'В разработке',
+                price: 'Абонемент: 3000₽/8 занятий',
+                features: [
+                    'Эстрадные постановки',
+                    'Участие в конкурсах',
+                    'Сценическое мастерство',
+                    'Работа с костюмами',
+                    'Яркие выступления'
+                ],
+                icon: '🎭',
+                ageGroup: '8-12',
+                room: 'Зал 3',
+                maxMembers: 12,
+                scheduleDays: []
+            },
+            
+            // Подростки 13-17 лет (3 направления)
+            'teens-contemporary': {
+                title: 'Современная хореография (Contemporary)',
+                description: 'Выразительный танец, основанный на эмоциях и естественности движения. Развитие пластики и творческого потенциала.',
+                schedule: 'В разработке',
+                price: 'Абонемент: 3000₽/8 занятий',
+                features: [
+                    'Современная хореография',
+                    'Развитие пластики тела',
+                    'Эмоциональная выразительность',
+                    'Работа с собственным телом',
+                    'Творческое самовыражение'
+                ],
+                icon: '💧',
+                ageGroup: '13-17',
+                room: 'Зал 1',
+                maxMembers: 12,
+                scheduleDays: []
+            },
+            'teens-hiphop-old': {
+                title: 'Хип-хоп (Old School)',
+                description: 'Изучение истоков уличной культуры. Мощные и техничные стили: Breaking, Popping, Locking.',
+                schedule: 'В разработке',
+                price: 'Абонемент: 3000₽/8 занятий',
+                features: [
+                    'Breaking, Popping, Locking',
+                    'Силовая подготовка',
+                    'Чувство ритма',
+                    'Уличная культура',
+                    'Акробатические элементы'
+                ],
+                icon: '👟',
+                ageGroup: '13-17',
+                room: 'Зал 2',
+                maxMembers: 12,
+                scheduleDays: []
+            },
+            'teens-hiphop-new': {
+                title: 'Хип-хоп (New Style)',
+                description: 'Современные уличные тенденции. Стили, популярные в клипах и на мировых танцполах.',
+                schedule: 'Четверг, Суббота в 19:00',
+                price: 'Абонемент: 3000₽/8 занятий',
+                features: [
+                    'Vogue, Dancehall, House',
+                    'Современные тенденции',
+                    'Музыкальность',
+                    'Стильная хореография',
+                    'Работа в команде'
+                ],
+                icon: '🎧',
+                ageGroup: '13-17',
+                room: 'Зал 2',
+                maxMembers: 15,
+                scheduleDays: [
+                    { day: 4, startTime: '19:00', endTime: '20:30' },
+                    { day: 6, startTime: '19:00', endTime: '20:30' }
+                ]
+            },
+            
+            // Взрослые 18-44 лет (3 направления)
             'adult-contemporary': {
-                id: 'adult-contemporary',
-                title: 'Танец для души (Contemporary)',
-                description: 'Свободный танец, помогающий снять напряжение и улучшить физическую форму.',
-                ageGroup: 'adult',
+                title: 'Танец для души (Contemporary, Modern Dance)',
+                description: 'Свободный танец, помогающий снять напряжение, выразить чувства и улучшить физическую форму.',
+                schedule: 'Понедельник и Среда в 19:00',
+                price: 'Абонемент: 4000₽/8 занятий',
+                features: [
+                    'Снятие стресса',
+                    'Улучшение физической формы',
+                    'Гармоничное движение',
+                    'Творческое самовыражение',
+                    'Подходит для любого уровня'
+                ],
                 icon: '🧘',
-                price: 'Пробное: 400₽, абонемент: 4000₽/8 занятий',
-                badge: '',
+                ageGroup: '18-44',
                 room: 'Зал 1',
                 maxMembers: 12,
                 scheduleDays: [
                     { day: 1, startTime: '19:00', endTime: '20:30' },
                     { day: 3, startTime: '19:00', endTime: '20:30' }
-                ],
+                ]
+            },
+            'adult-hiphop': {
+                title: 'Хип-хоп для взрослых',
+                description: 'Динамичное кардио, развитие чувства ритма и уверенности в себе. Подходит для любого уровня подготовки.',
+                schedule: 'В разработке',
+                price: 'Абонемент: 4000₽/8 занятий',
                 features: [
-                    'Снятие стресса',
-                    'Улучшение физической формы',
-                    'Творческое самовыражение'
+                    'Кардио-нагрузка',
+                    'Развитие ритма',
+                    'Уверенность в себе',
+                    'Современная музыка',
+                    'Поддержание формы'
                 ],
-                autoCreateGroups: true,
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString()
+                icon: '💪',
+                ageGroup: '18-44',
+                room: 'Зал 2',
+                maxMembers: 15,
+                scheduleDays: []
+            },
+            'adult-heels': {
+                title: 'High Heels / Lady Dance',
+                description: 'Стильный и женственный танец на каблуках. Развитие грации, сексуальности и уверенности в себе.',
+                schedule: 'В разработке',
+                price: 'Абонемент: 4000₽/8 занятий',
+                features: [
+                    'Танец на каблуках',
+                    'Развитие грации',
+                    'Уверенность в себе',
+                    'Женственность',
+                    'Работа с имиджем'
+                ],
+                icon: '👠',
+                ageGroup: '18-44',
+                room: 'Зал 3',
+                maxMembers: 12,
+                scheduleDays: []
+            },
+            
+            // Взрослые 25+ лет (3 направления)
+            'adult25-lady': {
+                title: 'Lady Dance, High Heels',
+                description: 'Элегантный танец, подчеркивающий женственность и пластику. Элементы джаза, стрип-пластики и современных стилей.',
+                schedule: 'В разработке',
+                price: 'Абонемент: 4000₽/8 занятий',
+                features: [
+                    'Элегантная хореография',
+                    'Развитие пластики',
+                    'Женственность и грация',
+                    'Элементы разных стилей',
+                    'Уверенность в себе'
+                ],
+                icon: '💃',
+                ageGroup: '25+',
+                room: 'Зал 3',
+                maxMembers: 12,
+                scheduleDays: []
+            },
+            'adult25-contemporary': {
+                title: 'Contemporary, Modern Dance',
+                description: 'Гармоничное сочетание физической нагрузки и творческого самовыражения. Улучшение осанки, гибкости и координации.',
+                schedule: 'В разработке',
+                price: 'Абонемент: 4000₽/8 занятий',
+                features: [
+                    'Физическая нагрузка',
+                    'Творческое самовыражение',
+                    'Улучшение осанки',
+                    'Гибкость и координация',
+                    'Снятие стресса'
+                ],
+                icon: '🌿',
+                ageGroup: '25+',
+                room: 'Зал 1',
+                maxMembers: 12,
+                scheduleDays: []
+            },
+            'adult25-ballet': {
+                title: 'Body Ballet для взрослых',
+                description: 'Упрощенная и адаптированная версия классического балета для взрослых. Идеально для формирования красивой осанки.',
+                schedule: 'В разработке',
+                price: 'Абонемент: 4000₽/8 занятий',
+                features: [
+                    'Адаптированный балет',
+                    'Красивая осанка',
+                    'Длинные мышцы',
+                    'Гибкость и грация',
+                    'Без чрезмерной нагрузки'
+                ],
+                icon: '🩰',
+                ageGroup: '25+',
+                room: 'Зал 1',
+                maxMembers: 12,
+                scheduleDays: []
+            },
+            
+            // Взрослые 45+ лет (3 направления)
+            'adult45-lady': {
+                title: 'Lady Dance для женщин 45+',
+                description: 'Элегантный танец, подчеркивающий женственность и пластику. Специально адаптированные занятия.',
+                schedule: 'В разработке',
+                price: 'Абонемент: 4000₽/8 занятий',
+                features: [
+                    'Адаптированные занятия',
+                    'Поддержание тонуса',
+                    'Развитие грации',
+                    'Уверенность в себе',
+                    'Дружеская атмосфера'
+                ],
+                icon: '🌺',
+                ageGroup: '45+',
+                room: 'Зал 3',
+                maxMembers: 12,
+                scheduleDays: []
+            },
+            'adult45-ballet': {
+                title: 'Body Ballet 45+',
+                description: 'Адаптированная программа классического балета для женщин 45+. Укрепление мышц, улучшение осанки, развитие гибкости.',
+                schedule: 'В разработке',
+                price: 'Абонемент: 4000₽/8 занятий',
+                features: [
+                    'Адаптированный балет',
+                    'Укрепление мышц',
+                    'Улучшение осанки',
+                    'Развитие гибкости',
+                    'Поддержание формы'
+                ],
+                icon: '🌟',
+                ageGroup: '45+',
+                room: 'Зал 1',
+                maxMembers: 12,
+                scheduleDays: []
+            },
+            'adult45-ballroom': {
+                title: 'Социальные танцы',
+                description: 'Прекрасный способ поддерживать активность, улучшать координацию, память и обретать новые знакомства.',
+                schedule: 'В разработке',
+                price: 'Абонемент: 4000₽/8 занятий',
+                features: [
+                    'Социальные танцы',
+                    'Улучшение координации',
+                    'Новые знакомства',
+                    'Активный образ жизни',
+                    'Дружеская атмосфера'
+                ],
+                icon: '💃',
+                ageGroup: '45+',
+                room: 'Зал 2',
+                maxMembers: 12,
+                scheduleDays: []
+            },
+            
+            // СПЕЦПРЕДЛОЖЕНИЯ (9 направлений)
+            'special-family': {
+                title: 'Семейный танец',
+                description: 'Совместные занятия для родителей и детей. Укрепление семейных связей через танец, веселое времяпрепровождение.',
+                schedule: 'Суббота в 11:00',
+                price: 'Разовое: 800₽ за пару, абонемент: 2800₽/4 занятия',
+                features: [
+                    'Совместные занятия родитель+ребенок',
+                    'Развитие взаимопонимания',
+                    'Общие интересы и хобби',
+                    'Фотозона и памятные моменты',
+                    'Специальная семейная скидка'
+                ],
+                icon: '👨‍👩‍👧',
+                ageGroup: 'special',
+                room: 'Зал 1',
+                maxMembers: 8,
+                badge: '🔥 НОВИНКА',
+                scheduleDays: [
+                    { day: 6, startTime: '11:00', endTime: '12:00' }
+                ]
+            },
+            'special-online': {
+                title: 'Онлайн-занятия',
+                description: 'Дистанционные занятия для тех, кто не может посещать студию. Индивидуальный подход через Zoom/Skype.',
+                schedule: 'По индивидуальному графику',
+                price: '800₽ за занятие, 2500₽/4 занятия',
+                features: [
+                    'Занятия из любой точки мира',
+                    'Индивидуальный график',
+                    'Запись занятий',
+                    'Персональная программа',
+                    'Обратная связь после урока'
+                ],
+                icon: '💻',
+                ageGroup: 'special',
+                room: 'Online',
+                maxMembers: 1,
+                badge: '🌐 ONLINE',
+                scheduleDays: []
+            },
+            'pregnancy-fitness': {
+                title: 'Фитнес для беременных',
+                description: 'Специальная программа физической активности для будущих мам. Безопасные упражнения для поддержания формы, подготовки к родам и восстановления после.',
+                schedule: 'Вторник и Четверг в 10:00',
+                price: 'Пробное: 450₽, абонемент: 3500₽/8 занятий',
+                features: [
+                    'Сертифицированный инструктор по перинатальной гимнастике',
+                    'Укрепление мышц тазового дна',
+                    'Профилактика отеков и болей в спине',
+                    'Дыхательные техники для родов',
+                    'Общение с другими будущими мамами',
+                    'Индивидуальный подход на каждом триместре'
+                ],
+                icon: '🤰',
+                ageGroup: 'special',
+                room: 'Зал 3',
+                maxMembers: 8,
+                badge: '👶 ДЛЯ БУДУЩИХ МАМ',
+                scheduleDays: [
+                    { day: 2, startTime: '10:00', endTime: '11:00' },
+                    { day: 4, startTime: '10:00', endTime: '11:00' }
+                ]
+            },
+            'pregnancy-gymnastics': {
+                title: 'Гимнастика для беременных',
+                description: 'Мягкие растяжки, упражнения на фитболе и пилатес для беременных. Улучшение гибкости, снятие напряжения, подготовка тела к родам.',
+                schedule: 'Понедельник и Среда в 11:00',
+                price: 'Пробное: 450₽, абонемент: 3200₽/8 занятий',
+                features: [
+                    'Работа с фитболами и мягким оборудованием',
+                    'Упражнения на расслабление и снятие тонуса',
+                    'Улучшение кровообращения и лимфотока',
+                    'Профилактика варикоза',
+                    'Подготовка суставов и связок к родам',
+                    'Сертификат о прохождении курса'
+                ],
+                icon: '🧘‍♀️',
+                ageGroup: 'special',
+                room: 'Зал 3',
+                maxMembers: 8,
+                badge: '🌈 БЕЗОПАСНО',
+                scheduleDays: [
+                    { day: 1, startTime: '11:00', endTime: '12:00' },
+                    { day: 3, startTime: '11:00', endTime: '12:00' }
+                ]
+            },
+            'family-stretching': {
+                title: 'Семейная растяжка',
+                description: 'Совместные занятия по стретчингу для родителей и детей. Улучшение гибкости, профилактика нарушений осанки у детей, общее оздоровление.',
+                schedule: 'Воскресенье в 10:00',
+                price: 'Семейный абонемент: 5000₽/4 занятия для семьи',
+                features: [
+                    'Парные упражнения родитель-ребенок',
+                    'Игровые элементы для детей',
+                    'Профилактика сколиоза и плоскостопия',
+                    'Улучшение эластичности мышц и связок',
+                    'Дыхательные практики для всей семьи',
+                    'Фотосессия после каждого месяца занятий'
+                ],
+                icon: '🤸‍♀️',
+                ageGroup: 'special',
+                room: 'Зал 1',
+                maxMembers: 8,
+                badge: '👨‍👩‍👧‍👦 СЕМЕЙНОЕ',
+                scheduleDays: [
+                    { day: 0, startTime: '10:00', endTime: '11:30' }
+                ]
+            },
+            'family-dance-weekend': {
+                title: 'Семейный танцевальный выходной',
+                description: 'Ежемесячное мероприятие: 3-часовая танцевальная программа для всей семьи с мастер-классами, конкурсами и дискотекой.',
+                schedule: 'Последняя суббота месяца с 11:00 до 14:00',
+                price: 'Семья до 4 человек: 2000₽',
+                features: [
+                    '3 разных танцевальных мастер-класса',
+                    'Тематические танцевальные баттлы',
+                    'Фотозона с реквизитом',
+                    'Легкий фуршет',
+                    'Призы и подарки участникам',
+                    'Дискотека для всей семьи',
+                    'Профессиональная фотосъемка'
+                ],
+                icon: '🎉',
+                ageGroup: 'special',
+                room: 'Большой зал',
+                maxMembers: 20,
+                badge: '🎪 СОБЫТИЕ',
+                scheduleDays: []
+            },
+            'mom-baby-dance': {
+                title: 'Танцы "Мама+Малыш"',
+                description: 'Занятия для мам с детьми от 6 месяцев до 3 лет. Нежные танцы с малышами на руках, развитие вестибулярного аппарата ребенка.',
+                schedule: 'Пятница в 10:30',
+                price: 'Разовое: 600₽, абонемент: 2800₽/4 занятия',
+                features: [
+                    'Адаптированные танцевальные движения с малышом',
+                    'Развитие вестибулярного аппарата ребенка',
+                    'Восстановление фигуры после родов',
+                    'Общение с другими мамами',
+                    'Безопасное оборудование и мягкие маты',
+                    'Детская зона для ползающих малышей'
+                ],
+                icon: '👶',
+                ageGroup: 'special',
+                room: 'Зал 3',
+                maxMembers: 10,
+                badge: '❤️ МАМА+МАЛЫШ',
+                scheduleDays: [
+                    { day: 5, startTime: '10:30', endTime: '11:30' }
+                ]
+            },
+            'couple-dance': {
+                title: 'Парные танцы для влюбленных',
+                description: 'Романтические танцевальные курсы для пар: бачата, сальса, аргентинское танго. Идеально для свиданий и особых моментов.',
+                schedule: 'Пятница в 20:00',
+                price: 'Пара: 1200₽ за занятие, курс 8 занятий: 8000₽',
+                features: [
+                    'Романтические стили танцев',
+                    'Улучшение взаимопонимания в паре',
+                    'Постановка свадебного танца',
+                    'Романтическая атмосфера',
+                    'Фотосессия в танцевальных образах',
+                    'Сертификат на 2 персональных занятия'
+                ],
+                icon: '💑',
+                ageGroup: 'special',
+                room: 'Зал 1',
+                maxMembers: 10,
+                badge: '💘 ДЛЯ ПАР',
+                scheduleDays: [
+                    { day: 5, startTime: '20:00', endTime: '21:30' }
+                ]
             }
         };
+
+        // ===== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ =====
+        let currentDate = new Date();
+        let currentCalendarDate = new Date();
         
-        // ===== ДАННЫЕ ДЛЯ СИСТЕМЫ =====
+        // Данные направлений
+        let directions = JSON.parse(localStorage.getItem('danceStudioDirections')) || {};
+        
+        // Инициализация направлений, если их нет
+        if (Object.keys(directions).length === 0) {
+            Object.keys(DIRECTIONS_DATA).forEach(key => {
+                directions[key] = {
+                    ...DIRECTIONS_DATA[key],
+                    id: key,
+                    autoCreateGroups: true,
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString()
+                };
+            });
+            localStorage.setItem('danceStudioDirections', JSON.stringify(directions));
+        }
+        
+        // Данные групп
         let groups = JSON.parse(localStorage.getItem('danceStudioGroups')) || [];
+        
+        // Данные тренеров
         let trainers = JSON.parse(localStorage.getItem('danceStudioTrainers')) || [
             { 
                 id: 1, 
@@ -2182,9 +2830,22 @@
                 experience: 10, 
                 groups: [], 
                 status: "active"
+            },
+            { 
+                id: 4, 
+                lastName: "Петрова", 
+                firstName: "Елена", 
+                middleName: "Владимировна", 
+                specialization: "Фитнес для беременных", 
+                phone: "+7 (911) 444-44-44", 
+                email: "elena@studio.ru", 
+                experience: 6, 
+                groups: [], 
+                status: "active"
             }
         ];
         
+        // Данные клиентов
         let clients = JSON.parse(localStorage.getItem('danceStudioClients')) || [
             { 
                 id: 1, 
@@ -2199,7 +2860,6 @@
                 phone: "+7 (900) 123-45-67",
                 email: "", 
                 birthDate: null,
-                gender: "female", 
                 groupId: null, 
                 subscription: "active", 
                 subscriptionEnd: "", 
@@ -2208,12 +2868,15 @@
             }
         ];
         
+        // Данные абонементов
         let subscriptions = JSON.parse(localStorage.getItem('danceStudioSubscriptions')) || [];
+        
+        // Данные занятий
         let classes = JSON.parse(localStorage.getItem('danceStudioClasses')) || [];
         
         // ID для новых записей
         let nextGroupId = groups.length > 0 ? Math.max(...groups.map(g => g.id)) + 1 : 1;
-        let nextTrainerId = trainers.length > 0 ? Math.max(...trainers.map(t => t.id)) + 1 : 4;
+        let nextTrainerId = trainers.length > 0 ? Math.max(...trainers.map(t => t.id)) + 1 : 5;
         let nextClientId = clients.length > 0 ? Math.max(...clients.map(c => c.id)) + 1 : 2;
         let nextSubscriptionId = subscriptions.length > 0 ? Math.max(...subscriptions.map(s => s.id)) + 1 : 1;
         let nextClassId = classes.length > 0 ? Math.max(...classes.map(c => c.id)) + 1 : 1;
@@ -2250,18 +2913,16 @@
             }
         }
         
-        function getAgeCategoryName(category) {
-            switch(category) {
-                case "baby": return "Малыши 3-7 лет";
-                case "kids": return "Дети 8-12 лет";
-                case "teens": return "Подростки 13-17 лет";
-                case "adult": return "Взрослые 18-44 лет";
-                case "adult25": return "Взрослые 25+ лет";
-                case "adult45": return "Взрослые 45+ лет";
-                case "special": return "Спецпредложения";
-                case "child": return "Дети 3-12 лет";
-                case "teen": return "Подростки 13-17 лет";
-                default: return category || "Не указана";
+        function getAgeCategoryDisplay(ageGroup) {
+            switch(ageGroup) {
+                case '3-7': return 'Малыши 3-7 лет';
+                case '8-12': return 'Дети 8-12 лет';
+                case '13-17': return 'Подростки 13-17 лет';
+                case '18-44': return 'Взрослые 18-44 лет';
+                case '25+': return 'Взрослые 25+ лет';
+                case '45+': return 'Взрослые 45+ лет';
+                case 'special': return 'Спецпредложения';
+                default: return ageGroup;
             }
         }
         
@@ -2286,6 +2947,45 @@
             document.getElementById(modalId).style.display = 'none';
         }
         
+        // ===== ФУНКЦИИ ДЛЯ АБОНЕМЕНТОВ =====
+        
+        function renderPrices() {
+            const container = document.getElementById('pricesContainer');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            PRICES.forEach(price => {
+                const card = document.createElement('div');
+                card.className = 'subscription-card';
+                
+                let ageBadge = '';
+                if (price.ageGroup === '3-12') ageBadge = '<span class="subscription-age">👶 Дети 3-12 лет</span>';
+                else if (price.ageGroup === '13-17') ageBadge = '<span class="subscription-age">🧑 Подростки 13-17 лет</span>';
+                else if (price.ageGroup === '18+') ageBadge = '<span class="subscription-age">👤 Взрослые 18+ лет</span>';
+                else if (price.ageGroup === '45+') ageBadge = '<span class="subscription-age">👵 Взрослые 45+ лет</span>';
+                else if (price.ageGroup === 'all') ageBadge = '<span class="subscription-age">✨ Все категории</span>';
+                
+                card.innerHTML = `
+                    <div class="subscription-header">
+                        <div class="subscription-title">${price.title}</div>
+                        <div class="subscription-price">${price.price}</div>
+                    </div>
+                    <div class="subscription-body">
+                        <div class="subscription-period">
+                            <i class="fas fa-clock"></i> ${price.period}
+                        </div>
+                        ${ageBadge}
+                        <ul class="subscription-features">
+                            ${price.features.map(f => `<li>${f}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+        
         // ===== ФУНКЦИИ ДЛЯ НАПРАВЛЕНИЙ =====
         
         function generateGroupsFromDirections() {
@@ -2307,7 +3007,7 @@
                             directionKey: key,
                             level: 'beginner',
                             trainerId: null,
-                            time: scheduleStr,
+                            time: scheduleStr || direction.schedule || 'В разработке',
                             room: direction.room || 'Зал 1',
                             maxMembers: direction.maxMembers || 12,
                             description: direction.description || '',
@@ -2324,7 +3024,7 @@
         }
         
         function formatScheduleFromDays(scheduleDays) {
-            if (!scheduleDays || scheduleDays.length === 0) return 'Расписание не указано';
+            if (!scheduleDays || scheduleDays.length === 0) return 'В разработке';
             
             const dayNames = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
             const dayGroups = {};
@@ -2352,7 +3052,7 @@
                 saveData();
                 renderDirections();
                 renderGroups();
-                showNotification(`Создано ${newGroups.length} новых групп из направлений!`, 'success');
+                showNotification(`Создано ${newGroups.length} новых групп`, 'success');
             } else {
                 showNotification('Все группы уже синхронизированы', 'info');
             }
@@ -2383,7 +3083,14 @@
                 return;
             }
             
+            let scheduled = 0;
+            let developing = 0;
+            
             filteredDirections.forEach(([key, direction]) => {
+                const hasSchedule = direction.scheduleDays && direction.scheduleDays.length > 0;
+                if (hasSchedule) scheduled++;
+                else developing++;
+                
                 const relatedGroups = groups.filter(g => g.directionKey === key);
                 const groupCount = relatedGroups.length;
                 const totalMembers = clients.filter(c => {
@@ -2395,15 +3102,16 @@
                 
                 let cardColor, cardColorDark;
                 switch(direction.ageGroup) {
-                    case 'baby':
-                    case 'kids':
+                    case '3-7':
                         cardColor = '#a29bfe'; cardColorDark = '#5b4fcf'; break;
-                    case 'teens':
+                    case '8-12':
                         cardColor = '#6c5ce7'; cardColorDark = '#4a3dc7'; break;
-                    case 'adult':
-                    case 'adult25':
+                    case '13-17':
+                        cardColor = '#0984e3'; cardColorDark = '#0770c4'; break;
+                    case '18-44':
+                    case '25+':
                         cardColor = '#00b894'; cardColorDark = '#00a085'; break;
-                    case 'adult45':
+                    case '45+':
                         cardColor = '#e17055'; cardColorDark = '#c44569'; break;
                     case 'special':
                         cardColor = '#fd79a8'; cardColorDark = '#e84393'; break;
@@ -2411,17 +3119,24 @@
                         cardColor = '#a29bfe'; cardColorDark = '#5b4fcf';
                 }
                 
+                const badgeClass = direction.badge ? 
+                    (direction.badge.includes('НОВИНКА') ? 'badge-new' : 
+                     direction.badge.includes('ONLINE') ? 'badge-online' : 
+                     direction.badge.includes('ДЛЯ ПАР') ? 'badge-couple' :
+                     direction.badge.includes('БУДУЩИХ') ? 'badge-pregnancy' :
+                     direction.badge.includes('СЕМЕЙНОЕ') ? 'badge-family' : 'badge-special') : '';
+                
                 const card = document.createElement('div');
                 card.className = 'direction-card';
                 card.innerHTML = `
-                    <div class="direction-header direction-editor-header" style="background: linear-gradient(to right, ${cardColor}, ${cardColorDark});">
+                    <div class="direction-header" style="background: linear-gradient(to right, ${cardColor}, ${cardColorDark});">
                         <div class="direction-title">${direction.title}</div>
                         <div class="direction-icon">${direction.icon || '💃'}</div>
                     </div>
                     <div class="direction-body">
                         <div class="direction-age">
-                            <i class="fas fa-user"></i> ${getAgeCategoryName(direction.ageGroup)}
-                            ${direction.badge ? `<span class="badge badge-special">${direction.badge}</span>` : ''}
+                            <i class="fas fa-user"></i> ${getAgeCategoryDisplay(direction.ageGroup)}
+                            ${direction.badge ? `<span class="badge ${badgeClass}">${direction.badge}</span>` : ''}
                             <span class="auto-generate-badge"><i class="fas fa-magic"></i> Авто</span>
                         </div>
                         
@@ -2430,17 +3145,16 @@
                         <div class="direction-schedule">
                             <i class="fas fa-calendar-alt"></i> 
                             <strong>Расписание:</strong> ${scheduleDisplay}
-                            <br><small>Зал: ${direction.room || 'Не указан'}</small>
+                            <br><small>Зал: ${direction.room || 'Не указан'} • ${direction.maxMembers || 12} мест</small>
                         </div>
                         
                         <div class="direction-stats">
                             <span><i class="fas fa-users"></i> Групп: ${groupCount}</span>
                             <span><i class="fas fa-user-friends"></i> Участников: ${totalMembers}</span>
-                            <span><i class="fas fa-chair"></i> Мест: ${direction.maxMembers || 12}</span>
                         </div>
                         
                         <ul class="direction-features">
-                            ${direction.features ? direction.features.slice(0, 3).map(f => `<li>${f}</li>`).join('') : ''}
+                            ${direction.features ? direction.features.slice(0, 4).map(f => `<li>${f}</li>`).join('') : ''}
                         </ul>
                         
                         <div class="direction-price">
@@ -2463,6 +3177,10 @@
                 
                 container.appendChild(card);
             });
+            
+            document.getElementById('totalDirectionsCount').textContent = filteredDirections.length;
+            document.getElementById('scheduledDirectionsCount').textContent = scheduled;
+            document.getElementById('developingDirectionsCount').textContent = developing;
         }
         
         function openDirectionModal(key = null) {
@@ -2506,8 +3224,6 @@
                     direction.scheduleDays.forEach(schedule => {
                         addScheduleDayRow(schedule.day, schedule.startTime, schedule.endTime);
                     });
-                } else {
-                    addScheduleDayRow(1, '18:00', '19:00');
                 }
             } else {
                 title.textContent = 'Добавить направление';
@@ -2516,10 +3232,12 @@
                 document.getElementById('autoCreateGroups').checked = true;
                 
                 addFeatureRow('');
+            }
+            
+            if (scheduleContainer.children.length === 0) {
                 addScheduleDayRow(1, '18:00', '19:00');
             }
             
-            updateGroupPreview();
             modal.style.display = 'block';
         }
         
@@ -2546,11 +3264,8 @@
             row.querySelector('.remove-feature-btn').addEventListener('click', function() {
                 if (container.children.length > 1) {
                     row.remove();
-                    updateGroupPreview();
                 }
             });
-            
-            row.querySelector('.feature-input').addEventListener('input', updateGroupPreview);
         }
         
         function addScheduleDayRow(day = 1, startTime = '18:00', endTime = '19:00') {
@@ -2584,12 +3299,6 @@
             
             row.querySelector('.remove-schedule-btn').addEventListener('click', function() {
                 row.remove();
-                updateGroupPreview();
-            });
-            
-            ['day-select', 'start-time', 'end-time'].forEach(selector => {
-                const el = row.querySelector(`.${selector}`);
-                if (el) el.addEventListener('change', updateGroupPreview);
             });
         }
         
@@ -2608,29 +3317,6 @@
             });
             
             return scheduleDays;
-        }
-        
-        function updateGroupPreview() {
-            const title = document.getElementById('directionTitle').value;
-            const room = document.getElementById('directionRoom').value;
-            const maxMembers = document.getElementById('directionMaxMembers').value;
-            const scheduleDays = collectScheduleDays();
-            
-            const preview = document.getElementById('groupPreview');
-            const previewName = document.getElementById('previewGroupName');
-            const previewSchedule = document.getElementById('previewSchedule');
-            const previewRoom = document.getElementById('previewRoom');
-            const previewMaxMembers = document.getElementById('previewMaxMembers');
-            
-            if (title && scheduleDays.length > 0) {
-                preview.style.display = 'block';
-                previewName.textContent = title;
-                previewSchedule.textContent = formatScheduleFromDays(scheduleDays);
-                previewRoom.textContent = room || 'Зал 1';
-                previewMaxMembers.textContent = maxMembers || 12;
-            } else {
-                preview.style.display = 'none';
-            }
         }
         
         function saveDirection(event) {
@@ -2660,10 +3346,15 @@
             });
             
             const scheduleDays = collectScheduleDays();
+            const scheduleStr = formatScheduleFromDays(scheduleDays);
             
-            const newKey = key || title.toLowerCase().replace(/[^a-zа-яё0-9]/gi, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+            const newKey = key || title.toLowerCase()
+                .replace(/[^a-zа-яё0-9]/gi, '-')
+                .replace(/-+/g, '-')
+                .replace(/^-|-$/g, '');
             
             directions[newKey] = {
+                ...directions[newKey],
                 id: newKey,
                 title,
                 ageGroup,
@@ -2675,21 +3366,24 @@
                 room,
                 maxMembers,
                 scheduleDays,
-                schedule: formatScheduleFromDays(scheduleDays),
+                schedule: scheduleStr,
                 autoCreateGroups,
                 updatedAt: new Date().toISOString(),
                 createdAt: directions[newKey]?.createdAt || new Date().toISOString()
             };
             
             if (!key && autoCreateGroups) {
-                syncGroupsWithDirections();
+                const newGroups = generateGroupsFromDirections();
+                if (newGroups.length > 0) {
+                    groups = [...groups, ...newGroups];
+                }
             }
             
             saveData();
             renderDirections();
             
             closeModal('directionModal');
-            showNotification('Направление успешно сохранено!', 'success');
+            showNotification('Направление сохранено!', 'success');
         }
         
         function editDirection(key) {
@@ -2776,7 +3470,7 @@
             saveData();
             renderCalendar(currentCalendarDate);
             
-            showNotification(`Сгенерировано ${addedCount} занятий для "${direction.title}"`, 'success');
+            showNotification(`Сгенерировано ${addedCount} занятий`, 'success');
         }
         
         // ===== ФУНКЦИИ ДЛЯ КАЛЕНДАРЯ =====
@@ -2891,6 +3585,7 @@
                 dayClasses.forEach(cls => {
                     const group = groups.find(g => g.id === cls.groupId);
                     const trainer = trainers.find(t => t.id === cls.trainerId);
+                    const direction = group ? directions[group.directionKey] : null;
                     
                     if (group) {
                         const eventDiv = document.createElement('div');
@@ -2904,6 +3599,7 @@
                             <div class="group-body">
                                 <p><strong>Тренер:</strong> ${trainer ? `${trainer.firstName} ${trainer.lastName}` : 'Не назначен'}</p>
                                 <p><strong>Зал:</strong> ${cls.room}</p>
+                                <p><strong>Направление:</strong> ${direction ? direction.title : 'Не указано'}</p>
                                 <p><strong>Участников:</strong> ${clients.filter(c => c.groupId === group.id).length}</p>
                                 ${cls.notes ? `<p><strong>Примечание:</strong> ${cls.notes}</p>` : ''}
                             </div>
@@ -2963,6 +3659,8 @@
                 const direction = directions[group.directionKey];
                 const members = clients.filter(c => c.groupId === group.id);
                 
+                const hasSchedule = group.scheduleDays && group.scheduleDays.length > 0;
+                
                 const card = document.createElement('div');
                 card.className = 'group-card';
                 card.innerHTML = `
@@ -2984,7 +3682,8 @@
                         </div>
                         ${direction ? `
                             <div style="margin-bottom: 15px; padding: 10px; background: #f0f7ff; border-radius: 5px;">
-                                <small><i class="fas fa-directions"></i> Направление: ${direction.title}</small>
+                                <small><i class="fas fa-directions"></i> ${direction.title} (${getAgeCategoryDisplay(direction.ageGroup)})</small>
+                                ${!hasSchedule ? '<br><small style="color: #e17055;"><i class="fas fa-exclamation-triangle"></i> Расписание в разработке</small>' : ''}
                             </div>
                         ` : ''}
                         <div class="group-members">
@@ -2998,7 +3697,7 @@
                                         </span>
                                     </div>
                                 `;
-                            }).join('') : '<p style="text-align: center; padding: 20px;">Нет участников</p>'}
+                            }).join('') : '<p style="text-align: center; padding: 20px; color: #636e72;">Нет участников</p>'}
                         </div>
                     </div>
                     <div class="group-footer">
@@ -3027,7 +3726,7 @@
             directionSelect.innerHTML = '<option value="">Выберите направление</option>';
             Object.keys(directions).forEach(key => {
                 const d = directions[key];
-                directionSelect.innerHTML += `<option value="${key}">${d.title} (${getAgeCategoryName(d.ageGroup)})</option>`;
+                directionSelect.innerHTML += `<option value="${key}">${d.title} (${getAgeCategoryDisplay(d.ageGroup)})</option>`;
             });
             
             const trainerSelect = document.getElementById('groupTrainer');
@@ -3050,6 +3749,8 @@
                 document.getElementById('groupRoom').value = group.room || '';
                 document.getElementById('groupDescription').value = group.description || '';
                 document.getElementById('autoGenerateClasses').checked = group.autoGenerate !== false;
+                
+                onGroupDirectionChange();
             } else {
                 title.textContent = 'Добавить группу';
                 form.reset();
@@ -3182,22 +3883,24 @@
             const key = document.getElementById('groupDirection').value;
             const scheduleField = document.getElementById('groupSchedule');
             const scheduleHint = document.getElementById('scheduleFromDirection');
+            const roomField = document.getElementById('groupRoom');
+            const maxField = document.getElementById('groupMaxMembers');
             
             if (key && directions[key]) {
                 const direction = directions[key];
                 const scheduleStr = formatScheduleFromDays(direction.scheduleDays || []);
                 
-                if (scheduleStr && !scheduleField.value) {
+                if (scheduleStr && scheduleStr !== 'В разработке' && !scheduleField.value) {
                     scheduleField.value = scheduleStr;
                     scheduleHint.style.display = 'block';
+                } else {
+                    scheduleHint.style.display = 'none';
                 }
                 
-                const roomField = document.getElementById('groupRoom');
                 if (direction.room && !roomField.value) {
                     roomField.value = direction.room;
                 }
                 
-                const maxField = document.getElementById('groupMaxMembers');
                 if (direction.maxMembers && !maxField.value) {
                     maxField.value = direction.maxMembers;
                 }
@@ -3371,11 +4074,24 @@
                     parentInfo = `${c.parentLastName} ${c.parentFirstName || ''}<br><small>${c.parentPhone || ''}</small>`;
                 }
                 
+                let age = '-';
+                if (c.age) age = `${c.age} лет`;
+                else if (c.birthDate) {
+                    const birthDate = new Date(c.birthDate);
+                    const today = new Date();
+                    let calculatedAge = today.getFullYear() - birthDate.getFullYear();
+                    const monthDiff = today.getMonth() - birthDate.getMonth();
+                    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                        calculatedAge--;
+                    }
+                    age = `${calculatedAge} лет`;
+                }
+                
                 row.innerHTML = `
                     <td>${c.id}</td>
                     <td><strong>${fullName}</strong></td>
-                    <td>${getAgeCategoryName(c.clientType)}</td>
-                    <td>${c.age || (c.birthDate ? new Date().getFullYear() - new Date(c.birthDate).getFullYear() : '-')}</td>
+                    <td>${c.clientType === 'child' ? 'Ребенок' : c.clientType === 'teen' ? 'Подросток' : c.clientType === 'adult' ? 'Взрослый' : c.clientType === 'adult45' ? '45+' : 'Спец'}</td>
+                    <td>${age}</td>
                     <td>${c.phone || '-'}</td>
                     <td>${parentInfo}</td>
                     <td>${group ? group.name : 'Не назначена'}</td>
@@ -3467,6 +4183,8 @@
                     document.getElementById('parentLastName').value = client.parentLastName || '';
                     document.getElementById('parentFirstName').value = client.parentFirstName || '';
                     document.getElementById('parentPhone').value = client.parentPhone || '';
+                    document.getElementById('clientPhone').value = client.phone || '';
+                    document.getElementById('clientEmail').value = client.email || '';
                 } else {
                     document.getElementById('clientBirthDate').value = client.birthDate || '';
                     document.getElementById('clientPhone').value = client.phone || '';
@@ -3516,7 +4234,8 @@
                 clientData.parentLastName = document.getElementById('parentLastName').value;
                 clientData.parentFirstName = document.getElementById('parentFirstName').value;
                 clientData.parentPhone = document.getElementById('parentPhone').value;
-                clientData.phone = document.getElementById('parentPhone').value;
+                clientData.phone = document.getElementById('clientPhone').value || document.getElementById('parentPhone').value;
+                clientData.email = document.getElementById('clientEmail').value || '';
                 clientData.birthDate = null;
             } else {
                 clientData.age = null;
@@ -3524,8 +4243,8 @@
                 clientData.parentFirstName = null;
                 clientData.parentPhone = null;
                 clientData.phone = document.getElementById('clientPhone').value;
-                clientData.birthDate = document.getElementById('clientBirthDate').value || null;
                 clientData.email = document.getElementById('clientEmail').value || '';
+                clientData.birthDate = document.getElementById('clientBirthDate').value || null;
             }
             
             if (id) {
@@ -3557,7 +4276,7 @@
             }
         }
         
-        // ===== ФУНКЦИИ ДЛЯ АБОНЕМЕНТОВ =====
+        // ===== ФУНКЦИИ ДЛЯ АБОНЕМЕНТОВ КЛИЕНТОВ =====
         
         function renderSubscriptions() {
             const table = document.getElementById('subscriptionsTable');
@@ -3631,6 +4350,12 @@
             groupSelect.innerHTML = '<option value="">Выберите группу</option>';
             groups.forEach(g => {
                 groupSelect.innerHTML += `<option value="${g.id}">${g.name}</option>`;
+            });
+            
+            const typeSelect = document.getElementById('subscriptionType');
+            typeSelect.innerHTML = '<option value="">Выберите тип</option>';
+            PRICES.forEach(p => {
+                typeSelect.innerHTML += `<option value="${p.title}">${p.title} - ${p.price} (${p.period})</option>`;
             });
             
             if (id) {
@@ -3831,6 +4556,8 @@
             const activeTrainers = trainers.filter(t => t.status === 'active').length;
             const totalGroups = groups.length;
             const totalDirections = Object.keys(directions).length;
+            const totalClasses = classes.length;
+            const totalSubscriptions = subscriptions.length;
             
             container.innerHTML = `
                 <div class="stat-card stat-directions">
@@ -3855,9 +4582,14 @@
                     <div class="stat-label">Тренеров</div>
                     <div class="stat-label">${activeTrainers} активных</div>
                 </div>
+                <div class="stat-card stat-subscriptions">
+                    <div class="stat-icon"><i class="fas fa-id-card"></i></div>
+                    <div class="stat-value">${totalSubscriptions}</div>
+                    <div class="stat-label">Абонементов</div>
+                </div>
                 <div class="stat-card stat-classes">
                     <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
-                    <div class="stat-value">${classes.length}</div>
+                    <div class="stat-value">${totalClasses}</div>
                     <div class="stat-label">Занятий</div>
                 </div>
             `;
@@ -3869,12 +4601,12 @@
             const workbook = XLSX.utils.book_new();
             
             // Направления
-            const dirData = [['ID', 'Название', 'Возрастная группа', 'Зал', 'Макс. участников', 'Расписание']];
+            const dirData = [['ID', 'Название', 'Возрастная группа', 'Зал', 'Макс. участников', 'Расписание', 'Стоимость']];
             Object.keys(directions).forEach(key => {
                 const d = directions[key];
                 dirData.push([
-                    key, d.title, getAgeCategoryName(d.ageGroup), d.room || '', 
-                    d.maxMembers || 12, formatScheduleFromDays(d.scheduleDays || [])
+                    key, d.title, getAgeCategoryDisplay(d.ageGroup), d.room || '', 
+                    d.maxMembers || 12, formatScheduleFromDays(d.scheduleDays || []), d.price || ''
                 ]);
             });
             XLSX.utils.book_append_sheet(workbook, XLSX.utils.aoa_to_sheet(dirData), 'Направления');
@@ -3891,24 +4623,36 @@
             XLSX.utils.book_append_sheet(workbook, XLSX.utils.aoa_to_sheet(groupData), 'Группы');
             
             // Тренеры
-            const trainerData = [['ID', 'ФИО', 'Специализация', 'Телефон', 'Статус']];
+            const trainerData = [['ID', 'ФИО', 'Специализация', 'Телефон', 'Email', 'Опыт', 'Статус']];
             trainers.forEach(t => {
                 trainerData.push([
-                    t.id, `${t.lastName} ${t.firstName}`, t.specialization, t.phone, t.status
+                    t.id, `${t.lastName} ${t.firstName}`, t.specialization, t.phone, 
+                    t.email || '', t.experience || 0, t.status
                 ]);
             });
             XLSX.utils.book_append_sheet(workbook, XLSX.utils.aoa_to_sheet(trainerData), 'Тренеры');
             
             // Клиенты
-            const clientData = [['ID', 'ФИО', 'Тип', 'Телефон', 'Группа', 'Статус']];
+            const clientData = [['ID', 'ФИО', 'Тип', 'Возраст', 'Телефон', 'Группа', 'Статус']];
             clients.forEach(c => {
                 const group = groups.find(g => g.id === c.groupId);
                 clientData.push([
-                    c.id, `${c.lastName} ${c.firstName}`, c.clientType, c.phone || '', 
-                    group ? group.name : '', c.subscription || 'active'
+                    c.id, `${c.lastName} ${c.firstName}`, c.clientType, 
+                    c.age || '', c.phone || '', group ? group.name : '', c.subscription || 'active'
                 ]);
             });
             XLSX.utils.book_append_sheet(workbook, XLSX.utils.aoa_to_sheet(clientData), 'Клиенты');
+            
+            // Абонементы
+            const subData = [['ID', 'Клиент', 'Тип', 'Начало', 'Окончание', 'Занятий', 'Статус']];
+            subscriptions.forEach(s => {
+                const client = clients.find(c => c.id === s.clientId);
+                subData.push([
+                    s.id, client ? `${client.lastName} ${client.firstName}` : '', 
+                    s.type, s.startDate, s.endDate, s.classes || 0, s.status
+                ]);
+            });
+            XLSX.utils.book_append_sheet(workbook, XLSX.utils.aoa_to_sheet(subData), 'Абонементы');
             
             XLSX.writeFile(workbook, `Грация_${new Date().toISOString().slice(0,10)}.xlsx`);
             showNotification('Данные экспортированы!', 'success');
@@ -3927,6 +4671,10 @@
                     const tabId = this.getAttribute('data-tab');
                     const content = document.getElementById(`${tabId}-content`);
                     if (content) content.classList.add('active');
+                    
+                    if (tabId === 'subscriptions') {
+                        renderPrices();
+                    }
                 });
             });
             
@@ -3939,7 +4687,7 @@
                     generateClassesForDirection(key);
                     total++;
                 });
-                showNotification(`Занятия сгенерированы!`, 'success');
+                showNotification('Занятия сгенерированы!', 'success');
             });
             
             document.getElementById('filterDirectionAge')?.addEventListener('change', function() {
@@ -3973,8 +4721,10 @@
             
             document.getElementById('generateClassesBtn')?.addEventListener('click', () => {
                 let total = 0;
-                Object.keys(directions).forEach(key => total++);
-                showNotification('Используйте кнопку "Сгенерировать занятия" во вкладке Направления', 'info');
+                Object.keys(directions).forEach(key => {
+                    total += generateClassesForDirection(key);
+                });
+                showNotification(`Занятия сгенерированы!`, 'success');
             });
             
             document.getElementById('addClassBtn')?.addEventListener('click', () => openClassModal());
@@ -4076,6 +4826,7 @@
             renderTrainers();
             renderClients();
             renderSubscriptions();
+            renderPrices();
             
             setInterval(() => {
                 const timeEl = document.getElementById('updateTime');
